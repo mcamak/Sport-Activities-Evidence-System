@@ -33,13 +33,6 @@ public interface ActivityRecordService {
 	 * @return activity record with given ID
 	 */
 	public ActivityRecord findById(Long id);
-	
-	/**
-	 * Retrieve all activity records
-	 *
-	 * @return list of all activity records
-	 */
-	public List<ActivityRecord> findAll();
 
 
 	/**
