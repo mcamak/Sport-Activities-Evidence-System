@@ -5,7 +5,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Implementation of BurnedCaloriesDao
+ * 
  * @author Tomas Effenberger
  */
 public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {

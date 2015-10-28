@@ -6,7 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- *
+ * Entity class for representation of a sport activity.
+ * 
  * @author Tomas Effenberger
  */
 @Entity
