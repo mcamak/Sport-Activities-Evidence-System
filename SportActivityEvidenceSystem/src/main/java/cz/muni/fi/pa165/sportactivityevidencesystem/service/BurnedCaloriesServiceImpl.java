@@ -19,7 +19,7 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService{
     private BurnedCaloriesDao burnedCaloriesDao;
 
     @Override
-    public void createBurnedCalories(BurnedCalories burnedCalories) {
+    public void create(BurnedCalories burnedCalories) {
         if (burnedCalories == null){
             throw new IllegalArgumentException("Object of burned calories is null. Cannot be created.");
         }
@@ -27,40 +27,40 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService{
             throw new IllegalArgumentException("Burned calories with this ID already exists.");
         }
         
-        burnedCaloriesDao.createBurnedCalories(burnedCalories);
+        burnedCaloriesDao.create(burnedCalories);
         
        
     }
 
     @Override
-    public void deleteBurnedCalories(BurnedCalories burnedCalories) {
+    public void delete(BurnedCalories burnedCalories) {
         if (burnedCalories == null){
             throw new IllegalArgumentException("Object of burned calories is null. Cannot be removed.");
         }
         if (burnedCalories.getId() == null){
             throw new IllegalArgumentException("Id of burned calories is null. Cannot be removed.");
         }
-        burnedCaloriesDao.deleteBurnedCalories(burnedCalories);
+        burnedCaloriesDao.delete(burnedCalories);
     }
 
     @Override
-    public void updateBurnedCalories(BurnedCalories burnedCalories) {
+    public void update(BurnedCalories burnedCalories) {
         if (burnedCalories == null){
             throw new IllegalArgumentException("Object of burned calories is null. Cannot be updated.");
         }
         if (burnedCalories.getId() == null){
             throw new IllegalArgumentException("Id of burned calories is null. Cannot be updated.");
         }
-        burnedCaloriesDao.updateBurnedCalories(burnedCalories);
+        burnedCaloriesDao.update(burnedCalories);
         
     }
 
     @Override
-    public BurnedCalories getBurnedCalories(Long id) {
+    public BurnedCalories findById(Long id) {
         if (id == null){
             throw new IllegalArgumentException("ID is null");
         }
-        return burnedCaloriesDao.getBurnedCalories(id);
+        return burnedCaloriesDao.findById(id);
         
     }
     
