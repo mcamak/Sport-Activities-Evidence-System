@@ -5,7 +5,7 @@ import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
 /**
  * This class provides functionality for storing and retrieving User entity
  * to/from database.
- * @author MajoCAM
+ * @author Marian Camak
  */
 public interface UserDao {
 
