@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.sportactivityevidencesystem.service;
 
 import cz.muni.fi.pa165.sportactivityevidencesystem.dao.SportActivityDao;
@@ -23,9 +18,9 @@ public class SportActivityServiceImpl implements SportActivityService {
         if(activity == null) {
             throw new IllegalArgumentException("Activity is null. ");
         }
-//        if(activity.getId() != null) {
-//            throw new IllegalArgumentException("Activity ID isn't null. It is already stored in database. ");
-//        }
+        if(activity.getId() != null) {
+            throw new IllegalArgumentException("Activity ID isn't null. It is already stored in database. ");
+        }
         sportActivityDao.createSportActivity(activity);
     }
 
@@ -34,9 +29,9 @@ public class SportActivityServiceImpl implements SportActivityService {
         if(activity == null) {
             throw new IllegalArgumentException("Activity is null. ");
         }
-//        if(activity.getId() == null) {
-//            throw new IllegalArgumentException("Activity ID is null - activity isn't stored in database. ");
-//        }
+        if(activity.getId() == null) {
+            throw new IllegalArgumentException("Activity ID is null - not persisted in database. ");
+        }
         sportActivityDao.deleteSportActivity(activity);
     }
 
@@ -53,10 +48,9 @@ public class SportActivityServiceImpl implements SportActivityService {
         if(activity == null) {
             throw new IllegalArgumentException("Activity is null. ");
         }
-//        if(activity.getId() == null) {
-//            throw new IllegalArgumentException("Activity ID is null - activity isn't stored in database. ");
-//        }
+        if(activity.getId() == null) {
+            throw new IllegalArgumentException("Activity ID is null - not persisted in database. ");
+        }
         sportActivityDao.updateSportActivity(activity);
-    }
-    
+    }    
 }
