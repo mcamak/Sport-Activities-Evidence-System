@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.entity;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -12,7 +13,7 @@ import javax.persistence.OneToOne;
 
 /**
  *
- * @author MajoCAM
+ * @author Marian Camak
  */
 @Entity
 public class ActivityRecord {
@@ -61,11 +62,11 @@ public class ActivityRecord {
     }
 
     public Set<User> getUsers() {
-        return users;
+        return Collections.unmodifiableSet(users);
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void addUser(User user) {
+        this.users.add(user);
     }
 
     @Override
