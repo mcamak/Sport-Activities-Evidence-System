@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pa165.sportactivityevidencesystem.entity;
 
+import cz.muni.fi.pa165.sportactivityevidencesystem.enums.Gender;
 import java.util.Objects;
 
 /**
