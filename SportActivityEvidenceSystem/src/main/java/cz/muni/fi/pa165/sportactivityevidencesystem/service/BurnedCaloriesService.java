@@ -19,26 +19,26 @@ public interface BurnedCaloriesService {
      * create burned calories
      * @param burnedCalories 
      */
-    public void createBurnedCalories(BurnedCalories burnedCalories);
+    public void create(BurnedCalories burnedCalories);
     
     /**
      * delete burned calories
      * @param burnedCalories 
      */
-    public void deleteBurnedCalories(BurnedCalories burnedCalories);
+    public void delete(BurnedCalories burnedCalories);
     
     /**
      * update burned calories
      * @param burnedCalories 
      */
-    public void updateBurnedCalories(BurnedCalories burnedCalories);
+    public void update(BurnedCalories burnedCalories);
     
     /**
      * find burned calories by id
      * @param id
      * @return burned calories with given id
      */
-    public BurnedCalories getBurnedCalories(Long id);
+    public BurnedCalories findById(Long id);
     
     
         
