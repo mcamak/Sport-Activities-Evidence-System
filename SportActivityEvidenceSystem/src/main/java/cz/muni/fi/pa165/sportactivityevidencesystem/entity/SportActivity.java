@@ -1,14 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.sportactivityevidencesystem.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
- * @author MajoCAM
+ * @author Tomas Effenberger
  */
+@Entity
 public class SportActivity {
-    
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String name;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof SportActivity)) {
+			return false;
+		}
+		SportActivity other = (SportActivity) obj;
+		if (!name.equals(other.getName())) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 73 * hash + name.hashCode();
+		return hash;
+	}
+
 }
