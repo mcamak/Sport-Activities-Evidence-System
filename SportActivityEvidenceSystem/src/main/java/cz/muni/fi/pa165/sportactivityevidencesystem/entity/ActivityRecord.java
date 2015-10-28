@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.sportactivityevidencesystem.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,8 +29,13 @@ public class ActivityRecord {
     private SportActivity activity;
     
     @OneToMany
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new HashSet<>();
 
+    
+    public Long getId() {
+        return id;
+    }
+    
     public Long getTimeSeconds() {
         return timeSeconds;
     }
@@ -60,11 +60,11 @@ public class ActivityRecord {
         this.activity = activity;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
