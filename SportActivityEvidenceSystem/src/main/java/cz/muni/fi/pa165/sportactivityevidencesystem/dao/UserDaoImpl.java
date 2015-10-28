@@ -1,9 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
+
+import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -11,4 +10,26 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
  */
 public class UserDaoImpl implements UserDao {
     
+    @PersistenceContext
+    private EntityManager em;
+
+    @Override
+    public void createUser(User user) {
+        em.persist(user);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        em.remove(user);
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return em.find(User.class, id);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        em.merge(user);
+    }
 }
