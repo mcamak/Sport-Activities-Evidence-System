@@ -3,11 +3,13 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Marian Camak
  */
+@Repository
 public class UserDaoImpl implements UserDao {
     
     @PersistenceContext
@@ -21,6 +23,16 @@ public class UserDaoImpl implements UserDao {
         if(user.getId() != null) {
             throw new IllegalArgumentException("User ID is not null. User is already stored in DB. ");
         }
+        if(user.getName() == null || user.getName().isEmpty()) {
+            throw new IllegalArgumentException("User name is null or empty. ");
+        }
+        if(user.getSex() == null) {
+            throw new IllegalArgumentException("Gender of user is null. ");
+        }
+        if(user.getWeight() < 0) {
+            throw new IllegalArgumentException("User bodyweight is lower than zero. ");
+        }
+        
         em.persist(user);
     }
 
@@ -50,6 +62,15 @@ public class UserDaoImpl implements UserDao {
         }
         if(user.getId() == null) {
             throw new IllegalArgumentException("User ID is null. First create an user. ");
+        }
+        if(user.getName() == null || user.getName().isEmpty()) {
+            throw new IllegalArgumentException("User name is null or empty. ");
+        }
+        if(user.getSex() == null) {
+            throw new IllegalArgumentException("Gender of user is null. ");
+        }
+        if(user.getWeight() < 0) {
+            throw new IllegalArgumentException("User bodyweight is lower than zero. ");
         }
         em.merge(user);
     }
