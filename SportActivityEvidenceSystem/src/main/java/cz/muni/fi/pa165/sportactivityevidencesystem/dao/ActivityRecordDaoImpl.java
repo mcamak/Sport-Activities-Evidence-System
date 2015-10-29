@@ -10,13 +10,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
+
 /**
  *
- * @author Barborka
+ * @author Barbora B.                                                                      
  */
 public class ActivityRecordDaoImpl implements ActivityRecordDao{
     
-     @PersistenceContext
+    @PersistenceContext
     private EntityManager em;
 
     @Override
