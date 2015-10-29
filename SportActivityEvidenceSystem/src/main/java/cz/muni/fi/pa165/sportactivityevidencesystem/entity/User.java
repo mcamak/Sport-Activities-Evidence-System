@@ -18,8 +18,8 @@ public class User {
     private Long id;
     private String name; 
     private Gender sex;
-    private Long age;
-    private Long weight;
+    private int age;
+    private int weight;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class User {
         return sex;
     }
 
-    public Long getAge() {
+    public int getAge() {
         return age;
     }
 
-    public Long getWeight() {
+    public int getWeight() {
         return weight;
     }
 
@@ -53,11 +53,11 @@ public class User {
         this.sex = sex;
     }
 
-    public void setAge(Long age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public void setWeight(Long weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
