@@ -6,23 +6,16 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
  * and open the template in the editor.
  */
 
-import cz.muni.fi.pa165.sportactivityevidencesystem.dao.ActivityRecordDao;
-import cz.muni.fi.pa165.sportactivityevidencesystem.dao.ActivityRecordDaoImpl;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.ActivityRecord;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.SportActivity;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
