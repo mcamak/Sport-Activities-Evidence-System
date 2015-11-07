@@ -1,35 +1,45 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
-import cz.muni.fi.pa165.sportactivityevidencesystem.PersistenceSampleApplicationContext;
+import cz.muni.fi.pa165.sportactivityevidencesystem.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.BurnedCalories;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.SportActivity;
+import java.util.List;
 import javax.inject.Inject;
-import static org.junit.Assert.*;
-import org.testng.annotations.Test;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import org.junit.runner.RunWith;
+import org.testng.annotations.Test;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.testng.annotations.BeforeMethod;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 /**
  *
  * @author Marian Camak
  */
+@ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
+@Transactional
 @RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration(classes = PersistenceSampleApplicationContext.class)
-public class BurnedCaloriesDaoTest {
+public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
+    
+    @PersistenceContext
+    public EntityManager em;
 
     @Inject
     private BurnedCaloriesDao burnCalDao;
 
     @Mock
-    private SportActivity sportActivity = new SportActivity();
+    private final SportActivity sportActivity = new SportActivity();
 
-//    @BeforeMethod
-//    public void init() {
-//        burnCalDao = new BurnedCaloriesDaoImpl();
-//    }
     /**
      * Test creating burned calory.
      */
@@ -158,6 +168,40 @@ public class BurnedCaloriesDaoTest {
 
         burnCalDao.findById(null);
     }
+    
+    /**
+     * Test finding all burned categories.
+     */
+    public void testFindAllBurnedCategories() {
+        BurnedCalories bCal1 = new BurnedCalories();
+        bCal1.setActivity(sportActivity);
+        bCal1.setBodyWeight(50);
+        bCal1.setCaloriesBurned(50);
+        
+        BurnedCalories bCal2 = new BurnedCalories();
+        bCal2.setActivity(sportActivity);
+        bCal2.setBodyWeight(30);
+        bCal2.setCaloriesBurned(40);
+
+        burnCalDao.create(bCal1);
+        List<BurnedCalories> all = burnCalDao.findAll();
+        assertEquals(all.size(), 1);
+        assertEquals(all.get(0), bCal1);
+        burnCalDao.create(bCal2);
+        all = burnCalDao.findAll();
+        assertEquals(all.size(), 2);
+        assertTrue(all.contains(bCal1));
+        assertTrue(all.contains(bCal2));
+    }
+    
+    /**
+     * Test finding all burned categories with no categories.
+     */
+    public void testFindAllBurnedCategoriesWithEmpty() {
+        List<BurnedCalories> all = burnCalDao.findAll();
+        assertTrue(all != null);
+        assertTrue(all.isEmpty());
+    }
 
     /**
      * Test updating burned category.
@@ -255,5 +299,4 @@ public class BurnedCaloriesDaoTest {
         bCal.setCaloriesBurned(-40);
         burnCalDao.update(bCal);
     }
-
 }
