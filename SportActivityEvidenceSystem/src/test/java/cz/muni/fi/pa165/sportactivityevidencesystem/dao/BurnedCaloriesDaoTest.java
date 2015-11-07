@@ -142,6 +142,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test finding all burned categories.
      */
+    @Test
     public void testFindAllBurnedCategories() {
         BurnedCalories bCal1 = createNewRandomBurnedCalory();        
         BurnedCalories bCal2 = createNewRandomBurnedCalory();
@@ -159,6 +160,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test finding all burned categories with no categories.
      */
+    @Test
     public void testFindAllBurnedCategoriesWithEmpty() {
         List<BurnedCalories> all = burnCalDao.findAll();
         assertTrue(all != null);
