@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
+import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -48,11 +49,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUser(Long id) {
+    public User findUser(Long id) {
         if(id == null) {
             throw new IllegalArgumentException("ID is null. ");
         }
         return em.find(User.class, id);
+    }
+    
+    @Override
+    public Collection<User> findAllUsers() {
+        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
     @Override
