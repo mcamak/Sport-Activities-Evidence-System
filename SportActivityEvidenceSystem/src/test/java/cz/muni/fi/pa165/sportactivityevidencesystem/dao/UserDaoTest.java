@@ -271,7 +271,7 @@ public class UserDaoTest {
     private User createNewRandomUser() {
         String[] names = new String[]{"Peter", "Jan", "Martina", "Maria"};
         User user = new User();        
-        user.setName(names[(int) System.currentTimeMillis() % 4]);
+        user.setName(names[(int) (System.currentTimeMillis() % 4)]);
         user.setAge((int) (System.currentTimeMillis() % 150));
         user.setSex(System.currentTimeMillis() % 2 == 0 ? Gender.MALE : Gender.FEMALE);
         user.setWeight((int) (System.currentTimeMillis() % 150));
