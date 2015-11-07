@@ -3,11 +3,13 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.SportActivity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Jan S.
  */
+@Repository
 public class SportActivityDaoImpl implements SportActivityDao {
     
     @PersistenceContext
