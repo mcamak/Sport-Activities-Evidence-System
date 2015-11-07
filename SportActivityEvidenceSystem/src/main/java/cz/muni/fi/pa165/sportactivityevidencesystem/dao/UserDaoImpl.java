@@ -27,6 +27,9 @@ public class UserDaoImpl implements UserDao {
         if(user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
         }
+        if(user.getAge() < 0) {
+            throw new IllegalArgumentException("User age is negative. ");
+        }
         if(user.getSex() == null) {
             throw new IllegalArgumentException("Gender of user is null. ");
         }
@@ -69,8 +72,11 @@ public class UserDaoImpl implements UserDao {
         if(user.getId() == null) {
             throw new IllegalArgumentException("User ID is null. First create an user. ");
         }
-        if(user.getName() == null || user.getName().isEmpty()) {
+        if(user.getName() == null || user.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
+        }
+        if(user.getAge() < 0) {
+            throw new IllegalArgumentException("User age is negative. ");
         }
         if(user.getSex() == null) {
             throw new IllegalArgumentException("Gender of user is null. ");
