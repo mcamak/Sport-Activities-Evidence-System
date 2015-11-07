@@ -45,11 +45,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testCreateBurnedCalory() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(bCal.getId());
     }
@@ -67,10 +63,8 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testCreateBurnedCaloryWithNullSportActivity() {
-        BurnedCalories bCal = new BurnedCalories();
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         bCal.setActivity(null);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
 
         burnCalDao.create(bCal);
     }
@@ -80,10 +74,8 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testCreateBurnedCaloryWithNegativeBodyWeight() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         bCal.setBodyWeight(-50);
-        bCal.setCaloriesBurned(50);
 
         burnCalDao.create(bCal);
     }
@@ -93,9 +85,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testCreateBurnedCaloryWithNegativeCaloriesBurned() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         bCal.setCaloriesBurned(-50);
 
         burnCalDao.create(bCal);
@@ -106,14 +96,10 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testDeleteBurnedCalory() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
+        BurnedCalories bCal = createNewRandomBurnedCalory();
 
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
-
         burnCalDao.delete(bCal);
         assertNull(burnCalDao.findById(bCal.getId()));
     }
@@ -131,11 +117,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDeleteBurnedCaloryWithNullId() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.delete(bCal);
     }
 
@@ -144,11 +126,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testFindBurnedCategory() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
     }
@@ -158,14 +136,6 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testFindBurnedCategoryWithNullId() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
-        burnCalDao.create(bCal);
-        assertNotNull(burnCalDao.findById(bCal.getId()));
-
         burnCalDao.findById(null);
     }
     
@@ -173,16 +143,8 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      * Test finding all burned categories.
      */
     public void testFindAllBurnedCategories() {
-        BurnedCalories bCal1 = new BurnedCalories();
-        bCal1.setActivity(sportActivity);
-        bCal1.setBodyWeight(50);
-        bCal1.setCaloriesBurned(50);
-        
-        BurnedCalories bCal2 = new BurnedCalories();
-        bCal2.setActivity(sportActivity);
-        bCal2.setBodyWeight(30);
-        bCal2.setCaloriesBurned(40);
-
+        BurnedCalories bCal1 = createNewRandomBurnedCalory();        
+        BurnedCalories bCal2 = createNewRandomBurnedCalory();
         burnCalDao.create(bCal1);
         List<BurnedCalories> all = burnCalDao.findAll();
         assertEquals(all.size(), 1);
@@ -208,11 +170,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testUpdateBurnedCategory() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
 
@@ -238,10 +196,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testUpdateBurnedCategoryWithNullCategoryId() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(70);
-        bCal.setCaloriesBurned(40);
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.update(bCal);
     }
 
@@ -250,17 +205,11 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testUpdateBurnedCategoryWithNullSportActivity() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
 
         bCal.setActivity(null);
-        bCal.setBodyWeight(70);
-        bCal.setCaloriesBurned(40);
         burnCalDao.update(bCal);
     }
 
@@ -269,16 +218,11 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testUpdateBurnedCategoryWithNegativeBodyWeight() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
 
         bCal.setBodyWeight(-70);
-        bCal.setCaloriesBurned(40);
         burnCalDao.update(bCal);
     }
 
@@ -287,16 +231,19 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testUpdateBurnedCategoryWithNegativeCaloriesBurned() {
-        BurnedCalories bCal = new BurnedCalories();
-        bCal.setActivity(sportActivity);
-        bCal.setBodyWeight(50);
-        bCal.setCaloriesBurned(50);
-
+        BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
 
-        bCal.setBodyWeight(70);
         bCal.setCaloriesBurned(-40);
         burnCalDao.update(bCal);
+    }
+    
+    private BurnedCalories createNewRandomBurnedCalory() {
+        BurnedCalories bCal = new BurnedCalories();
+        bCal.setActivity(sportActivity);
+        bCal.setBodyWeight((int) (System.currentTimeMillis() % 150));
+        bCal.setCaloriesBurned((int) (System.currentTimeMillis() % 2000));
+        return bCal;
     }
 }
