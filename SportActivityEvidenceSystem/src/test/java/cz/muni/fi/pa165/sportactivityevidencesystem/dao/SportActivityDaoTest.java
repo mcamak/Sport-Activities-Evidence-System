@@ -5,22 +5,15 @@
  */
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
-import cz.muni.fi.pa165.sportactivityevidencesystem.PersistenceSampleApplicationContext;
+import cz.muni.fi.pa165.sportactivityevidencesystem.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.SportActivity;
 import javax.inject.Inject;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.testng.annotations.BeforeMethod;
 import org.junit.runner.RunWith;
 
 /**
@@ -28,9 +21,9 @@ import org.junit.runner.RunWith;
  * @author Jan S.
  */
 @RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration(classes = PersistenceSampleApplicationContext.class)
+@ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
 
-public class SportActivityDaoImpl {
+public class SportActivityDaoTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
     
