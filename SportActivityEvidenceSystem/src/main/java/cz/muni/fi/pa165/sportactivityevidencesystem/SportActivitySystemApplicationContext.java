@@ -1,6 +1,5 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem;
 
-import cz.muni.fi.pa165.sportactivityevidencesystem.dao.ActivityRecordDao;
 import javax.sql.DataSource;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -18,23 +17,21 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+/**
+ *
+ * @author Marian Camak
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
-@ComponentScan(basePackageClasses = {ActivityRecordDao.class})
-public class PersistenceSampleApplicationContext {
+@ComponentScan(basePackages = "cz.muni.fi.pa165.*")
+public class SportActivitySystemApplicationContext {
 
     @Bean
     public JpaTransactionManager transactionManager() {
         return new JpaTransactionManager(entityManagerFactory().getObject());
     }
 
-    /**
-     * Starts up a container that emulates behavior prescribed in JPA spec for
-     * container-managed EntityManager
-     *
-     * @return
-     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean();
