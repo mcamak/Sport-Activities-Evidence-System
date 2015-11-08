@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         if(id == null) {
             throw new IllegalArgumentException("ID is null. ");
         }
-        return userDao.getUser(id);
+        return userDao.findUser(id);
     }
 
     @Override
