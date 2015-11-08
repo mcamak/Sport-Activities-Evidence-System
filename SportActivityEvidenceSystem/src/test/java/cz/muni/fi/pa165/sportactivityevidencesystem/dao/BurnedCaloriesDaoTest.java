@@ -8,10 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import org.junit.runner.RunWith;
 import org.testng.annotations.Test;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -20,6 +17,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
+import org.testng.annotations.BeforeMethod;
 
 /**
  *
@@ -28,7 +26,6 @@ import static org.testng.Assert.assertTrue;
 @ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
-@RunWith(MockitoJUnitRunner.class)
 public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     
     @PersistenceContext
@@ -36,9 +33,18 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
 
     @Inject
     private BurnedCaloriesDao burnCalDao;
+    
+    @Inject
+    private SportActivityDao activityDao;
 
-    @Mock
-    private final SportActivity sportActivity = new SportActivity();
+    private SportActivity sportActivity;
+    
+    @BeforeMethod
+    public void setUpMethod() {
+        sportActivity = new SportActivity();
+        sportActivity.setName("Running");
+        activityDao.createSportActivity(sportActivity);
+    }
 
     /**
      * Test creating burned calory.
