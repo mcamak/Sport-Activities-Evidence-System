@@ -244,8 +244,8 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     private BurnedCalories createNewRandomBurnedCalory() {
         BurnedCalories bCal = new BurnedCalories();
         bCal.setActivity(sportActivity);
-        bCal.setBodyWeight((int) (System.currentTimeMillis() % 150));
-        bCal.setCaloriesBurned((int) (System.currentTimeMillis() % 2000));
+        bCal.setBodyWeight((int) (System.nanoTime() % 150));
+        bCal.setCaloriesBurned((int) (System.nanoTime() % 2000));
         return bCal;
     }
 }
