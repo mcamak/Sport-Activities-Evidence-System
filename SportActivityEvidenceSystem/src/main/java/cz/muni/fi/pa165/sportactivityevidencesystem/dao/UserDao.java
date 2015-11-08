@@ -1,7 +1,7 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * This class provides functionality for storing and retrieving User entity
@@ -33,7 +33,7 @@ public interface UserDao {
      * Retrieves a collection of all users
      * @return collection of users
      */
-    public Collection<User> findAllUsers();
+    public List<User> findAllUsers();
 
     /**
      * Updates user in the database

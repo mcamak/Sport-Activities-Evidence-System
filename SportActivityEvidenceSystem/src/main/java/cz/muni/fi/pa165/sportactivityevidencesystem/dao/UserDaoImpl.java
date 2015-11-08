@@ -1,7 +1,7 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -59,7 +59,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<User> findAllUsers() {
+    public List<User> findAllUsers() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
