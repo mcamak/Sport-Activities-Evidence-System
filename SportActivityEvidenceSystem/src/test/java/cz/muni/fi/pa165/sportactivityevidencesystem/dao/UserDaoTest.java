@@ -1,23 +1,21 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
 import cz.muni.fi.pa165.sportactivityevidencesystem.SportActivitySystemApplicationContext;
-import cz.muni.fi.pa165.sportactivityevidencesystem.entity.BurnedCalories;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
 import cz.muni.fi.pa165.sportactivityevidencesystem.enums.Gender;
 import java.util.Collection;
-import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.testng.Assert;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -25,10 +23,10 @@ import org.testng.annotations.Test;
  *
  * @author Tomas Effenberger
  */
-@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
-public class UserDaoTest {
+public class UserDaoTest extends AbstractTestNGSpringContextTests {
 
     @PersistenceContext
     public EntityManager em;
@@ -36,33 +34,14 @@ public class UserDaoTest {
     @Inject
     private UserDao userDao;
 
-    private User user1;
-    private User user2;
-
-    @BeforeMethod
-    public void createUsers() {
-        user1 = new User();
-        user1.setAge(20);
-        user1.setName("Adam");
-        user1.setSex(Gender.MALE);
-        user1.setWeight(70);
-        userDao.createUser(user1);
-
-        user2 = new User();
-        user2.setAge(21);
-        user2.setName("Michael");
-        user2.setSex(Gender.MALE);
-        user2.setWeight(68);
-        userDao.createUser(user2);
-    }
-
     /**
      * Test creating new user.
      */
     @Test
     public void testCreateUser() {
-        Assert.assertNotNull(user1.getId());
-        Assert.assertNotNull(user2.getId());
+        User user = createNewRandomUser();
+        userDao.createUser(user);
+        Assert.assertNotNull(user.getId());
     }
 
     /**
@@ -128,11 +107,19 @@ public class UserDaoTest {
      */
     @Test
     public void testGetUser() {
-        User user = userDao.findUser(user1.getId());
-        Assert.assertEquals("Adam", user.getName());
-        Assert.assertEquals(20, user.getAge());
-        Assert.assertEquals(Gender.MALE, user.getSex());
-        Assert.assertEquals(70, user.getWeight());
+        User user = new User();
+        user.setName("Adam");
+        user.setAge(20);
+        user.setSex(Gender.MALE);
+        user.setWeight(70);
+        userDao.createUser(user);
+        assertNotNull(user.getId());
+        
+        User found = userDao.findUser(user.getId());
+        Assert.assertEquals("Adam", found.getName());
+        Assert.assertEquals(20, found.getAge());
+        Assert.assertEquals(Gender.MALE, found.getSex());
+        Assert.assertEquals(70, found.getWeight());
     }
     
     /**
@@ -146,11 +133,29 @@ public class UserDaoTest {
     /**
      * Test find all users.
      */
+    @Test
     public void testFindAllUsers() {
+        User user1 = createNewRandomUser();
+        User user2 = createNewRandomUser();
+        userDao.createUser(user1);
         Collection<User> all = userDao.findAllUsers();
+        assertEquals(all.size(), 1);
+        assertTrue(all.contains(user1));
+        userDao.createUser(user2);
+        all = userDao.findAllUsers();
         assertEquals(all.size(), 2);
         assertTrue(all.contains(user1));
         assertTrue(all.contains(user2));
+    }
+    
+    /**
+     * Test find all users when no users persisted.
+     */
+    @Test
+    public void testFindAllUsersEmpty() {
+        Collection<User> all = userDao.findAllUsers();
+        assertTrue(all != null);
+        assertTrue(all.isEmpty());
     }
 
     /**
@@ -158,9 +163,11 @@ public class UserDaoTest {
      */
     @Test
     public void testDeleteUser() {
-        Assert.assertNotNull(userDao.findUser(user1.getId()));
-        userDao.deleteUser(user1);
-        Assert.assertNull(userDao.findUser(user1.getId()));
+        User user = createNewRandomUser();
+        userDao.createUser(user);
+        Assert.assertNotNull(userDao.findUser(user.getId()));
+        userDao.deleteUser(user);
+        Assert.assertNull(userDao.findUser(user.getId()));
     }
     
     /**
@@ -194,9 +201,12 @@ public class UserDaoTest {
      */
     @Test
     public void testUpdateUser() {
-        user2.setName("John");
-        userDao.updateUser(user2);
-        Assert.assertEquals("John", em.find(User.class, user2.getId()));
+        User user = createNewRandomUser();
+        userDao.createUser(user);
+        Assert.assertNotNull(userDao.findUser(user.getId()));
+        user.setName("John");
+        userDao.updateUser(user);
+        Assert.assertEquals("John", em.find(User.class, user.getId()).getName());
     }
     
     /**
@@ -271,10 +281,10 @@ public class UserDaoTest {
     private User createNewRandomUser() {
         String[] names = new String[]{"Peter", "Jan", "Martina", "Maria"};
         User user = new User();        
-        user.setName(names[(int) (System.currentTimeMillis() % 4)]);
-        user.setAge((int) (System.currentTimeMillis() % 150));
-        user.setSex(System.currentTimeMillis() % 2 == 0 ? Gender.MALE : Gender.FEMALE);
-        user.setWeight((int) (System.currentTimeMillis() % 150));
+        user.setName(names[(int) (System.nanoTime() % 4)]);
+        user.setAge((int) (System.nanoTime() % 150));
+        user.setSex(System.nanoTime() % 2 == 0 ? Gender.MALE : Gender.FEMALE);
+        user.setWeight((int) (System.nanoTime() % 150));
         return user;
     }
 
