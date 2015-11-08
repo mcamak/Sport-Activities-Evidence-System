@@ -30,7 +30,7 @@ public class ActivityRecord {
     private SportActivity activity;
     
     @OneToMany
-    private Set<User> users = new HashSet<>();
+    private final Set<User> users = new HashSet<>();
 
     
     public Long getId() {
@@ -68,6 +68,10 @@ public class ActivityRecord {
     public void addUser(User user) {
         this.users.add(user);
     }
+    
+    public void removeUser(User user) {
+        this.users.remove(user);
+    }
 
     @Override
     public int hashCode() {
@@ -88,16 +92,16 @@ public class ActivityRecord {
             return false;
         }
         final ActivityRecord other = (ActivityRecord) obj;
-        if (!Objects.equals(this.timeSeconds, other.timeSeconds)) {
+        if (!Objects.equals(this.timeSeconds, other.getTimeSeconds())) {
             return false;
         }
-        if (this.distance != other.distance) {
+        if (this.distance != other.getDistance()) {
             return false;
         }
-        if (!Objects.equals(this.activity, other.activity)) {
+        if (!Objects.equals(this.activity, other.getActivity())) {
             return false;
         }
-        if (!Objects.equals(this.users, other.users)) {
+        if (!Objects.equals(this.users, other.getUsers())) {
             return false;
         }
         return true;
