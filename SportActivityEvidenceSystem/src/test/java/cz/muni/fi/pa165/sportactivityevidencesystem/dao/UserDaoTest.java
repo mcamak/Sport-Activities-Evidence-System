@@ -138,7 +138,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         User user1 = createNewRandomUser();
         User user2 = createNewRandomUser();
         userDao.createUser(user1);
-        Collection<User> all = userDao.findAllUsers();
+        List<User> all = userDao.findAllUsers();
         assertEquals(all.size(), 1);
         assertTrue(all.contains(user1));
         userDao.createUser(user2);
@@ -153,7 +153,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testFindAllUsersEmpty() {
-        Collection<User> all = userDao.findAllUsers();
+        List<User> all = userDao.findAllUsers();
         assertTrue(all != null);
         assertTrue(all.isEmpty());
     }
