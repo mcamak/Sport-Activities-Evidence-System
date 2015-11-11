@@ -40,8 +40,8 @@ import org.junit.rules.ExpectedException;
 @Transactional
 public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests{
     
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
+    //@Rule
+    //public final ExpectedException expectedException = ExpectedException.none();
     
     @PersistenceContext
     public EntityManager em;
