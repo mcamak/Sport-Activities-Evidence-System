@@ -10,6 +10,7 @@ import cz.muni.fi.pa165.sportactivityevidencesystem.SportActivitySystemApplicati
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.ActivityRecord;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.SportActivity;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.User;
+import cz.muni.fi.pa165.sportactivityevidencesystem.enums.Gender;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,13 +51,24 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests{
     
     @Inject 
     private SportActivity sportActivity;
+    private SportActivityDao activityDao;
     private User user;
+    private UserDao userDao;
     
     
     
    @BeforeMethod
    public void init(){
-       activityRecord = new ActivityRecordDaoImpl();
+       sportActivity = new SportActivity();
+       sportActivity.setName("Running");
+       activityDao.createSportActivity(sportActivity);
+       
+       user = new User();
+       user.setName("Peter");
+       user.setAge(35);
+       user.setSex(Gender.MALE);
+       user.setWeight(95);
+       userDao.createUser(user);
    }
    
    /**
