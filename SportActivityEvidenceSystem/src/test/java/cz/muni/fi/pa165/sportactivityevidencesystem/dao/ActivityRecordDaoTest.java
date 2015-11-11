@@ -15,21 +15,15 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import org.testng.annotations.BeforeMethod;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 
 /**
  *
@@ -38,7 +32,7 @@ import org.junit.rules.ExpectedException;
 @ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
-public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests{
+public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     
     //@Rule
     //public final ExpectedException expectedException = ExpectedException.none();
@@ -49,13 +43,14 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests{
     @Inject
     private ActivityRecordDao activityRecord;
     
-    @Inject 
-    private SportActivity sportActivity;
+    @Inject
     private SportActivityDao activityDao;
-    private User user;
+    
+    @Inject
     private UserDao userDao;
     
-    
+    private SportActivity sportActivity; 
+    private User user;    
     
    @BeforeMethod
    public void init(){
