@@ -5,7 +5,6 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import cz.muni.fi.pa165.sportactivityevidencesystem.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.ActivityRecord;
 import cz.muni.fi.pa165.sportactivityevidencesystem.entity.SportActivity;
@@ -15,7 +14,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -33,232 +32,222 @@ import org.testng.annotations.BeforeMethod;
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
-    
+
     //@Rule
     //public final ExpectedException expectedException = ExpectedException.none();
-    
     @PersistenceContext
     public EntityManager em;
-    
+
     @Inject
-    private ActivityRecordDao activityRecord;
-    
+    private ActivityRecordDao recordDao;
+
     @Inject
     private SportActivityDao activityDao;
-    
+
     @Inject
     private UserDao userDao;
-    
-    private SportActivity sportActivity; 
-    private User user;    
-    
-   @BeforeMethod
-   public void init(){
-       sportActivity = new SportActivity();
-       sportActivity.setName("Running");
-       activityDao.createSportActivity(sportActivity);
-       
-       user = new User();
-       user.setName("Peter");
-       user.setAge(35);
-       user.setSex(Gender.MALE);
-       user.setWeight(95);
-       userDao.createUser(user);
-   }
-   
-   /**
-    * Create and set activity record for later use
-    * @return ActivityRecord
-    */
-   public ActivityRecord setActivityRecord(){
-       ActivityRecord actv = new ActivityRecord();
-       actv.setActivity(sportActivity);
-       actv.setDistance(5);
-       actv.setTimeSeconds(Long.MIN_VALUE);
-       actv.addUser(user);
-       activityRecord.create(actv);
-       return actv;
-   }
-   
-    
-    /**
-     * Test creating activity record with null parameter
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateWithNull(){
-        activityRecord.create(null);
+
+    private SportActivity sportActivity;
+    private User user;
+
+    @BeforeMethod
+    public void init() {
+        sportActivity = new SportActivity();
+        sportActivity.setName("Running");
+        activityDao.createSportActivity(sportActivity);
+
+        user = new User();
+        user.setName("Peter");
+        user.setAge(35);
+        user.setSex(Gender.MALE);
+        user.setWeight(95);
+        userDao.createUser(user);
     }
-    
+
+    /**
+     * Create and set activity record for later use
+     *
+     * @return ActivityRecord
+     */
+    private ActivityRecord setActivityRecord() {
+        ActivityRecord actv = new ActivityRecord();
+        actv.setActivity(sportActivity);
+        actv.setDistance(5);
+        actv.setTimeSeconds(45L);
+        actv.addUser(user);
+        return actv;
+    }
+
     /**
      * Test creating activity record
      */
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreate(){
-        ActivityRecord record= setActivityRecord();
+    @Test
+    public void testCreate() {
+        ActivityRecord record = setActivityRecord();
+        recordDao.create(record);
         assertNotNull(record.getId());
     }
-    
+
+    /**
+     * Test creating activity record with null parameter
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateWithNull() {
+        recordDao.create(null);
+    }
+
     /**
      * Test creating record with null sport activity
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateNullActivity(){
-        ActivityRecord record= new ActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateNullActivity() {
+        ActivityRecord record = new ActivityRecord();
         record.setActivity(null);
         record.setDistance(5);
         record.setTimeSeconds(Long.MIN_VALUE);
         record.addUser(user);
-        
-        activityRecord.create(record);   
-    
+
+        recordDao.create(record);
+
     }
-    
+
     /**
      * Test creating record with wrong distance
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateWrongDistance(){
-        ActivityRecord record= new ActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateWrongDistance() {
+        ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
         record.setDistance(-5);
         record.setTimeSeconds(Long.MIN_VALUE);
         record.addUser(user);
-        
-        activityRecord.create(record);   
-    
+
+        recordDao.create(record);
+
     }
-    
+
     /**
      * Test creating record with wrong time
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateWrongTime(){
-        ActivityRecord record= new ActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateWrongTime() {
+        ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
         record.setDistance(5);
         record.setTimeSeconds(null);
         record.addUser(user);
-        
-        activityRecord.create(record);   
-    
+
+        recordDao.create(record);
+
     }
-    
+
     /**
      * Test creating record with null user
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateNullUser(){
-        ActivityRecord record= new ActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateNullUser() {
+        ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
         record.setDistance(5);
         record.setTimeSeconds(Long.MIN_VALUE);
         record.addUser(null);
-        
-        activityRecord.create(record);   
-    
+
+        recordDao.create(record);
+
     }
-    
+
     /**
      * Test deleting record with null parameter
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testDeleteNull(){
-        activityRecord.delete(null);
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDeleteNull() {
+        recordDao.delete(null);
     }
-    
+
     /**
      * Test deleting record
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testDelete(){
-        ActivityRecord record= setActivityRecord();
-        
-        Long id = record.getId();
-        assertNotNull(activityRecord.findActivityRecord(id));
-        
-        activityRecord.delete(record);
-        assertNull(activityRecord.findActivityRecord(id));
-        
-        
+    @Test
+    public void testDelete() {
+        ActivityRecord record = setActivityRecord();
+        recordDao.create(record);
+        assertNotNull(recordDao.findActivityRecord(record.getId()));
+
+        recordDao.delete(record);
+        assertNull(recordDao.findActivityRecord(record.getId()));
     }
-    
+
     /**
      * Test updating activity record
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdate(){
-        ActivityRecord record= setActivityRecord();
-   
-        Long id = record.getId();
-        assertNotNull(activityRecord.findActivityRecord(id));
-        
+    @Test
+    public void testUpdate() {
+        ActivityRecord record = setActivityRecord();
+        recordDao.create(record);
+        assertNotNull(recordDao.findActivityRecord(record.getId()));
+
         record.setDistance(15);
-        record.setTimeSeconds(Long.MAX_VALUE);
-        activityRecord.update(record);
-        
-        ActivityRecord recordFound = activityRecord.findActivityRecord(id);
-        assertEquals(15,recordFound.getDistance());
-    //    assertEquals(Long.MAX_VALUE,recordFound.getTimeSeconds());
+        record.setTimeSeconds(20L);
+        recordDao.update(record);
+
+        ActivityRecord recordFound = recordDao.findActivityRecord(record.getId());
+        assertEquals(recordFound.getDistance(), 15);
+        assertEquals(recordFound.getTimeSeconds(), new Long(20));
     }
-    
+
     /**
      * Test updating activity with null
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdateNull(){
-        activityRecord.update(null);
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testUpdateNull() {
+        recordDao.update(null);
     }
-    
+
     /**
      * Test updating activity with null sport activity
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdateNullActivity(){
-        ActivityRecord record= setActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testUpdateNullActivity() {
+        ActivityRecord record = setActivityRecord();
+        recordDao.create(record);
+        assertNotNull(recordDao.findActivityRecord(record.getId()));
+        
         record.setActivity(null);
-        activityRecord.update(record);
+        recordDao.update(record);
     }
-    
+
     /**
      * Test updating activity with wrong distance
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdateWrongDistance(){
-        ActivityRecord record= setActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testUpdateWrongDistance() {
+        ActivityRecord record = setActivityRecord();
+        recordDao.create(record);
+        assertNotNull(recordDao.findActivityRecord(record.getId()));
+        
         record.setDistance(-5);
-        activityRecord.update(record);
+        recordDao.update(record);
     }
-    
-     /**
+
+    /**
      * Test updating activity with null time
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdateWrongTime(){
-        ActivityRecord record= setActivityRecord();
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testUpdateWrongTime() {
+        ActivityRecord record = setActivityRecord();
+        recordDao.create(record);
+        assertNotNull(recordDao.findActivityRecord(record.getId()));
+        
         record.setTimeSeconds(null);
-        activityRecord.update(record);
+        recordDao.update(record);
     }
-    
-     /**
-     * Test updating activity with null user
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdateNullUser(){
-        ActivityRecord record= setActivityRecord();
-        record.addUser(null);
-        activityRecord.update(record);
-    }
-    
-    
+
     /**
      * Test getting activity record by null id
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testFindActivityRecordNull(){
-        activityRecord.findActivityRecord(null);
-        
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testFindActivityRecordNull() {
+        recordDao.findActivityRecord(null);
     }
-    
 
 }
