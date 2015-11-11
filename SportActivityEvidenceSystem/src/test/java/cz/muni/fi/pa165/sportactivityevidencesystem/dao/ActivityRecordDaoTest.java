@@ -26,7 +26,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
