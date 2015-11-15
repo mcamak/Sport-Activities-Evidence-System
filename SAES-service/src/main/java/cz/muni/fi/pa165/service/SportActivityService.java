@@ -5,14 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * JPA implementation of CRUD operations
- *
  * @author MajoCAM
  */
 @Service
 public interface SportActivityService {
 
-    public void createSportActivity(SportActivity activity);
+    public SportActivity createSportActivity(SportActivity activity);
 
     public void deleteSportActivity(SportActivity activity);
 

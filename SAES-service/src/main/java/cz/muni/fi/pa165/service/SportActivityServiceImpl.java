@@ -19,8 +19,9 @@ public class SportActivityServiceImpl implements SportActivityService {
     private SportActivityDao sportActivityDao;
 
     @Override
-    public void createSportActivity(SportActivity activity) {
+    public SportActivity createSportActivity(SportActivity activity) {
         sportActivityDao.createSportActivity(activity);
+        return activity;
     }
 
     @Override
