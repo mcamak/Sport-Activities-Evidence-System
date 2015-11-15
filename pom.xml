@@ -8,7 +8,7 @@
     <modules>
         <module>SAES-persistence</module>
         <module>SAES-service</module>
-        <module>API</module>
+        <module>SAES-api</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

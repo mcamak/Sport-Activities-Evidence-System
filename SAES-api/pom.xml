@@ -6,10 +6,11 @@
         <artifactId>SportActivityEvidenceSystemParent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>API</artifactId>
+    <artifactId>SAES-api</artifactId>
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
+    <name>SAES-api</name>
 </project>
