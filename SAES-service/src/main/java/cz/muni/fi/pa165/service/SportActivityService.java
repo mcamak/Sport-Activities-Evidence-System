@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.entity.SportActivity;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,33 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SportActivityService {
 
-    /**
-     * Creates sport activity
-     *
-     * @param activity - activity to be created
-     */
     public void createSportActivity(SportActivity activity);
 
-    /**
-     * Removes sport activity
-     *
-     * @param activity - activity to be removed
-     */
-    public void removeSportActivity(SportActivity activity);
+    public void deleteSportActivity(SportActivity activity);
 
-    /**
-     * Retrieves sport activity
-     *
-     * @param id of the activity, which will be retrieved
-     * @return retrieved activity
-     */
-    public SportActivity findSportActivity(Long id);
+    public SportActivity findById(Long id);
+    
+    public List<SportActivity> findAll();
 
-    /**
-     * Updates sport activity
-     *
-     * @param activity - activity to update
-     */
-    public void updateSportActivity(SportActivity activity);
+    public void changeName(SportActivity activity, String newName);
 
 }
