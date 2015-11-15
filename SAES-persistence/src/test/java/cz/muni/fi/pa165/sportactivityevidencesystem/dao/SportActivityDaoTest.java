@@ -16,9 +16,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.junit.runner.RunWith;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
@@ -27,7 +25,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
  *
  * @author Jan S.
  */
-@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
