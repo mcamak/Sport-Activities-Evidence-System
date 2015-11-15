@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.SportActivity;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -35,4 +36,8 @@ public class SportActivityDaoImpl implements SportActivityDao {
         return em.find(SportActivity.class, id);
     }
     
+    @Override
+    public List<SportActivity> findAll() {
+        return em.createQuery("SELECT a FROM SportActivity a", SportActivity.class).getResultList();
+    }
 }

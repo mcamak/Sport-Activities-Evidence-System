@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.SportActivity;
+import java.util.List;
 
 /**
  * This class contains basic 
@@ -32,4 +33,11 @@ public interface SportActivityDao {
      * @return found SportActivity
      */
     public SportActivity findSportActivity(Long id);
+    
+    /**
+     * Find all sport activities.
+     * 
+     * @return list of sport activities
+     */
+    public List<SportActivity> findAll();
 }
