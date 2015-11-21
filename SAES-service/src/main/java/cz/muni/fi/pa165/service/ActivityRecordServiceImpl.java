@@ -1,7 +1,9 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
+import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
+import cz.muni.fi.pa165.saes.entity.User;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
@@ -15,40 +17,35 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Inject
     private ActivityRecordDao activityRecordDao;
+    
+    @Inject
+    private UserDao userDao;
 
     @Override
     public void create(ActivityRecord activityRecord) {
-        if (activityRecord == null) {
-            throw new IllegalArgumentException("Activity record is null. ");
-        }
-        if (activityRecord.getId() != null) {
-            throw new IllegalArgumentException("Activity record ID isn't null. It is already stored in database. ");
-        }
         activityRecordDao.create(activityRecord);
     }
 
     @Override
     public void removeSportActivity(ActivityRecord activityRecord) {
-        if (activityRecord == null) {
-            throw new IllegalArgumentException("Activity record is null. ");
-        }
         activityRecordDao.delete(activityRecord);
     }
 
     @Override
     public ActivityRecord findById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id is null. ");
-        }
         return activityRecordDao.findActivityRecord(id);
     }
 
     @Override
     public void updateSportActivity(ActivityRecord activityRecord) {
-        if (activityRecord == null) {
-            throw new IllegalArgumentException("Activity record is null. ");
-        }
         activityRecordDao.update(activityRecord);
     }
 
+    @Override
+    public void removeUserFromRecord(Long activityId, Long userId) {
+        ActivityRecord record = activityRecordDao.findActivityRecord(activityId);
+        User user = userDao.findUser(userId);
+        record.removeUser(user);
+        activityRecordDao.update(record);
+    }
 }

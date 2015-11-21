@@ -11,33 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ActivityRecordService {
 
-    /**
-     * Create activity record
-     *
-     * @param activityRecord - activity record to create
-     */
     public void create(ActivityRecord activityRecord);
-
-    /**
-     * Remove activity record
-     *
-     * @param activityRecord - activity record to remove
-     */
     public void removeSportActivity(ActivityRecord activityRecord);
-
-    /**
-     * Retrieve activity record by ID
-     *
-     * @param id - ID of an activity record
-     * @return activity record with given ID
-     */
+    public void removeUserFromRecord(Long activityId, Long userId);
     public ActivityRecord findById(Long id);
-
-    /**
-     * Update activity record
-     *
-     * @param activityRecord- activity record to update
-     */
     public void updateSportActivity(ActivityRecord activityRecord);
 
 }
