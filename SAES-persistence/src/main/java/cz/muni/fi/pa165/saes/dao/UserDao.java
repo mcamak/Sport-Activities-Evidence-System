@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.saes.dao;
 
+import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
 import java.util.List;
 
@@ -34,6 +35,13 @@ public interface UserDao {
      * @return collection of users
      */
     public List<User> findAllUsers();
+    
+    /**
+     * Retrieves a filtered collection of users.
+     * @param filter by which the collection will be filtered
+     * @return filtered collection of users
+     */
+    public List<User> findUsersByParameters(UserFilter filter);
 
     /**
      * Updates user in the database
