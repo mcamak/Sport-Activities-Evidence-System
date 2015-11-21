@@ -1,12 +1,13 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
+import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author Jan S.
  */
 @Service
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public void createUser(User user) {
+    public Long createUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User ID is not null. ");
         }
         userDao.createUser(user);
+        return user.getId();
     }
 
     @Override
@@ -54,5 +56,15 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User ID is null. Persist user first. ");
         }
         userDao.updateUser(user);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userDao.findAllUsers();
+    }
+
+    @Override
+    public List<User> getUsersByFilter(UserFilter filter) {
+        return userDao.findUsersByParameters(filter);
     }
 }
