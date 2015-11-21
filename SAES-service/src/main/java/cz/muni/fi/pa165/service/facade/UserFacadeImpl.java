@@ -13,10 +13,14 @@ import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import java.util.List;
 import javax.inject.Inject;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author MajoCAM
  */
+@Service
+@Transactional
 public class UserFacadeImpl implements UserFacade {
     
     @Inject
