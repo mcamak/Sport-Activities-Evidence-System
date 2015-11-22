@@ -2,16 +2,30 @@ package cz.muni.fi.pa165.dto;
 
 import enums.Gender;
 import java.util.Objects;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author MajoCAM
  */
 public class UserCreateDTO {
-    
+
+    @NotNull
+    @Size(min = 3, max = 50)
     String name;
+
+    @NotNull
     Gender sex;
-    int weight;
-    int age;
+
+    @Min(0)
+    @Max(800)
+    Integer weight;
+
+    @Min(0)
+    @Max(150)
+    Integer age;
 
     public String getName() {
         return name;
@@ -29,19 +43,19 @@ public class UserCreateDTO {
         this.sex = sex;
     }
 
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
