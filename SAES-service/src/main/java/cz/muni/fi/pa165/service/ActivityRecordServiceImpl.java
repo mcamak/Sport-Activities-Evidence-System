@@ -22,8 +22,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     private UserDao userDao;
 
     @Override
-    public void create(ActivityRecord activityRecord) {
+    public ActivityRecord create(ActivityRecord activityRecord) {
         activityRecordDao.create(activityRecord);
+        return activityRecord;
     }
 
     @Override
