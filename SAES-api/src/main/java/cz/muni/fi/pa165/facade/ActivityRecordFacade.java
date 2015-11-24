@@ -10,12 +10,11 @@ import java.util.List;
 
 /**
  *
- * @author Barborka
+ * @author B. Bajtosova
  */
 public interface ActivityRecordFacade {
     public Long createSportActivityRecord(ActivityRecordDTO createDTO);
     public void deleteActivityRecord(Long activityRecordId);
-    public List<ActivityRecordDTO> getAllActivities();
     public ActivityRecordDTO getActivityWithId(Long id);
     
 }
