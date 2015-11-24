@@ -13,8 +13,11 @@ import java.util.List;
  * @author B. Bajtosova
  */
 public interface ActivityRecordFacade {
-    public Long createSportActivityRecord(ActivityRecordDTO createDTO);
+    public Long create(ActivityRecordDTO createDTO);
     public void deleteActivityRecord(Long activityRecordId);
-    public ActivityRecordDTO getActivityWithId(Long id);
+    public void removeUserFromRecord(Long activityId, Long userId);
+    public ActivityRecordDTO findById(Long id);
+    public void updateActivityRecord(ActivityRecordDTO activityRecord);
+    
     
 }
