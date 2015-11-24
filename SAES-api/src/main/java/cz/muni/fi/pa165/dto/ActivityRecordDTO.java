@@ -24,10 +24,10 @@ public class ActivityRecordDTO {
     private int distance;
 
     @ManyToOne
-    private SportActivity activity;
+    private SportActivityDTO activity;
 
     @OneToMany
-    private final Set<User> users = new HashSet<>();
+    private final Set<UserDTO> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -49,23 +49,23 @@ public class ActivityRecordDTO {
         this.distance = distance;
     }
 
-    public SportActivity getActivity() {
+    public SportActivityDTO getActivity() {
         return activity;
     }
 
-    public void setActivity(SportActivity activity) {
+    public void setActivity(SportActivityDTO activity) {
         this.activity = activity;
     }
 
-    public Set<User> getUsers() {
+    public Set<UserDTO> getUsers() {
         return Collections.unmodifiableSet(users);
     }
 
-    public void addUser(User user) {
+    public void addUser(UserDTO user) {
         this.users.add(user);
     }
 
-    public void removeUser(User user) {
+    public void removeUser(UserDTO user) {
         this.users.remove(user);
     }
 
