@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ActivityRecordService {
 
-    public void create(ActivityRecord activityRecord);
+    public ActivityRecord create(ActivityRecord activityRecord);
     public void removeSportActivity(ActivityRecord activityRecord);
     public void removeUserFromRecord(Long activityId, Long userId);
     public ActivityRecord findById(Long id);
