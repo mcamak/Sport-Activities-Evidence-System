@@ -3,7 +3,9 @@ package cz.muni.fi.pa165.service;
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
+import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
-    public void removeSportActivity(ActivityRecord activityRecord) {
+    public void deleteActivityRecord(ActivityRecord activityRecord) {
         activityRecordDao.delete(activityRecord);
     }
 
@@ -38,7 +40,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
-    public void updateSportActivity(ActivityRecord activityRecord) {
+    public void updateActivityRecord(ActivityRecord activityRecord) {
         activityRecordDao.update(activityRecord);
     }
 
@@ -49,4 +51,5 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         record.removeUser(user);
         activityRecordDao.update(record);
     }
+    
 }
