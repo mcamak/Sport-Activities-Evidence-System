@@ -23,10 +23,8 @@ public class ActivityRecordDTO {
 
     private int distance;
 
-    @ManyToOne
     private SportActivityDTO activity;
 
-    @OneToMany
     private final Set<UserDTO> users = new HashSet<>();
 
     public Long getId() {
