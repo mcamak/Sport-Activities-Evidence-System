@@ -33,7 +33,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
     private BeanMappingService bms;
 
     @Override
-    public Long createSportActivityRecord(ActivityRecordDTO recordDTO) {
+    public Long create(ActivityRecordDTO recordDTO) {
         ActivityRecord newActivity;
         newActivity = activityRecordService.create(bms.mapTo(recordDTO, ActivityRecord.class));
         return newActivity.getId();
@@ -42,13 +42,25 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
 
     @Override
     public void deleteActivityRecord(Long activityRecordId) {
-        activityRecordService.removeSportActivity(activityRecordService.findById(activityRecordId));
+        activityRecordService.deleteActivityRecord(activityRecordService.findById(activityRecordId));
     }
 
 
     @Override
-    public ActivityRecordDTO getActivityWithId(Long id) {
+    public ActivityRecordDTO findById(Long id) {
         return bms.mapTo(activityRecordService.findById(id), ActivityRecordDTO.class);
+    }
+    
+    /**
+    public void removeUserFromRecord(Long activityId, Long userId){
+        activityRecordService.removeUserFromRecord(activityId, userId);
+    
+    }
+    **/
+    
+    public void updateActivityRecord(ActivityRecordDTO activityRecord){
+        activityRecordService.update(bms.mapTo(activityRecord, ActivityRecord.class));
+    
     }
     
 }
