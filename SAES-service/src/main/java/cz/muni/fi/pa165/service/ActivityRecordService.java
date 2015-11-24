@@ -15,6 +15,6 @@ public interface ActivityRecordService {
     public void deleteActivityRecord(ActivityRecord activityRecord);
     public void removeUserFromRecord(Long activityId, Long userId);
     public ActivityRecord findById(Long id);
-    public void updateActivityRecord(ActivityRecord activityRecord);
+    public void update(ActivityRecord activityRecord);
 
 }
