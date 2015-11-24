@@ -40,7 +40,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
-    public void updateActivityRecord(ActivityRecord activityRecord) {
+    public void update(ActivityRecord activityRecord) {
         activityRecordDao.update(activityRecord);
     }
 
