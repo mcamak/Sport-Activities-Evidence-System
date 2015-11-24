@@ -15,7 +15,7 @@ import java.util.List;
 public interface ActivityRecordFacade {
     public Long create(ActivityRecordDTO createDTO);
     public void deleteActivityRecord(Long activityRecordId);
-    public void removeUserFromRecord(Long activityId, Long userId);
+    //public void removeUserFromRecord(Long activityId, Long userId);
     public ActivityRecordDTO findById(Long id);
     public void updateActivityRecord(ActivityRecordDTO activityRecord);
     
