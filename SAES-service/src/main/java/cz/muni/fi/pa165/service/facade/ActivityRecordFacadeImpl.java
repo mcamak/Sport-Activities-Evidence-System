@@ -11,7 +11,6 @@ import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.service.ActivityRecordService;
 //import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
-import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

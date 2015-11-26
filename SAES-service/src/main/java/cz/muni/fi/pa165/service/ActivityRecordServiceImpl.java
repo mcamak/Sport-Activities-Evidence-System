@@ -3,9 +3,7 @@ package cz.muni.fi.pa165.service;
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
-import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
-import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 

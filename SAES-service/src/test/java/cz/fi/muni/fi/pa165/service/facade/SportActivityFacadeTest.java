@@ -8,7 +8,6 @@ package cz.fi.muni.fi.pa165.service.facade;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
-import cz.muni.fi.pa165.saes.entity.SportActivity;
 import java.util.Collection;
 import javax.inject.Inject;
 import static org.testng.Assert.assertEquals;
