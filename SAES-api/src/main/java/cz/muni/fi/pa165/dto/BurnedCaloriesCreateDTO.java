@@ -25,7 +25,7 @@ public class BurnedCaloriesCreateDTO {
     private SportActivityDTO activity;  
     
     @Min(0)
-    @Max(800)
+    @Max(1000)
     private int bodyWeight;   
     
     @NotNull
