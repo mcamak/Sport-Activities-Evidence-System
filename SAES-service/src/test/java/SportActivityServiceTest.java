@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 
 
 
@@ -30,10 +31,14 @@ public class SportActivityServiceTest {
     private SportActivityServiceImpl sportActivity;
     
     
-    //@Before
+    @BeforeMethod
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
+    
+    /**
+     * Test creating sport activity 
+     */
     
     @Test
     public void createSportActivityTest(){
@@ -43,6 +48,9 @@ public class SportActivityServiceTest {
     
     }
     
+    /**
+     * Test creating null activity
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createSportActivityNullTest(){
         sportActivity.createSportActivity(null);
@@ -51,6 +59,9 @@ public class SportActivityServiceTest {
         
     }
     
+    /**
+     * Test deleting sport activity
+     */
     @Test
     public void deleteSportActivityTest(){
         SportActivity sact = new SportActivity();
@@ -59,12 +70,18 @@ public class SportActivityServiceTest {
         verify(sportDao).deleteSportActivity(sact);
     }
     
-    @Test
+    /**
+     * Test deleting null activity
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteSportActivityNullTest(){
         sportActivity.deleteSportActivity(null);
         verify(sportDao,never()).deleteSportActivity(null);
     }
     
+    /**
+     * Test finding activity by id
+     */
     @Test
     public void findByIdTest(){
         SportActivity sact = new SportActivity();
@@ -79,12 +96,18 @@ public class SportActivityServiceTest {
         assertEquals(sact,returnActivity);
     }
     
-    @Test
+    /**
+     * Test finding activity with null 
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest(){
         sportActivity.findById(null);
         verify(sportDao,never()).findSportActivity(null);
     }
     
+    /**
+     * Test finding all activities
+     */
     @Test
     public void findAllTest(){
         SportActivity running = new SportActivity();
@@ -106,6 +129,9 @@ public class SportActivityServiceTest {
         
     }
     
+    /**
+     * Test change name of activity
+     */
     @Test
     public void changeNameTest(){
         SportActivity sact = new SportActivity();
