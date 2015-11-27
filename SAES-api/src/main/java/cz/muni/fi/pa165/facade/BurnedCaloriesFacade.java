@@ -6,6 +6,7 @@
 package cz.muni.fi.pa165.facade;
 
 import cz.muni.fi.pa165.dto.BurnedCaloriesDTO;
+import cz.muni.fi.pa165.dto.BurnedCaloriesCreateDTO;
 
 /**
  *
@@ -18,7 +19,7 @@ public interface BurnedCaloriesFacade {
      *
      * @param burnedCalories
      */
-    public void create(BurnedCaloriesDTO burnedCalories);
+    public void create(BurnedCaloriesCreateDTO burnedCalories);
 
     /**
      * Find burned calories by id.

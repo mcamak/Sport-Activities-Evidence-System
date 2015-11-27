@@ -8,27 +8,24 @@ package cz.muni.fi.pa165.dto;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
  * @author MajoCAM
  */
-@Getter
-@Setter
-@EqualsAndHashCode
+@lombok.Getter
+@lombok.Setter
+@lombok.EqualsAndHashCode
 public class BurnedCaloriesCreateDTO {
-    
-    @NotNull
-    private SportActivityDTO activity;  
-    
+
     @Min(0)
-    @Max(1000)
-    private int bodyWeight;   
-    
+    @Max(999)
+    private int bodyWeight;
+
     @NotNull
-    @Min(0)    
+    @Min(0)
     private int caloriesBurned;
+
+    @NotNull
+    private SportActivityDTO activity;
 }
