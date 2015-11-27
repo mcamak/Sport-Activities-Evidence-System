@@ -8,8 +8,8 @@ package cz.fi.muni.fi.pa165.service.facade;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
+import cz.muni.fi.pa165.service.facade.SportActivityFacadeImpl;
 import java.util.Collection;
-import javax.inject.Inject;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import org.mockito.InjectMocks;
@@ -26,9 +26,14 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
 public class SportActivityFacadeTest {
     
-    @Inject
+    
+    
     @InjectMocks
-    private SportActivityFacade facade;
+    private SportActivityFacade facade = new SportActivityFacadeImpl();
+    
+   /**
+     * Test creating sport activity
+     */
     
     @Test
     public void createSportActivityTest(){
@@ -38,6 +43,10 @@ public class SportActivityFacadeTest {
         assertTrue(facade.getActivityWithId( sactivity.getId() ).getName().equals( "Running" ));
         
     }
+    
+    /**
+     * Test changing name of activity 
+     */
     
     @Test
     public void changeActivityNameTest(){
@@ -49,6 +58,9 @@ public class SportActivityFacadeTest {
     
     }
     
+    /**
+     * Test deleting sport activity
+     */
     @Test 
     public void deleteSportActivityTest(){
         SportActivityDTO sactivity = new SportActivityDTO();
@@ -58,6 +70,10 @@ public class SportActivityFacadeTest {
         facade.deleteActivity(sactivity.getId()); 
     }
     
+    
+    /**
+     * Test getting all activities
+     */
     @Test
     public void getAllActivitiesTest(){
         SportActivityDTO running = new SportActivityDTO();
@@ -75,6 +91,9 @@ public class SportActivityFacadeTest {
     
     }
     
+    /**
+     * Test getting activity with id
+     */
     @Test 
     public void getActivityWithIdTest(){
         SportActivityDTO sactivity = new SportActivityDTO();
