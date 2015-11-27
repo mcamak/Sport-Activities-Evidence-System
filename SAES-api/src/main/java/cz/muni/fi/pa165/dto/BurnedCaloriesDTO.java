@@ -6,6 +6,7 @@
 package cz.muni.fi.pa165.dto;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -92,9 +93,10 @@ public class BurnedCaloriesDTO {
 
     /**
      * Indicates whether some other object is "equal to" this one.
-     * 
+     *
      * @param obj - the reference object with which to compare.
-     * @return true if this object is the same as the obj argument; false otherwise.
+     * @return true if this object is the same as the obj argument; false
+     * otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -113,4 +115,19 @@ public class BurnedCaloriesDTO {
                 .append(id, rhs.id)
                 .isEquals();
     }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        // you pick a hard-coded, randomly chosen, non-zero, odd number
+        // ideally different for each class
+        return new HashCodeBuilder(7, 111).
+                append(id).
+                toHashCode();
+    }
+
 }
