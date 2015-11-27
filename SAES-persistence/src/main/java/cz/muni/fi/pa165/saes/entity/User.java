@@ -5,7 +5,7 @@
  */
 package cz.muni.fi.pa165.saes.entity;
 
-import cz.muni.fi.pa165.saes.enums.Gender;
+import enums.Gender;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

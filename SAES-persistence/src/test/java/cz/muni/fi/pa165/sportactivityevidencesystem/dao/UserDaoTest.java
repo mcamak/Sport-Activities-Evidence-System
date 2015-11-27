@@ -3,7 +3,7 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.saes.entity.User;
-import cz.muni.fi.pa165.saes.enums.Gender;
+import enums.Gender;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

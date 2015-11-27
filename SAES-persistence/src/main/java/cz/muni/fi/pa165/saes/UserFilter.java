@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.saes;
 
-import cz.muni.fi.pa165.saes.enums.Gender;
+import enums.Gender;
 import java.util.HashSet;
 import java.util.Set;
 

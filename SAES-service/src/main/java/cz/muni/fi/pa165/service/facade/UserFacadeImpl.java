@@ -6,7 +6,7 @@ import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.User;
-import cz.muni.fi.pa165.saes.enums.Gender;
+import enums.Gender;
 import cz.muni.fi.pa165.service.ActivityRecordService;
 import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.UserService;
