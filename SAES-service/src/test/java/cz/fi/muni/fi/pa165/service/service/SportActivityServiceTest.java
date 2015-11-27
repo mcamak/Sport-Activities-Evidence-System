@@ -1,3 +1,5 @@
+package cz.fi.muni.fi.pa165.service.service;
+
 
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
