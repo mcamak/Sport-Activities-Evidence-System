@@ -97,12 +97,15 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testUpdate() {
-        // TODO
+        burnedCaloriesDTO.setId(99L);
+        burnedCaloriesFacade.update(burnedCaloriesDTO);
+        verify(burnedCaloriesService).update(burnedCalories);
     }
 
     @Test
     public void testDelete() {
-        // TODO
+        burnedCaloriesFacade.delete(burnedCaloriesDTO);
+        verify(burnedCaloriesService).delete(burnedCalories);
     }
 
 }
