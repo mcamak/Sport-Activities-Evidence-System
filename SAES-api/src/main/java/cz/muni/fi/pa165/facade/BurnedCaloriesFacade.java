@@ -18,8 +18,9 @@ public interface BurnedCaloriesFacade {
      * Creates burned calories.
      *
      * @param burnedCalories
+     * @return ID of created record.
      */
-    public void create(BurnedCaloriesCreateDTO burnedCalories);
+    public Long create(BurnedCaloriesCreateDTO burnedCalories);
 
     /**
      * Find burned calories by id.
@@ -32,15 +33,15 @@ public interface BurnedCaloriesFacade {
     /**
      * Update burned calories.
      *
-     * @param burnedCalories
+     * @param burnedCaloriesDTO
      */
-    public void update(BurnedCaloriesDTO burnedCalories);
+    public void update(BurnedCaloriesDTO burnedCaloriesDTO);
 
     /**
      * Deletes burned calories.
      *
-     * @param burnedCalories
+     * @param burnedCaloriesDTO
      */
-    public void delete(BurnedCaloriesDTO burnedCalories);
+    public void delete(BurnedCaloriesDTO burnedCaloriesDTO);
 
 }

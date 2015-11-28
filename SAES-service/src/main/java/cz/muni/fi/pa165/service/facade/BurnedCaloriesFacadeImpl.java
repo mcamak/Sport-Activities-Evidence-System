@@ -30,8 +30,10 @@ public class BurnedCaloriesFacadeImpl implements BurnedCaloriesFacade {
     private BeanMappingService bms;
 
     @Override
-    public void create(BurnedCaloriesCreateDTO burnedCalories) {
-        burnedCaloriesService.create(bms.mapTo(burnedCalories, BurnedCalories.class));
+    public Long create(BurnedCaloriesCreateDTO burnedCaloriesCreateDTO) {
+        BurnedCalories burnedCalories = bms.mapTo(burnedCaloriesCreateDTO, BurnedCalories.class);
+        burnedCaloriesService.create(burnedCalories);
+        return burnedCalories.getId();
     }
 
     @Override
@@ -40,12 +42,12 @@ public class BurnedCaloriesFacadeImpl implements BurnedCaloriesFacade {
     }
 
     @Override
-    public void update(BurnedCaloriesDTO burnedCalories) {
-        burnedCaloriesService.update(bms.mapTo(burnedCalories, BurnedCalories.class));
+    public void update(BurnedCaloriesDTO burnedCaloriesDTO) {
+        burnedCaloriesService.update(bms.mapTo(burnedCaloriesDTO, BurnedCalories.class));
     }
 
     @Override
-    public void delete(BurnedCaloriesDTO burnedCalories) {
-        burnedCaloriesService.delete(bms.mapTo(burnedCalories, BurnedCalories.class));
+    public void delete(BurnedCaloriesDTO burnedCaloriesDTO) {
+        burnedCaloriesService.delete(bms.mapTo(burnedCaloriesDTO, BurnedCalories.class));
     }
 }
