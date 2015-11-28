@@ -16,12 +16,14 @@ import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import javax.inject.Inject;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
+import static org.testng.Assert.assertEquals;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -40,6 +42,7 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
     private BurnedCaloriesService burnedCaloriesService;
 
     private BurnedCalories burnedCalories;
+    private BurnedCaloriesDTO burnedCaloriesDTO;
     private BurnedCaloriesCreateDTO burnedCaloriesCreateDTO;
 
     @BeforeClass
@@ -56,7 +59,7 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
 
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Test");
-        
+
         SportActivityDTO sportActivityDTO = new SportActivityDTO();
         sportActivityDTO.setName(sportActivity.getName());
         sportActivityDTO.setId(99L);
@@ -65,6 +68,11 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
         burnedCalories.setBodyWeight(100);
         burnedCalories.setCaloriesBurned(5000);
         burnedCalories.setActivity(sportActivity);
+
+        burnedCaloriesDTO = new BurnedCaloriesDTO();
+        burnedCaloriesDTO.setBodyWeight(burnedCalories.getBodyWeight());
+        burnedCaloriesDTO.setCaloriesBurned(burnedCalories.getCaloriesBurned());
+        burnedCaloriesDTO.setActivity(sportActivityDTO);
 
         burnedCaloriesCreateDTO = new BurnedCaloriesCreateDTO();
         burnedCaloriesCreateDTO.setBodyWeight(burnedCalories.getBodyWeight());
@@ -80,7 +88,11 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testFindById() {
-        // TODO
+        Long id = burnedCalories.getId();
+        burnedCaloriesDTO.setId(id);
+        when(burnedCaloriesService.findById(id)).thenReturn(burnedCalories);
+        BurnedCaloriesDTO findedBurnedCalories = burnedCaloriesFacade.findById(id);
+        assertEquals(findedBurnedCalories, burnedCaloriesDTO);
     }
 
     @Test
