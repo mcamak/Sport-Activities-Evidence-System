@@ -15,6 +15,7 @@ import cz.muni.fi.pa165.service.BurnedCaloriesService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import javax.inject.Inject;
 import org.mockito.Mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
@@ -24,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
 import static org.testng.Assert.assertEquals;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -82,6 +84,11 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
         burnedCaloriesCreateDTO.setBodyWeight(burnedCalories.getBodyWeight());
         burnedCaloriesCreateDTO.setCaloriesBurned(burnedCalories.getCaloriesBurned());
         burnedCaloriesCreateDTO.setActivity(sportActivityDTO);
+    }
+
+    @AfterMethod
+    public void cleanUp() {
+        reset(burnedCaloriesService);
     }
 
     @Test

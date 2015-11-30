@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import javax.inject.Inject;
 import org.mockito.Mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
@@ -25,6 +26,7 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
 import static org.testng.Assert.assertEquals;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 
 /**
@@ -76,6 +78,11 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         activityRecordDTO.setActivity(sportActivityDTO);
     }
 
+    @AfterMethod
+    public void cleanUp() {
+        reset(activityRecordService);
+    }
+
     /**
      * Test creating activity record
      */
@@ -112,7 +119,9 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testDelete() {
-        activityRecordFacade.deleteActivityRecord(activityRecordDTO.getId());
-        verify(activityRecordService).deleteActivityRecord(activityRecord);
+        Long activityRecordId = activityRecordDTO.getId();
+        activityRecordFacade.deleteActivityRecord(activityRecordId);
+        ActivityRecord foundActivityRecord = activityRecordService.findById(activityRecordId);
+        verify(activityRecordService).deleteActivityRecord(foundActivityRecord);
     }
 }

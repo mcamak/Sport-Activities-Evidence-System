@@ -1,6 +1,5 @@
 package cz.fi.muni.fi.pa165.service.service;
 
-
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.SportActivityServiceImpl;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-//import org.junit.Before;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -17,8 +15,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-
-
 
 /**
  *
@@ -31,8 +27,7 @@ public class SportActivityServiceTest {
     
     @InjectMocks
     private SportActivityServiceImpl sportActivity;
-    
-    
+        
     @BeforeMethod
     public void setup() {
         MockitoAnnotations.initMocks(this);

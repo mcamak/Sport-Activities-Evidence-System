@@ -7,102 +7,118 @@ package cz.fi.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
-import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
-import cz.muni.fi.pa165.service.facade.SportActivityFacadeImpl;
-import java.util.Collection;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import org.mockito.InjectMocks;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
+import cz.muni.fi.pa165.service.SportActivityService;
+import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
+import javax.inject.Inject;
+import org.mockito.Mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-
 
 /**
  *
  * @author B. Bajtosova
  */
+@ContextConfiguration(classes = ServiceConfiguration.class)
+public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
 
-@ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
-public class SportActivityFacadeTest {
+    @Inject
+    private SportActivityFacade sportActivityFacade;
+
+    @Mock
+    private SportActivityService sportActivityService;
+
+    private SportActivity sportActivity;
+    private SportActivityDTO sportActivityDTO;
+    //private SportActivityCreateDTO sportActivityCreateDTO;
+
+    @BeforeClass
+    public void setup() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        if (AopUtils.isAopProxy(sportActivityFacade)
+                && sportActivityFacade instanceof Advised) {
+            sportActivityFacade = (SportActivityFacade) ((Advised) sportActivityFacade)
+                    .getTargetSource().getTarget();
+        }
+        ReflectionTestUtils.setField(sportActivityFacade,
+                "sportActivityService",
+                sportActivityService);
+    }
+
+    @BeforeMethod
+    public void setUpMethod() {
+
+        sportActivity = new SportActivity();
+        sportActivity.setName("Chess");
+
+        sportActivityDTO = new SportActivityDTO();
+        sportActivityDTO.setName(sportActivity.getName());
+        sportActivityDTO.setId(999L);
+    }
     
-    
-    
-    @InjectMocks
-    private SportActivityFacade facade = new SportActivityFacadeImpl();
-    
-   /**
+    @AfterMethod
+    public void cleanUp()
+    {
+        reset(sportActivityService);
+    }
+
+    /**
      * Test creating sport activity
      */
-    
     @Test
-    public void createSportActivityTest(){
-        SportActivityDTO sactivity = new SportActivityDTO();
-        sactivity.setName("Running");
-        facade.createSportActivity(sactivity);
-        assertTrue(facade.getActivityWithId( sactivity.getId() ).getName().equals( "Running" ));
-        
+    public void createSportActivityTest() {
+        sportActivityFacade.createSportActivity(sportActivityDTO);
+        verify(sportActivityService).createSportActivity(sportActivity);
     }
-    
+
     /**
-     * Test changing name of activity 
+     * Test changing name of activity
      */
-    
     @Test
-    public void changeActivityNameTest(){
-        SportActivityDTO sactivity = new SportActivityDTO();
-        sactivity.setName("Running");
-        facade.createSportActivity(sactivity);
-        facade.changeActivityName(sactivity, "Jumping");
-        assertTrue(facade.getActivityWithId( sactivity.getId() ).getName().equals( "Jumping" ));
-    
+    public void changeActivityNameTest() {
+        sportActivityFacade.changeActivityName(sportActivityDTO, "Jumping");
+        verify(sportActivityService).changeName(sportActivity, "Jumping");
     }
-    
+
     /**
      * Test deleting sport activity
      */
-    @Test 
-    public void deleteSportActivityTest(){
-        SportActivityDTO sactivity = new SportActivityDTO();
-        sactivity.setName("Running");
-        facade.createSportActivity(sactivity);
-        assertEquals(sactivity, facade.getActivityWithId(sactivity.getId()));
-        facade.deleteActivity(sactivity.getId()); 
+    @Test
+    public void deleteSportActivityTest() {
+        Long sportActivityId = sportActivityDTO.getId();
+        sportActivityFacade.deleteActivity(sportActivityId);
+        SportActivity foundSportActivity = sportActivityService.findById(sportActivityId);
+        verify(sportActivityService).deleteSportActivity(foundSportActivity);
     }
-    
-    
+
     /**
      * Test getting all activities
      */
     @Test
-    public void getAllActivitiesTest(){
-        SportActivityDTO running = new SportActivityDTO();
-        SportActivityDTO jumping = new SportActivityDTO();
-        running.setName("Running");
-        jumping.setName("Jumping");
-        
-        facade.createSportActivity(running);
-        facade.createSportActivity(jumping);
-        
-        Collection<SportActivityDTO> activities = facade.getAllActivities();
-        
-        assertTrue(activities.contains(running));
-        assertTrue(activities.contains(jumping));
-    
+    public void getAllActivitiesTest() {
+        sportActivityFacade.getAllActivities();
+        verify(sportActivityService).findAll();
     }
-    
+
     /**
      * Test getting activity with id
      */
-    @Test 
-    public void getActivityWithIdTest(){
-        SportActivityDTO sactivity = new SportActivityDTO();
-        sactivity.setName("Running");
-        facade.createSportActivity(sactivity);
-        assertEquals(sactivity, facade.getActivityWithId(sactivity.getId()));
-    
+    @Test
+    public void getActivityWithIdTest() {
+        Long sportActivityId = sportActivityDTO.getId();
+        when(sportActivityService.findById(sportActivityId)).thenReturn(sportActivity);
+        sportActivityFacade.getActivityWithId(sportActivityId);
+        verify(sportActivityService).findById(sportActivityId);
     }
- 
-    
- 
 }

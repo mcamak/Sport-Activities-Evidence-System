@@ -19,34 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
 public class SportActivityFacadeImpl implements SportActivityFacade {
 
     @Inject
-    private SportActivityService activityService;
+    private SportActivityService sportActivityService;
 
     @Inject
     private BeanMappingService bms;
 
     @Override
     public Long createSportActivity(SportActivityDTO sDTO) {
-        SportActivity created = activityService.createSportActivity(bms.mapTo(sDTO, SportActivity.class));
+        SportActivity created = bms.mapTo(sDTO, SportActivity.class);
+        sportActivityService.createSportActivity(created);
         return created.getId();
     }
 
     @Override
     public void changeActivityName(SportActivityDTO old, String newName) {
-        activityService.changeName(bms.mapTo(old, SportActivity.class), newName);
+        sportActivityService.changeName(bms.mapTo(old, SportActivity.class), newName);
     }
 
     @Override
     public void deleteActivity(Long activityId) {
-        activityService.deleteSportActivity(activityService.findById(activityId));
+        sportActivityService.deleteSportActivity(sportActivityService.findById(activityId));
     }
 
     @Override
     public List<SportActivityDTO> getAllActivities() {
-        return bms.mapTo(activityService.findAll(), SportActivityDTO.class);
+        return bms.mapTo(sportActivityService.findAll(), SportActivityDTO.class);
     }
 
     @Override
     public SportActivityDTO getActivityWithId(Long id) {
-        return bms.mapTo(activityService.findById(id), SportActivityDTO.class);
+        return bms.mapTo(sportActivityService.findById(id), SportActivityDTO.class);
     }
 }
