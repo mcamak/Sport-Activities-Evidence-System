@@ -48,10 +48,14 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
     @BeforeClass
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
-        if (AopUtils.isAopProxy(burnedCaloriesFacade) && burnedCaloriesFacade instanceof Advised) {
-            burnedCaloriesFacade = (BurnedCaloriesFacade) ((Advised) burnedCaloriesFacade).getTargetSource().getTarget();
+        if (AopUtils.isAopProxy(burnedCaloriesFacade)
+                && burnedCaloriesFacade instanceof Advised) {
+            burnedCaloriesFacade = (BurnedCaloriesFacade) ((Advised) burnedCaloriesFacade)
+                    .getTargetSource().getTarget();
         }
-        ReflectionTestUtils.setField(burnedCaloriesFacade, "burnedCaloriesService", burnedCaloriesService);
+        ReflectionTestUtils.setField(burnedCaloriesFacade,
+                "burnedCaloriesService",
+                burnedCaloriesService);
     }
 
     @BeforeMethod
@@ -91,8 +95,8 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
         Long id = burnedCalories.getId();
         burnedCaloriesDTO.setId(id);
         when(burnedCaloriesService.findById(id)).thenReturn(burnedCalories);
-        BurnedCaloriesDTO findedBurnedCalories = burnedCaloriesFacade.findById(id);
-        assertEquals(findedBurnedCalories, burnedCaloriesDTO);
+        BurnedCaloriesDTO foundBurnedCalories = burnedCaloriesFacade.findById(id);
+        assertEquals(foundBurnedCalories, burnedCaloriesDTO);
     }
 
     @Test

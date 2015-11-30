@@ -7,86 +7,73 @@ package cz.fi.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
-import cz.muni.fi.pa165.dto.UserCreateDTO;
-import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
-import cz.muni.fi.pa165.facade.SportActivityFacade;
-import cz.muni.fi.pa165.facade.UserFacade;
-import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
-import enums.Gender;
-import cz.muni.fi.pa165.service.facade.ActivityRecordFacadeImpl;
-import org.mockito.InjectMocks;
+import cz.muni.fi.pa165.saes.entity.ActivityRecord;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
+import cz.muni.fi.pa165.service.ActivityRecordService;
+import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import javax.inject.Inject;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.util.ReflectionTestUtils;
 import static org.testng.Assert.assertEquals;
+import org.testng.annotations.BeforeClass;
 
 /**
  *
  * @author B. Bajtosova
  */
-@ContextConfiguration(classes = SportActivitySystemApplicationContext.class)
-public class ActivityRecordFacadeTest {
+@ContextConfiguration(classes = ServiceConfiguration.class)
+public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
+
+    @Inject
+    private ActivityRecordFacade activityRecordFacade;
 
     @Mock
-    private SportActivityFacade sportFacade;
+    private ActivityRecordService activityRecordService;
 
-    @Mock
-    private UserFacade userFacade;
+    private SportActivityDTO sportActivityDTO;
+    private ActivityRecord activityRecord;
+    private ActivityRecordDTO activityRecordDTO;
 
-    @InjectMocks
-    private ActivityRecordFacade recordFacade = new ActivityRecordFacadeImpl();
-
-    @Inject
-    private UserCreateDTO newUser;
-
-    @Inject
-    private UserDTO existingUser;
-
-    @Inject
-    private SportActivityDTO activity;
+    @BeforeClass
+    public void setup() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        if (AopUtils.isAopProxy(activityRecordFacade)
+                && activityRecordFacade instanceof Advised) {
+            activityRecordFacade = (ActivityRecordFacade) ((Advised) activityRecordFacade)
+                    .getTargetSource().getTarget();
+        }
+        ReflectionTestUtils.setField(activityRecordFacade,
+                "activityRecordService",
+                activityRecordService);
+    }
 
     @BeforeMethod
     public void init() {
-        MockitoAnnotations.initMocks(this);
+        SportActivity sportActivity = new SportActivity();
+        sportActivity.setName("Running");
 
-        activity = new SportActivityDTO();
-        activity.setName("Running");
-        sportFacade.createSportActivity(activity);
+        sportActivityDTO = new SportActivityDTO();
+        sportActivityDTO.setName(sportActivity.getName());
 
-        newUser = new UserCreateDTO();
-        newUser.setName("Peter");
-        newUser.setAge(35);
-        newUser.setSex(Gender.MALE);
-        newUser.setWeight(95);
-        userFacade.createUser(newUser);
+        activityRecord = new ActivityRecord();
+        activityRecord.setDistance(12000);
+        activityRecord.setTimeSeconds(888L);
+        activityRecord.setActivity(sportActivity);
 
-        existingUser = new UserDTO();
-        existingUser.setId(1L);
-        existingUser.setName("Peter");
-        existingUser.setAge(35);
-        existingUser.setSex(Gender.MALE);
-        existingUser.setWeight(95);
-
-    }
-
-    /**
-     * Create and set activity record for later use
-     *
-     * @return ActivityRecordDTO
-     */
-    private ActivityRecordDTO setActivityRecord() {
-        ActivityRecordDTO actv = new ActivityRecordDTO();
-        actv.setActivity(activity);
-        actv.setDistance(5);
-        actv.setTimeSeconds(45L);
-        actv.addUser(existingUser);
-        return actv;
+        activityRecordDTO = new ActivityRecordDTO();
+        activityRecordDTO.setDistance(activityRecord.getDistance());
+        activityRecordDTO.setTimeSeconds(activityRecord.getTimeSeconds());
+        activityRecordDTO.setActivity(sportActivityDTO);
     }
 
     /**
@@ -94,25 +81,8 @@ public class ActivityRecordFacadeTest {
      */
     @Test
     public void createTest() {
-        ActivityRecordDTO record = new ActivityRecordDTO();
-        recordFacade.create(record);
-        assertNotNull(record.getId());
-
-    }
-
-    /**
-     * Test deleting record
-     */
-    @Test
-    public void deleteActivityRecordTest() {
-
-        ActivityRecordDTO record = setActivityRecord();
-        recordFacade.create(record);
-        assertNotNull(recordFacade.findById(record.getId()));
-
-        recordFacade.deleteActivityRecord(record.getId());
-        assertNull(recordFacade.findById(record.getId()));
-
+        activityRecordFacade.create(activityRecordDTO);
+        verify(activityRecordService).create(activityRecord);
     }
 
     /**
@@ -120,37 +90,29 @@ public class ActivityRecordFacadeTest {
      */
     @Test
     public void findByIdTest() {
-        ActivityRecordDTO record = setActivityRecord();
-        recordFacade.create(record);
-
-        assertNotNull(recordFacade.findById(record.getId()));
+        Long id = activityRecord.getId();
+        activityRecordDTO.setId(id);
+        when(activityRecordService.findById(id)).thenReturn(activityRecord);
+        ActivityRecordDTO foundactivityRecord = activityRecordFacade.findById(id);
+        assertEquals(foundactivityRecord, activityRecordDTO);
     }
 
-    /**
-     * @Test public void removeUserFromRecordTest(){ ActivityRecordDTO record =
-     * setActivityRecord(); recordFacade.create(record);
-     *
-     *
-     * }
-     *
-     */
     /**
      * Test updating record
      */
     @Test
-    public void updateActivityRecordTest() {
-        ActivityRecordDTO record = setActivityRecord();
-        recordFacade.create(record);
-        assertNotNull(recordFacade.findById(record.getId()));
-
-        record.setDistance(15);
-        record.setTimeSeconds(20L);
-        recordFacade.updateActivityRecord(record);
-
-        ActivityRecordDTO recordFound = recordFacade.findById(record.getId());
-        assertEquals(recordFound.getDistance(), 15);
-        assertEquals(recordFound.getTimeSeconds(), new Long(20));
-
+    public void updateTest() {
+        activityRecordDTO.setId(99L);
+        activityRecordFacade.updateActivityRecord(activityRecordDTO);
+        verify(activityRecordService).update(activityRecord);
     }
 
+    /**
+     * Test deleting record
+     */
+    @Test
+    public void testDelete() {
+        activityRecordFacade.deleteActivityRecord(activityRecordDTO.getId());
+        verify(activityRecordService).deleteActivityRecord(activityRecord);
+    }
 }

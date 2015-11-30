@@ -9,7 +9,6 @@ import cz.muni.fi.pa165.dto.ActivityRecordDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.service.ActivityRecordService;
-//import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,8 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
 
     @Override
     public Long create(ActivityRecordDTO recordDTO) {
-        ActivityRecord newActivity;
-        newActivity = activityRecordService.create(bms.mapTo(recordDTO, ActivityRecord.class));
+        ActivityRecord newActivity = bms.mapTo(recordDTO, ActivityRecord.class);
+        activityRecordService.create(newActivity);
         return newActivity.getId();
         
     }
@@ -50,13 +49,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
         return bms.mapTo(activityRecordService.findById(id), ActivityRecordDTO.class);
     }
     
-    /**
-    public void removeUserFromRecord(Long activityId, Long userId){
-        activityRecordService.removeUserFromRecord(activityId, userId);
-    
-    }
-    **/
-    
+    @Override
     public void updateActivityRecord(ActivityRecordDTO activityRecord){
         activityRecordService.update(bms.mapTo(activityRecord, ActivityRecord.class));
     
