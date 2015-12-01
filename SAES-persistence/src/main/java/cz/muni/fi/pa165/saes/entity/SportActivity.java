@@ -9,48 +9,48 @@ import javax.persistence.Table;
 
 /**
  * Entity class for representation of a sport activity.
- * 
+ *
  * @author Tomas Effenberger
  */
 @Entity
 @Table(name = "SportActivity")
 public class SportActivity implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String name;
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof SportActivity)) {
-			return false;
-		}
-		SportActivity other = (SportActivity) obj;
-		if (!name.equals(other.getName())) {
-			return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public int hashCode() {
-		int hash = 7;
-		hash = 73 * hash + name.hashCode();
-		return hash;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SportActivity)) {
+            return false;
+        }
+        SportActivity other = (SportActivity) obj;
+        if (!name.equals(other.getName())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 73 * hash + name.hashCode();
+        return hash;
+    }
 
 }
