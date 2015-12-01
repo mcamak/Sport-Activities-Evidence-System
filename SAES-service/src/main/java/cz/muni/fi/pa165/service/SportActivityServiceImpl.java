@@ -6,6 +6,7 @@ import exceptions.SaesServiceException;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the {@link SportActivityService}.
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @author MajoCAM
  */
 @Service
+@Transactional
 public class SportActivityServiceImpl implements SportActivityService {
 
     @Inject

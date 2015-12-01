@@ -5,12 +5,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Jan S.
  */
 @Repository
+@Transactional
 public class SportActivityDaoImpl implements SportActivityDao {
     
     @PersistenceContext
@@ -23,7 +25,7 @@ public class SportActivityDaoImpl implements SportActivityDao {
 
     @Override
     public void deleteSportActivity(SportActivity activity) {
-        em.remove(activity);
+        em.remove(em.contains(activity) ? activity : em.merge(activity));
     }
 
     @Override

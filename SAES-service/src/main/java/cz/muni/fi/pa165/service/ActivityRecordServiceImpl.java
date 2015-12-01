@@ -6,6 +6,7 @@ import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.User;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of service for sport activity records.
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @author Tomas Effenberger
  */
 @Service
+@Transactional
 public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Inject

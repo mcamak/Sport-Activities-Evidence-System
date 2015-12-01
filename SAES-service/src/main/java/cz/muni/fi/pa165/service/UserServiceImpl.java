@@ -6,11 +6,13 @@ import cz.muni.fi.pa165.saes.entity.User;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Jan S.
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Inject

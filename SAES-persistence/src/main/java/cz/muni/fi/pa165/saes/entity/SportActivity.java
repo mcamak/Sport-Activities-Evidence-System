@@ -1,9 +1,11 @@
 package cz.muni.fi.pa165.saes.entity;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Entity class for representation of a sport activity.
@@ -11,7 +13,8 @@ import javax.persistence.Id;
  * @author Tomas Effenberger
  */
 @Entity
-public class SportActivity {
+@Table(name = "SportActivity")
+public class SportActivity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
