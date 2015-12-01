@@ -46,6 +46,7 @@ public class SportActivityServiceImpl implements SportActivityService {
         if(activity.getName().equals(newName)) {
             throw new SaesServiceException("Activity is already named as '" + newName + "'. ");
         }
+        activity.setName(newName);
         sportActivityDao.updateSportActivity(activity);
     }
 }

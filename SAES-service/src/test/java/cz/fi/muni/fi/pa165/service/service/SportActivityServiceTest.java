@@ -3,20 +3,14 @@ package cz.fi.muni.fi.pa165.service.service;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.reset;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -140,12 +134,12 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void changeNameTest() {
         SportActivity sportActivity = new SportActivity();
-        sportActivity.setName("Running");
+        sportActivity.setName("Chess");
         sportActivityService.createSportActivity(sportActivity);
-        sportActivityService.changeName(sportActivity, "jumping");
-        SportActivity foundActivity = sportActivityService.findById(sportActivity.getId());
+        sportActivityService.changeName(sportActivity, "Jumping");
+        sportActivity = sportActivityService.findById(sportActivity.getId());
         
-        assertEquals(foundActivity.getName(), "jumping");
+        assertEquals(sportActivity.getName(), "Jumping");
     }
 
 }
