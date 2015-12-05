@@ -27,6 +27,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String passwordHash;
 
     @Enumerated(EnumType.STRING)
     private Gender sex;
@@ -40,6 +41,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+    
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
     public Gender getSex() {
@@ -62,6 +67,10 @@ public class User {
         this.name = name;
     }
 
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
     public void setSex(Gender sex) {
         this.sex = sex;
     }
@@ -76,9 +85,9 @@ public class User {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.id);
+        int hash = 7;        
         hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.passwordHash);
         hash = 97 * hash + Objects.hashCode(this.sex);
         hash = 97 * hash + Objects.hashCode(this.age);
         hash = 97 * hash + Objects.hashCode(this.weight);
@@ -94,10 +103,10 @@ public class User {
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.passwordHash, other.passwordHash)) {
             return false;
         }
         if (this.sex != other.sex) {
@@ -111,5 +120,4 @@ public class User {
         }
         return true;
     }
-
 }
