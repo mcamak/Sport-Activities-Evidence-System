@@ -8,9 +8,15 @@ import java.util.List;
  * @author MajoCAM
  */
 public interface SportActivityFacade {
-    public Long createSportActivity(SportActivityDTO createDTO);
-    public void changeActivityName(SportActivityDTO old, String newName);
-    public void deleteActivity(Long activityId);
-    public List<SportActivityDTO> getAllActivities();
-    public SportActivityDTO getActivityWithId(Long id);
+
+    public Long create(SportActivityDTO createDTO);
+
+    public SportActivityDTO findById(Long id);
+
+    public void update(SportActivityDTO old, String newName);
+
+    public void delete(Long activityId);
+
+    public List<SportActivityDTO> findAll();
+
 }

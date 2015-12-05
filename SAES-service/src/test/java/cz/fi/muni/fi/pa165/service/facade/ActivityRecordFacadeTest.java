@@ -110,7 +110,7 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
     @Test
     public void updateTest() {
         activityRecordDTO.setId(99L);
-        activityRecordFacade.updateActivityRecord(activityRecordDTO);
+        activityRecordFacade.update(activityRecordDTO);
         verify(activityRecordService).update(activityRecord);
     }
 
@@ -120,7 +120,7 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testDelete() {
         Long activityRecordId = activityRecordDTO.getId();
-        activityRecordFacade.deleteActivityRecord(activityRecordId);
+        activityRecordFacade.delete(activityRecordId);
         ActivityRecord foundActivityRecord = activityRecordService.findById(activityRecordId);
         verify(activityRecordService).deleteActivityRecord(foundActivityRecord);
     }

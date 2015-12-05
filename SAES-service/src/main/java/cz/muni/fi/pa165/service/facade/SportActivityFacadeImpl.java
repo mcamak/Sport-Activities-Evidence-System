@@ -25,29 +25,29 @@ public class SportActivityFacadeImpl implements SportActivityFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long createSportActivity(SportActivityDTO sDTO) {
+    public Long create(SportActivityDTO sDTO) {
         SportActivity created = bms.mapTo(sDTO, SportActivity.class);
         sportActivityService.createSportActivity(created);
         return created.getId();
     }
 
     @Override
-    public void changeActivityName(SportActivityDTO old, String newName) {
+    public void update(SportActivityDTO old, String newName) {
         sportActivityService.changeName(bms.mapTo(old, SportActivity.class), newName);
     }
 
     @Override
-    public void deleteActivity(Long activityId) {
+    public void delete(Long activityId) {
         sportActivityService.deleteSportActivity(sportActivityService.findById(activityId));
     }
 
     @Override
-    public List<SportActivityDTO> getAllActivities() {
+    public List<SportActivityDTO> findAll() {
         return bms.mapTo(sportActivityService.findAll(), SportActivityDTO.class);
     }
 
     @Override
-    public SportActivityDTO getActivityWithId(Long id) {
+    public SportActivityDTO findById(Long id) {
         return bms.mapTo(sportActivityService.findById(id), SportActivityDTO.class);
     }
 }

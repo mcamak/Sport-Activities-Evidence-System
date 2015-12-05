@@ -78,7 +78,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createSportActivityTest() {
-        sportActivityFacade.createSportActivity(sportActivityDTO);
+        sportActivityFacade.create(sportActivityDTO);
         verify(sportActivityService).createSportActivity(sportActivity);
     }
 
@@ -87,7 +87,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void changeActivityNameTest() {
-        sportActivityFacade.changeActivityName(sportActivityDTO, "Jumping");
+        sportActivityFacade.update(sportActivityDTO, "Jumping");
         verify(sportActivityService).changeName(sportActivity, "Jumping");
     }
 
@@ -97,7 +97,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
     @Test
     public void deleteSportActivityTest() {
         Long sportActivityId = sportActivityDTO.getId();
-        sportActivityFacade.deleteActivity(sportActivityId);
+        sportActivityFacade.delete(sportActivityId);
         SportActivity foundSportActivity = sportActivityService.findById(sportActivityId);
         verify(sportActivityService).deleteSportActivity(foundSportActivity);
     }
@@ -107,7 +107,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void getAllActivitiesTest() {
-        sportActivityFacade.getAllActivities();
+        sportActivityFacade.findAll();
         verify(sportActivityService).findAll();
     }
 
@@ -118,7 +118,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
     public void getActivityWithIdTest() {
         Long sportActivityId = sportActivityDTO.getId();
         when(sportActivityService.findById(sportActivityId)).thenReturn(sportActivity);
-        sportActivityFacade.getActivityWithId(sportActivityId);
+        sportActivityFacade.findById(sportActivityId);
         verify(sportActivityService).findById(sportActivityId);
     }
 }

@@ -36,17 +36,17 @@ public class UserFacadeImpl implements UserFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long createUser(UserCreateDTO u) {
+    public Long create(UserCreateDTO u) {
         return userService.createUser(bms.mapTo(u, User.class));
     }
 
     @Override
-    public void changeUserData(UserDTO u) {
+    public void update(UserDTO u) {
         userService.updateUser(bms.mapTo(u, User.class));
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void delete(Long id) {
         userService.removeUser(userService.findUser(id));
     }
 
@@ -67,17 +67,17 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
+    public List<UserDTO> findAll() {
         return bms.mapTo(userService.findAll(), UserDTO.class);
     }
 
     @Override
-    public UserDTO getUserWithId(Long id) {
+    public UserDTO findById(Long id) {
         return bms.mapTo(userService.findUser(id), UserDTO.class);
     }
 
     @Override
-    public List<UserDTO> getUserByParameters(enums.Gender sex, Integer minAge, Integer maxAge, Integer minWeight, Integer maxWeight) {
+    public List<UserDTO> findByParameters(enums.Gender sex, Integer minAge, Integer maxAge, Integer minWeight, Integer maxWeight) {
         UserFilter filter = new UserFilter();
         if (sex != null) {
             if(sex.name().equals(Gender.MALE.name())) {

@@ -12,11 +12,13 @@ import cz.muni.fi.pa165.dto.ActivityRecordDTO;
  * @author B. Bajtosova
  */
 public interface ActivityRecordFacade {
-    public Long create(ActivityRecordDTO createDTO);
-    public void deleteActivityRecord(Long activityRecordId);
-    //public void removeUserFromRecord(Long activityId, Long userId);
-    public ActivityRecordDTO findById(Long id);
-    public void updateActivityRecord(ActivityRecordDTO activityRecord);
-    
-    
+
+    public Long create(ActivityRecordDTO activityRecordCreateDTO);
+
+    public ActivityRecordDTO findById(Long activityRecordId);
+
+    public void update(ActivityRecordDTO activityRecordDTO);
+
+    public void delete(Long activityRecordId);
+
 }

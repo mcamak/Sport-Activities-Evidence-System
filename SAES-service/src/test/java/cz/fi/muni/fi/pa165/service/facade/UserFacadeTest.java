@@ -89,7 +89,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testCreate() {
-        userFacade.createUser(userCreateDTO);
+        userFacade.create(userCreateDTO);
         verify(userService).createUser(user);
     }
 
@@ -98,7 +98,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         Long userId = user.getId();
         userDTO.setId(userId);
         when(userService.findUser(userId)).thenReturn(user);
-        UserDTO foundBurnedCalories = userFacade.getUserWithId(userId);
+        UserDTO foundBurnedCalories = userFacade.findById(userId);
         assertEquals(foundBurnedCalories, userDTO);
     }
 
@@ -106,7 +106,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     public void testUpdate() {
         user.setId(99L);
         userDTO.setId(user.getId());
-        userFacade.changeUserData(userDTO);
+        userFacade.update(userDTO);
         verify(userService).updateUser(user);
     }
 
@@ -114,7 +114,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     public void testDelete() {
         Long userId = user.getId();
         when(userService.findUser(userId)).thenReturn(user);
-        userFacade.deleteUser(userId);
+        userFacade.delete(userId);
         verify(userService).removeUser(user);
     }
 }

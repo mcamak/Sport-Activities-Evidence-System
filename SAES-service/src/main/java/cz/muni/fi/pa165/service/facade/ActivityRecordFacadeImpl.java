@@ -39,7 +39,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
     }
 
     @Override
-    public void deleteActivityRecord(Long activityRecordId) {
+    public void delete(Long activityRecordId) {
         activityRecordService.deleteActivityRecord(activityRecordService.findById(activityRecordId));
     }
 
@@ -50,7 +50,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
     }
     
     @Override
-    public void updateActivityRecord(ActivityRecordDTO activityRecord){
+    public void update(ActivityRecordDTO activityRecord){
         activityRecordService.update(bms.mapTo(activityRecord, ActivityRecord.class));
     
     }
