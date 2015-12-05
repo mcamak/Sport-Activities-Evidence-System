@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.facade;
 
 import cz.muni.fi.pa165.dto.UserCreateDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
+import cz.muni.fi.pa165.dto.UserLogInDTO;
 import enums.Gender;
 import java.util.List;
 
@@ -11,11 +12,27 @@ import java.util.List;
 public interface UserFacade {
 
     /**
-     * Creates new user.
-     * @param u user to be created.
-     * @return generated id of user
+     * Sign in new user with password.
+     * @param u user to be signed in
+     * @param password - unencrypted password
+     * @return ID assigned to the user
      */
-    public Long create(UserCreateDTO u);
+    public Long signIn(UserCreateDTO u, String password);
+    
+    /**
+     * Log in an user
+     * @param logIn login info containing user id and password
+     * @return true if user was succefully logged in, false otherwise
+     */
+    public boolean logIn(UserLogInDTO logIn);
+    
+    /**
+     * Changes password of user.
+     * @param id of user changing its password
+     * @param oldPassword old user password to be changed
+     * @param newPassword new user password
+     */
+    public void changePassword(Long id, String oldPassword, String newPassword);
 
     /**
      * Finds an user by given id.
