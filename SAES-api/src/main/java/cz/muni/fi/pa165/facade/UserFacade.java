@@ -18,10 +18,6 @@ public interface UserFacade {
 
     public void delete(Long id);
 
-    public void saveActivityRecord(Long userId, Long sportActivityId, Long seconds, Integer distance);
-
-    public void removeActivityRecord(Long userId, Long recordId);
-
     public List<UserDTO> findAll();
 
     public List<UserDTO> findByParameters(Gender sex, Integer minAge, Integer maxAge, Integer minWeight, Integer maxWeight);

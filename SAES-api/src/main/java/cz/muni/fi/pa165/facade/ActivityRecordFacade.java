@@ -21,4 +21,6 @@ public interface ActivityRecordFacade {
 
     public void delete(Long activityRecordId);
 
+    public void removeUserFromActivityRecord(Long userId, Long recordId);
+
 }

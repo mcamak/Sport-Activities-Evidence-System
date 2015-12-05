@@ -25,12 +25,6 @@ public class UserFacadeImpl implements UserFacade {
     
     @Inject
     private UserService userService;
-    
-    @Inject
-    private ActivityRecordService recordService;
-    
-    @Inject
-    private SportActivityService activityService;
 
     @Inject
     private BeanMappingService bms;
@@ -48,22 +42,6 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void delete(Long id) {
         userService.removeUser(userService.findUser(id));
-    }
-
-    @Override
-    public void saveActivityRecord(Long userId, Long sportActivityId, Long seconds, Integer distance) {
-        ActivityRecord record = new ActivityRecord();
-        record.addUser(userService.findUser(userId));
-        record.setActivity(activityService.findById(sportActivityId));
-        record.setDistance(distance);
-        record.setTimeSeconds(seconds);
-        
-        recordService.create(record);
-    }
-
-    @Override
-    public void removeActivityRecord(Long userId, Long recordId) {
-        recordService.removeUserFromRecord(userId, recordId);
     }
 
     @Override

@@ -18,15 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author B. Bajtosova
  */
-
 @Service
 @Transactional
-public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
-    
-    @Inject 
+public class ActivityRecordFacadeImpl implements ActivityRecordFacade {
+
+    @Inject
     private ActivityRecordService activityRecordService;
-    
-    
+
     @Inject
     private BeanMappingService bms;
 
@@ -35,7 +33,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
         ActivityRecord newActivity = bms.mapTo(recordDTO, ActivityRecord.class);
         activityRecordService.create(newActivity);
         return newActivity.getId();
-        
+
     }
 
     @Override
@@ -43,16 +41,20 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade{
         activityRecordService.deleteActivityRecord(activityRecordService.findById(activityRecordId));
     }
 
-
     @Override
     public ActivityRecordDTO findById(Long id) {
         return bms.mapTo(activityRecordService.findById(id), ActivityRecordDTO.class);
     }
-    
+
     @Override
-    public void update(ActivityRecordDTO activityRecord){
+    public void update(ActivityRecordDTO activityRecord) {
         activityRecordService.update(bms.mapTo(activityRecord, ActivityRecord.class));
-    
+
     }
-    
+
+    @Override
+    public void removeUserFromActivityRecord(Long userId, Long recordId) {
+        activityRecordService.removeUserFromRecord(userId, recordId);
+    }
+
 }
