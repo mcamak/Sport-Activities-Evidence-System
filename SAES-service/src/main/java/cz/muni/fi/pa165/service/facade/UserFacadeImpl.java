@@ -2,13 +2,11 @@ package cz.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.UserCreateDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
+import cz.muni.fi.pa165.dto.UserLogInDTO;
 import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.saes.UserFilter;
-import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.User;
 import enums.Gender;
-import cz.muni.fi.pa165.service.ActivityRecordService;
-import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import java.util.List;
@@ -30,18 +28,40 @@ public class UserFacadeImpl implements UserFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long create(UserCreateDTO u) {
-        return userService.createUser(bms.mapTo(u, User.class));
+    public Long signIn(UserCreateDTO u, String password) {
+        if(u == null) {
+            throw new IllegalArgumentException("User is null. ");
+        }
+        if(password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password is null or empty. ");
+        }
+        return userService.signIn(bms.mapTo(u, User.class), password);
+    }
+    
+    @Override
+    public boolean logIn(UserLogInDTO logIn) {
+        return userService.authenticate(logIn.getId(), logIn.getPassword());
+    }
+
+    @Override
+    public void changePassword(Long id, String oldPassword, String newPassword) {
+        userService.changePassword(id, oldPassword, newPassword);        
     }
 
     @Override
     public void update(UserDTO u) {
-        userService.updateUser(bms.mapTo(u, User.class));
+        if(u == null) {
+            throw new IllegalArgumentException("User is null. ");
+        }
+        userService.update(bms.mapTo(u, User.class));
     }
 
     @Override
     public void delete(Long id) {
-        userService.removeUser(userService.findUser(id));
+        if(id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
+        userService.remove(userService.findById(id));
     }
 
     @Override
@@ -51,7 +71,10 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public UserDTO findById(Long id) {
-        return bms.mapTo(userService.findUser(id), UserDTO.class);
+        if(id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
+        return bms.mapTo(userService.findById(id), UserDTO.class);
     }
 
     @Override
