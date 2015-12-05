@@ -29,6 +29,9 @@ public class UserDaoImpl implements UserDao {
         if (user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
         }
+        if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()) {
+            throw new IllegalArgumentException("Password hash is null or empty. ");
+        }
         if (user.getAge() < 0) {
             throw new IllegalArgumentException("User age is negative. ");
         }
@@ -75,6 +78,9 @@ public class UserDaoImpl implements UserDao {
         }
         if (user.getName() == null || user.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
+        }
+        if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()) {
+            throw new IllegalArgumentException("Password hash is null or empty. ");
         }
         if (user.getAge() < 0) {
             throw new IllegalArgumentException("User age is negative. ");
