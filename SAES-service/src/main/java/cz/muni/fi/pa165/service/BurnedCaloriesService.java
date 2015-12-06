@@ -6,6 +6,7 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,11 +24,12 @@ public interface BurnedCaloriesService {
     public void create(BurnedCalories burnedCalories);
 
     /**
-     * delete burned calories
+     * find burned calories by id
      *
-     * @param burnedCalories
+     * @param id
+     * @return burned calories with given id
      */
-    public void delete(BurnedCalories burnedCalories);
+    public BurnedCalories findById(Long id);
 
     /**
      * update burned calories
@@ -37,11 +39,17 @@ public interface BurnedCaloriesService {
     public void update(BurnedCalories burnedCalories);
 
     /**
-     * find burned calories by id
+     * delete burned calories
      *
-     * @param id
-     * @return burned calories with given id
+     * @param burnedCalories
      */
-    public BurnedCalories findById(Long id);
+    public void delete(BurnedCalories burnedCalories);
+
+    /**
+     * finds all records for burned calories
+     *
+     * @return list of all records
+     */
+    public List<BurnedCalories> findAll();
 
 }

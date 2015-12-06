@@ -8,13 +8,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Implementation of SportActivityDao
  *
  * @author Jan S.
  */
 @Repository
 @Transactional
 public class SportActivityDaoImpl implements SportActivityDao {
-    
+
     @PersistenceContext
     private EntityManager em;
 
@@ -37,7 +38,7 @@ public class SportActivityDaoImpl implements SportActivityDao {
     public SportActivity findSportActivity(Long id) {
         return em.find(SportActivity.class, id);
     }
-    
+
     @Override
     public List<SportActivity> findAll() {
         return em.createQuery("SELECT a FROM SportActivity a", SportActivity.class).getResultList();

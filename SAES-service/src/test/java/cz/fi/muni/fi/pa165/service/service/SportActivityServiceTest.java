@@ -30,7 +30,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Test creating sport activity
+     * Tests creating sport activity
      */
     @Test
     public void createSportActivityTest() {
@@ -52,7 +52,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Test creating null activity
+     * Tests creating null activity
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createSportActivityNullTest() {
@@ -60,7 +60,29 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Test deleting sport activity
+     * Tests finding activity by id
+     */
+    @Test
+    public void findByIdTest() {
+        SportActivity sportActivity = new SportActivity();
+        sportActivity.setName("Running");
+        sportActivityService.createSportActivity(sportActivity);
+        boolean isRightSportActivityFound
+                = sportActivity.equals(sportActivityService.findById(sportActivity.getId()));
+
+        assertTrue(isRightSportActivityFound);
+    }
+
+    /**
+     * Tests finding activity with null
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByIdNullTest() {
+        sportActivityService.findById(null);
+    }
+
+    /**
+     * Tests deleting sport activity
      */
     @Test
     public void deleteSportActivityTest() {
@@ -77,7 +99,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Test deleting null activity
+     * Tests deleting null activity
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteSportActivityNullTest() {
@@ -85,29 +107,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Test finding activity by id
-     */
-    @Test
-    public void findByIdTest() {
-        SportActivity sportActivity = new SportActivity();
-        sportActivity.setName("Running");
-        sportActivityService.createSportActivity(sportActivity);
-        boolean isRightSportActivityFound
-                = sportActivity.equals(sportActivityService.findById(sportActivity.getId()));
-
-        assertTrue(isRightSportActivityFound);
-    }
-
-    /**
-     * Test finding activity with null
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void findByIdNullTest() {
-        sportActivityService.findById(null);
-    }
-
-    /**
-     * Test finding all activities
+     * Tests finding all activities
      */
     @Test
     public void findAllTest() {
@@ -129,7 +129,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Test change name of activity
+     * Tests change name of activity
      */
     @Test
     public void changeNameTest() {
@@ -138,7 +138,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
         sportActivityService.createSportActivity(sportActivity);
         sportActivityService.changeName(sportActivity, "Jumping");
         sportActivity = sportActivityService.findById(sportActivity.getId());
-        
+
         assertEquals(sportActivity.getName(), "Jumping");
     }
 

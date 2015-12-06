@@ -7,6 +7,7 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
+import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +66,11 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
         }
         return burnedCaloriesDao.findById(id);
 
+    }
+
+    @Override
+    public List<BurnedCalories> findAll() {
+        return burnedCaloriesDao.findAll();
     }
 
 }
