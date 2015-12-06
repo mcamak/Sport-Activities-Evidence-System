@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public Long signIn(User user, String password) {
+    public Long create(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void remove(User user) {
+    public void delete(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
@@ -94,12 +94,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User ID is null. Persist user first. ");
         }
         User old = userDao.findUser(user.getId());
-        if (old.getAge() >= user.getAge()) {
-            throw new SaesServiceException("New age must be higher than old value. ");
-        }
-        if (!old.getSex().equals(user.getSex())) {
-            throw new SaesServiceException("You cannot change your gender. ");
-        }
         try {
             userDao.updateUser(user);
         } catch (Exception e) {
@@ -117,7 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersByFilter(UserFilter filter) {
+    public List<User> findByParameters(UserFilter filter) {
         try {
             return userDao.findUsersByParameters(filter);
         } catch (Exception e) {

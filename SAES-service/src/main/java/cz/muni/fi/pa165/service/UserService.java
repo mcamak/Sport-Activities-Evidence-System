@@ -14,10 +14,9 @@ public interface UserService {
     /**
      * Creates new user.
      * @param user - user to be created
-     * @param password - plain password
      * @return ID assigned to newly created user
      */
-    public Long signIn(User user, String password);
+    public Long create(User user);
     
     /**
      * Log in user.
@@ -39,7 +38,7 @@ public interface UserService {
      * Remove given user.
      * @param user to be removed
      */
-    public void remove(User user);
+    public void delete(User user);
 
     /**
      * Finds an user by given id.
@@ -65,5 +64,5 @@ public interface UserService {
      * @param filter - custom filter
      * @return a list of users filtered by given custom filter
      */
-    public List<User> getUsersByFilter(UserFilter filter);
+    public List<User> findByParameters(UserFilter filter);
 }

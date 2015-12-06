@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserFacadeImpl implements UserFacade {
-    
+
     @Inject
     private UserService userService;
 
@@ -28,16 +28,22 @@ public class UserFacadeImpl implements UserFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long signIn(UserCreateDTO u, String password) {
-        if(u == null) {
+    public Long create(UserCreateDTO u, String password) {
+        if (u == null) {
             throw new IllegalArgumentException("User is null. ");
         }
-        if(password == null || password.isEmpty()) {
+        if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Password is null or empty. ");
         }
-        return userService.signIn(bms.mapTo(u, User.class), password);
+        
+        User user = bms.mapTo(u, User.class);
+        
+        // FIXME make hash from password
+        user.setPasswordHash(password);
+        
+        return userService.create(user);
     }
-    
+
     @Override
     public boolean logIn(UserLogInDTO logIn) {
         return userService.authenticate(logIn.getId(), logIn.getPassword());
@@ -45,12 +51,12 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public void changePassword(Long id, String oldPassword, String newPassword) {
-        userService.changePassword(id, oldPassword, newPassword);        
+        userService.changePassword(id, oldPassword, newPassword);
     }
 
     @Override
     public void update(UserDTO u) {
-        if(u == null) {
+        if (u == null) {
             throw new IllegalArgumentException("User is null. ");
         }
         userService.update(bms.mapTo(u, User.class));
@@ -58,10 +64,10 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public void delete(Long id) {
-        if(id == null) {
+        if (id == null) {
             throw new IllegalArgumentException("ID is null. ");
         }
-        userService.remove(userService.findById(id));
+        userService.delete(userService.findById(id));
     }
 
     @Override
@@ -71,7 +77,7 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public UserDTO findById(Long id) {
-        if(id == null) {
+        if (id == null) {
             throw new IllegalArgumentException("ID is null. ");
         }
         return bms.mapTo(userService.findById(id), UserDTO.class);
@@ -81,13 +87,13 @@ public class UserFacadeImpl implements UserFacade {
     public List<UserDTO> findByParameters(enums.Gender sex, Integer minAge, Integer maxAge, Integer minWeight, Integer maxWeight) {
         UserFilter filter = new UserFilter();
         if (sex != null) {
-            if(sex.name().equals(Gender.MALE.name())) {
+            if (sex.name().equals(Gender.MALE.name())) {
                 filter.addGender(Gender.MALE);
             }
-            if(sex.name().equals(Gender.FEMALE.name())) {
+            if (sex.name().equals(Gender.FEMALE.name())) {
                 filter.addGender(Gender.FEMALE);
             }
-            
+
         }
         if (minAge != null) {
             filter.setMinAge(minAge);
@@ -101,7 +107,7 @@ public class UserFacadeImpl implements UserFacade {
         if (maxWeight != null) {
             filter.setMaxWeight(maxWeight);
         }
-        
-        return bms.mapTo(userService.getUsersByFilter(filter), UserDTO.class);
+
+        return bms.mapTo(userService.findByParameters(filter), UserDTO.class);
     }
 }

@@ -106,9 +106,6 @@ public class User {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.passwordHash, other.passwordHash)) {
-            return false;
-        }
         if (this.sex != other.sex) {
             return false;
         }

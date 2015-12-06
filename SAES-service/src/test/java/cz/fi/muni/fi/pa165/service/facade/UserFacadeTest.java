@@ -14,8 +14,6 @@ import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import enums.Gender;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 import org.mockito.Mock;
 import static org.mockito.Mockito.reset;
@@ -73,6 +71,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         user.setSex(Gender.MALE);
         user.setWeight(100);
         user.setId(12899L);
+        user.setPasswordHash("kobliha");
 
         userDTO = new UserDTO();
         userDTO.setAge(user.getAge());
@@ -98,9 +97,9 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void signInTest() {
-        userFacade.signIn(userCreateDTO, "password");
-        verify(userService).signIn(user, "password");
+    public void createTest() {
+        userFacade.create(userCreateDTO, user.getPasswordHash());
+        verify(userService).create(user);
     }
 
     @Test
@@ -111,8 +110,8 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void changePasswordTest() {
-        userFacade.changePassword(user.getId(), "pes", "kocka");
-        verify(userService).changePassword(user.getId(), "pes", "kocka");
+        userFacade.changePassword(user.getId(), user.getPasswordHash(), "kocka");
+        verify(userService).changePassword(user.getId(), user.getPasswordHash(), "kocka");
     }
 
     @Test
@@ -137,7 +136,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         Long userId = user.getId();
         when(userService.findById(userId)).thenReturn(user);
         userFacade.delete(userId);
-        verify(userService).remove(user);
+        verify(userService).delete(user);
     }
 
     @Test
@@ -162,7 +161,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
                 user.getWeight(),
                 user.getWeight());
 
-        verify(userService).getUsersByFilter(userFilter);
+        verify(userService).findByParameters(userFilter);
     }
 
 }

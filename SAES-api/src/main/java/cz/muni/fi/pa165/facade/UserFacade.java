@@ -18,7 +18,7 @@ public interface UserFacade {
      * @param password - unencrypted password
      * @return ID assigned to the user
      */
-    public Long signIn(UserCreateDTO u, String password);
+    public Long create(UserCreateDTO u, String password);
 
     /**
      * Log in an user

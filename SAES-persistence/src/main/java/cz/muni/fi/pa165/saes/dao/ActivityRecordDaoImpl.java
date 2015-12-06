@@ -54,7 +54,7 @@ public class ActivityRecordDaoImpl implements ActivityRecordDao {
         if (activityRecord.getId() == null) {
             throw new IllegalArgumentException("Activity record ID is null. ");
         }
-        em.remove(activityRecord);
+        em.remove(em.contains(activityRecord) ? activityRecord : em.merge(activityRecord));
     }
 
     @Override

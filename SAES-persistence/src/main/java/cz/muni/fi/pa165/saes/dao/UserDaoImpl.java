@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
         if (user.getId() == null) {
             throw new IllegalArgumentException("User ID is null. User is not stored in DB. ");
         }
-        em.remove(user);
+        em.remove(em.contains(user) ? user : em.merge(user));
     }
 
     @Override
