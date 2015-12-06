@@ -1,10 +1,12 @@
 *~
 *.log
 
-/SportActivityEvidenceSystem/target/
-/SAES-persistence/target/
-/SAES-service/target/
-/SAES-api/target/
+/SAES-api/target/*
+/SAES-rest/target/*
+/SAES-service/target/*
+/SAES-spring-mvc/target/*
+/SAES-persistence/target/*
+/SportActivityEvidenceSystem/target/*
 
 .project
 .settings/*
