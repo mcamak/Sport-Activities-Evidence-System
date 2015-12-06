@@ -33,14 +33,14 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      * Tests creating sport activity
      */
     @Test
-    public void createSportActivityTest() {
+    public void createTest() {
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Running");
         SportActivity sportActivity2 = new SportActivity();
         sportActivity2.setName("Chess");
 
-        sportActivityService.createSportActivity(sportActivity);
-        sportActivityService.createSportActivity(sportActivity2);
+        sportActivityService.create(sportActivity);
+        sportActivityService.create(sportActivity2);
 
         // do we find righ ammount of activities?
         List<SportActivity> foundSportActivityList = sportActivityService.findAll();
@@ -56,7 +56,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createSportActivityNullTest() {
-        sportActivityService.createSportActivity(null);
+        sportActivityService.create(null);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     public void findByIdTest() {
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Running");
-        sportActivityService.createSportActivity(sportActivity);
+        sportActivityService.create(sportActivity);
         boolean isRightSportActivityFound
                 = sportActivity.equals(sportActivityService.findById(sportActivity.getId()));
 
@@ -85,14 +85,14 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      * Tests deleting sport activity
      */
     @Test
-    public void deleteSportActivityTest() {
+    public void deleteTest() {
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Running");
-        sportActivityService.createSportActivity(sportActivity);
+        sportActivityService.create(sportActivity);
         Long sportActivityId = sportActivity.getId();
 
         boolean containsBeforeDelete = sportActivityService.findById(sportActivityId) != null;
-        sportActivityService.deleteSportActivity(sportActivity);
+        sportActivityService.delete(sportActivity);
         boolean containsAfterDelete = sportActivityService.findById(sportActivityId) != null;
 
         assertNotEquals(containsBeforeDelete, containsAfterDelete);
@@ -102,8 +102,8 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      * Tests deleting null activity
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void deleteSportActivityNullTest() {
-        sportActivityService.deleteSportActivity(null);
+    public void deleteNullTest() {
+        sportActivityService.delete(null);
     }
 
     /**
@@ -116,8 +116,8 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
         SportActivity sportActivity2 = new SportActivity();
         sportActivity2.setName("Chess");
 
-        sportActivityService.createSportActivity(sportActivity);
-        sportActivityService.createSportActivity(sportActivity2);
+        sportActivityService.create(sportActivity);
+        sportActivityService.create(sportActivity2);
 
         // do we find righ ammount of activities?
         List<SportActivity> foundSportActivityList = sportActivityService.findAll();
@@ -135,7 +135,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     public void changeNameTest() {
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Chess");
-        sportActivityService.createSportActivity(sportActivity);
+        sportActivityService.create(sportActivity);
         sportActivityService.changeName(sportActivity, "Jumping");
         sportActivity = sportActivityService.findById(sportActivity.getId());
 

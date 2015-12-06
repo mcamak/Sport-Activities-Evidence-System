@@ -38,7 +38,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade {
 
     @Override
     public void delete(Long activityRecordId) {
-        activityRecordService.deleteActivityRecord(activityRecordService.findById(activityRecordId));
+        activityRecordService.delete(activityRecordService.findById(activityRecordId));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade {
 
     @Override
     public void removeUserFromActivityRecord(Long userId, Long recordId) {
-        activityRecordService.removeUserFromRecord(userId, recordId);
+        activityRecordService.removeUserFromActivityRecord(userId, recordId);
     }
 
 }

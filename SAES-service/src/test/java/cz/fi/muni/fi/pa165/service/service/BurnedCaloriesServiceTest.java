@@ -39,7 +39,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Running");
 
-        sportActivityService.createSportActivity(sportActivity);
+        sportActivityService.create(sportActivity);
 
         burnedCalories = new BurnedCalories();
         burnedCalories.setActivity(sportActivity);

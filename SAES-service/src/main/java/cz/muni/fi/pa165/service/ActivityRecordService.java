@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
 public interface ActivityRecordService {
 
     public ActivityRecord create(ActivityRecord activityRecord);
-    public void deleteActivityRecord(ActivityRecord activityRecord);
-    public void removeUserFromRecord(Long activityId, Long userId);
+
     public ActivityRecord findById(Long id);
+
     public void update(ActivityRecord activityRecord);
+
+    public void delete(ActivityRecord activityRecord);
+
+    public void removeUserFromActivityRecord(Long activityId, Long userId);
 
 }

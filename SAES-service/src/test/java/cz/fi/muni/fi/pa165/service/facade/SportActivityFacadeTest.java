@@ -79,7 +79,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
     @Test
     public void createSportActivityTest() {
         sportActivityFacade.create(sportActivityDTO);
-        verify(sportActivityService).createSportActivity(sportActivity);
+        verify(sportActivityService).create(sportActivity);
     }
 
     /**
@@ -99,7 +99,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
         Long sportActivityId = sportActivityDTO.getId();
         sportActivityFacade.delete(sportActivityId);
         SportActivity foundSportActivity = sportActivityService.findById(sportActivityId);
-        verify(sportActivityService).deleteSportActivity(foundSportActivity);
+        verify(sportActivityService).delete(foundSportActivity);
     }
 
     /**

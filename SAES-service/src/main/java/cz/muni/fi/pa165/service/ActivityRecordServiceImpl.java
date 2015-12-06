@@ -30,7 +30,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
-    public void deleteActivityRecord(ActivityRecord activityRecord) {
+    public void delete(ActivityRecord activityRecord) {
         activityRecordDao.delete(activityRecord);
     }
 
@@ -45,7 +45,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
-    public void removeUserFromRecord(Long activityId, Long userId) {
+    public void removeUserFromActivityRecord(Long activityId, Long userId) {
         ActivityRecord record = activityRecordDao.findActivityRecord(activityId);
         User user = userDao.findUser(userId);
         record.removeUser(user);

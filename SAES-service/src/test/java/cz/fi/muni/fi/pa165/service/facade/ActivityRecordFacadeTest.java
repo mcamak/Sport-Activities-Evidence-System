@@ -122,6 +122,6 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         Long activityRecordId = activityRecordDTO.getId();
         activityRecordFacade.delete(activityRecordId);
         ActivityRecord foundActivityRecord = activityRecordService.findById(activityRecordId);
-        verify(activityRecordService).deleteActivityRecord(foundActivityRecord);
+        verify(activityRecordService).delete(foundActivityRecord);
     }
 }

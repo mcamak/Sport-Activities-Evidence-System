@@ -27,7 +27,7 @@ public class SportActivityFacadeImpl implements SportActivityFacade {
     @Override
     public Long create(SportActivityDTO sDTO) {
         SportActivity created = bms.mapTo(sDTO, SportActivity.class);
-        sportActivityService.createSportActivity(created);
+        sportActivityService.create(created);
         return created.getId();
     }
 
@@ -38,7 +38,7 @@ public class SportActivityFacadeImpl implements SportActivityFacade {
 
     @Override
     public void delete(Long activityId) {
-        sportActivityService.deleteSportActivity(sportActivityService.findById(activityId));
+        sportActivityService.delete(sportActivityService.findById(activityId));
     }
 
     @Override
