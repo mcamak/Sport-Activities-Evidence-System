@@ -5,7 +5,9 @@
  */
 package cz.fi.muni.fi.pa165.service.facade;
 
+import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
+import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
@@ -45,6 +47,7 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
     private SportActivityDTO sportActivityDTO;
     private ActivityRecord activityRecord;
     private ActivityRecordDTO activityRecordDTO;
+    private ActivityRecordCreateDTO activityRecordCreateDTO;
 
     @BeforeClass
     public void setup() throws Exception {
@@ -76,6 +79,12 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         activityRecordDTO.setDistance(activityRecord.getDistance());
         activityRecordDTO.setTimeSeconds(activityRecord.getTimeSeconds());
         activityRecordDTO.setActivity(sportActivityDTO);
+        activityRecordDTO.setId(activityRecord.getId());
+
+        activityRecordCreateDTO = new ActivityRecordCreateDTO();
+        activityRecordCreateDTO.setDistance(activityRecord.getDistance());
+        activityRecordCreateDTO.setTimeSeconds(activityRecord.getTimeSeconds());
+        activityRecordCreateDTO.setActivity(sportActivityDTO);
     }
 
     @AfterMethod
@@ -88,7 +97,7 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-        activityRecordFacade.create(activityRecordDTO);
+        activityRecordFacade.create(activityRecordCreateDTO);
         verify(activityRecordService).create(activityRecord);
     }
 
@@ -122,6 +131,6 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         Long activityRecordId = activityRecordDTO.getId();
         activityRecordFacade.delete(activityRecordId);
         ActivityRecord foundActivityRecord = activityRecordService.findById(activityRecordId);
-        verify(activityRecordService).deleteActivityRecord(foundActivityRecord);
+        verify(activityRecordService).delete(foundActivityRecord);
     }
 }

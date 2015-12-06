@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pa165.facade;
 
+import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
 
 /**
@@ -13,7 +14,7 @@ import cz.muni.fi.pa165.dto.ActivityRecordDTO;
  */
 public interface ActivityRecordFacade {
 
-    public Long create(ActivityRecordDTO activityRecordCreateDTO);
+    public Long create(ActivityRecordCreateDTO activityRecordCreateDTO);
 
     public ActivityRecordDTO findById(Long activityRecordId);
 

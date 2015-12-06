@@ -17,7 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false, of = {"id"})
 public class UserLogInDTO {
     
     @NotNull

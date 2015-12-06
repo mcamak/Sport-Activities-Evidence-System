@@ -5,6 +5,7 @@
  */
 package cz.fi.muni.fi.pa165.service.facade;
 
+import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
@@ -41,7 +42,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
 
     private SportActivity sportActivity;
     private SportActivityDTO sportActivityDTO;
-    //private SportActivityCreateDTO sportActivityCreateDTO;
+    private SportActivityCreateDTO sportActivityCreateDTO;
 
     @BeforeClass
     public void setup() throws Exception {
@@ -64,12 +65,14 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
 
         sportActivityDTO = new SportActivityDTO();
         sportActivityDTO.setName(sportActivity.getName());
-        sportActivityDTO.setId(999L);
+        sportActivityDTO.setId(sportActivity.getId());
+
+        sportActivityCreateDTO = new SportActivityCreateDTO();
+        sportActivityCreateDTO.setName(sportActivity.getName());
     }
-    
+
     @AfterMethod
-    public void cleanUp()
-    {
+    public void cleanUp() {
         reset(sportActivityService);
     }
 
@@ -78,8 +81,8 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createSportActivityTest() {
-        sportActivityFacade.create(sportActivityDTO);
-        verify(sportActivityService).createSportActivity(sportActivity);
+        sportActivityFacade.create(sportActivityCreateDTO);
+        verify(sportActivityService).create(sportActivity);
     }
 
     /**
@@ -99,7 +102,7 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
         Long sportActivityId = sportActivityDTO.getId();
         sportActivityFacade.delete(sportActivityId);
         SportActivity foundSportActivity = sportActivityService.findById(sportActivityId);
-        verify(sportActivityService).deleteSportActivity(foundSportActivity);
+        verify(sportActivityService).delete(foundSportActivity);
     }
 
     /**

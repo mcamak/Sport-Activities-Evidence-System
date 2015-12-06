@@ -7,11 +7,15 @@ package cz.fi.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.UserCreateDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
+import cz.muni.fi.pa165.dto.UserLogInDTO;
 import cz.muni.fi.pa165.facade.UserFacade;
+import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import enums.Gender;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import org.mockito.Mock;
 import static org.mockito.Mockito.reset;
@@ -44,6 +48,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     private User user;
     private UserDTO userDTO;
+    private UserLogInDTO userLogInDTO;
     private UserCreateDTO userCreateDTO;
 
     @BeforeClass
@@ -75,6 +80,10 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         userDTO.setSex(user.getSex());
         userDTO.setWeight(user.getWeight());
         userDTO.setId(user.getId());
+        
+        userLogInDTO = new UserLogInDTO();
+        userLogInDTO.setId(user.getId());
+        userLogInDTO.setPassword("Rohozec");
 
         userCreateDTO = new UserCreateDTO();
         userCreateDTO.setAge(user.getAge());
@@ -89,13 +98,25 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testSignIn() {
+    public void signInTest() {
         userFacade.signIn(userCreateDTO, "password");
         verify(userService).signIn(user, "password");
     }
 
     @Test
-    public void testFindById() {
+    public void logInTest() {
+        userFacade.logIn(userLogInDTO);
+        verify(userService).authenticate(userLogInDTO.getId(), userLogInDTO.getPassword());
+    }
+
+    @Test
+    public void changePasswordTest() {
+        userFacade.changePassword(user.getId(), "pes", "kocka");
+        verify(userService).changePassword(user.getId(), "pes", "kocka");
+    }
+
+    @Test
+    public void findByIdTest() {
         Long userId = user.getId();
         userDTO.setId(userId);
         when(userService.findById(userId)).thenReturn(user);
@@ -104,7 +125,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testUpdate() {
+    public void updateTest() {
         user.setId(99L);
         userDTO.setId(user.getId());
         userFacade.update(userDTO);
@@ -112,10 +133,36 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testDelete() {
+    public void deleteTest() {
         Long userId = user.getId();
         when(userService.findById(userId)).thenReturn(user);
         userFacade.delete(userId);
         verify(userService).remove(user);
     }
+
+    @Test
+    public void findAllTest() {
+        userFacade.findAll();
+        verify(userService).findAll();
+    }
+
+    @Test
+    public void findByParametersTest() {
+
+        UserFilter userFilter = new UserFilter();
+        userFilter.addGender(user.getSex());
+        userFilter.setMinAge(user.getAge());
+        userFilter.setMaxAge(user.getAge());
+        userFilter.setMinWeight(user.getWeight());
+        userFilter.setMaxWeight(user.getWeight());
+
+        userFacade.findByParameters(user.getSex(),
+                user.getAge(),
+                user.getAge(),
+                user.getWeight(),
+                user.getWeight());
+
+        verify(userService).getUsersByFilter(userFilter);
+    }
+
 }

@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SportActivityService {
 
-    public SportActivity createSportActivity(SportActivity activity);
-
-    public void deleteSportActivity(SportActivity activity);
+    public SportActivity create(SportActivity activity);
 
     public SportActivity findById(Long id);
-    
-    public List<SportActivity> findAll();
 
     public void changeName(SportActivity activity, String newName);
+
+    public void delete(SportActivity activity);
+
+    public List<SportActivity> findAll();
 
 }
