@@ -5,27 +5,28 @@ package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
+import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
-import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
-import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
 import enums.Gender;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import org.testng.annotations.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import static org.testng.Assert.*;
 
 /**
  *
@@ -61,6 +62,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
 
         user = new User();
         user.setName("Peter");
+        user.setPasswordHash("passwordHash");
         user.setAge(35);
         user.setSex(Gender.MALE);
         user.setWeight(95);

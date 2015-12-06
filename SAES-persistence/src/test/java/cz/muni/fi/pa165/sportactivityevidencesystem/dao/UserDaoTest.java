@@ -1,23 +1,23 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
-import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
+import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import enums.Gender;
-import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.testng.Assert;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.testng.Assert.*;
 
 /**
  * Tests for UserDaoImpl
@@ -72,6 +72,16 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         u.setName("");
         userDao.createUser(u);
     }
+
+    /**
+     * Test creating user with null password hash.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateUserWithNullPasswordHash() {
+        User u = createNewRandomUser();
+        u.setPasswordHash(null);
+        userDao.createUser(u);
+    }
     
     /**
      * Test creating user with negative age.
@@ -110,6 +120,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     public void testGetUser() {
         User user = new User();
         user.setName("Adam");
+        user.setPasswordHash("PasswordHash");
         user.setAge(20);
         user.setSex(Gender.MALE);
         user.setWeight(70);
@@ -118,6 +129,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         
         User found = userDao.findUser(user.getId());
         Assert.assertEquals("Adam", found.getName());
+        Assert.assertEquals("PasswordHash", found.getPasswordHash());
         Assert.assertEquals(20, found.getAge());
         Assert.assertEquals(Gender.MALE, found.getSex());
         Assert.assertEquals(70, found.getWeight());
@@ -230,6 +242,18 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         user.setName(null);
         userDao.updateUser(user);
     }
+
+    /**
+     * Test updating user with null password hash.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testUpdateUserWithNullPasswordHash() {
+        User user = createNewRandomUser();
+        userDao.createUser(user);
+        assertNotNull(user.getId());
+        user.setPasswordHash(null);
+        userDao.updateUser(user);
+    }
     
     /**
      * Test updating user with empty name.
@@ -283,6 +307,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         String[] names = new String[]{"Peter", "Jan", "Martina", "Maria"};
         User user = new User();        
         user.setName(names[(int) (System.nanoTime() % 4)]);
+        user.setPasswordHash("PasswordHash");
         user.setAge((int) (System.nanoTime() % 150));
         user.setSex(System.nanoTime() % 2 == 0 ? Gender.MALE : Gender.FEMALE);
         user.setWeight((int) (System.nanoTime() % 150));
