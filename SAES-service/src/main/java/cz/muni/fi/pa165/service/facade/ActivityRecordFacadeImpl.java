@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pa165.service.facade;
 
+import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
@@ -29,7 +30,7 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long create(ActivityRecordDTO recordDTO) {
+    public Long create(ActivityRecordCreateDTO recordDTO) {
         ActivityRecord newActivity = bms.mapTo(recordDTO, ActivityRecord.class);
         activityRecordService.create(newActivity);
         return newActivity.getId();

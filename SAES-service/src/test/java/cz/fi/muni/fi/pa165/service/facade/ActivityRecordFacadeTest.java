@@ -5,7 +5,9 @@
  */
 package cz.fi.muni.fi.pa165.service.facade;
 
+import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
+import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
@@ -43,8 +45,10 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
     private ActivityRecordService activityRecordService;
 
     private SportActivityDTO sportActivityDTO;
+    private SportActivityCreateDTO sportActivityCreateDTO;
     private ActivityRecord activityRecord;
     private ActivityRecordDTO activityRecordDTO;
+    private ActivityRecordCreateDTO activityRecordCreateDTO;
 
     @BeforeClass
     public void setup() throws Exception {
@@ -67,6 +71,9 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         sportActivityDTO = new SportActivityDTO();
         sportActivityDTO.setName(sportActivity.getName());
 
+        sportActivityCreateDTO = new SportActivityCreateDTO();
+        sportActivityCreateDTO.setName(sportActivity.getName());
+
         activityRecord = new ActivityRecord();
         activityRecord.setDistance(12000);
         activityRecord.setTimeSeconds(888L);
@@ -76,6 +83,12 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         activityRecordDTO.setDistance(activityRecord.getDistance());
         activityRecordDTO.setTimeSeconds(activityRecord.getTimeSeconds());
         activityRecordDTO.setActivity(sportActivityDTO);
+        activityRecordDTO.setId(activityRecord.getId());
+
+        activityRecordCreateDTO = new ActivityRecordCreateDTO();
+        activityRecordCreateDTO.setDistance(activityRecord.getDistance());
+        activityRecordCreateDTO.setTimeSeconds(activityRecord.getTimeSeconds());
+        activityRecordCreateDTO.setActivity(sportActivityDTO);
     }
 
     @AfterMethod
@@ -88,7 +101,7 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-        activityRecordFacade.create(activityRecordDTO);
+        activityRecordFacade.create(activityRecordCreateDTO);
         verify(activityRecordService).create(activityRecord);
     }
 
