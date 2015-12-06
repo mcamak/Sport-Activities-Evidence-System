@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.facade;
 
+import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface SportActivityFacade {
 
-    public Long create(SportActivityDTO createDTO);
+    public Long create(SportActivityCreateDTO sportActivityCreateDTO);
 
     public SportActivityDTO findById(Long id);
 

@@ -45,7 +45,6 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
     private ActivityRecordService activityRecordService;
 
     private SportActivityDTO sportActivityDTO;
-    private SportActivityCreateDTO sportActivityCreateDTO;
     private ActivityRecord activityRecord;
     private ActivityRecordDTO activityRecordDTO;
     private ActivityRecordCreateDTO activityRecordCreateDTO;
@@ -70,9 +69,6 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
 
         sportActivityDTO = new SportActivityDTO();
         sportActivityDTO.setName(sportActivity.getName());
-
-        sportActivityCreateDTO = new SportActivityCreateDTO();
-        sportActivityCreateDTO.setName(sportActivity.getName());
 
         activityRecord = new ActivityRecord();
         activityRecord.setDistance(12000);

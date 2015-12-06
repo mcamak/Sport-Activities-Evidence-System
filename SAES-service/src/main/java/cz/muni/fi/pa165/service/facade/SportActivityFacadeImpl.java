@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service.facade;
 
+import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
@@ -25,7 +26,7 @@ public class SportActivityFacadeImpl implements SportActivityFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long create(SportActivityDTO sDTO) {
+    public Long create(SportActivityCreateDTO sDTO) {
         SportActivity created = bms.mapTo(sDTO, SportActivity.class);
         sportActivityService.create(created);
         return created.getId();
