@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import exceptions.SaesServiceException;
+import cz.muni.fi.pa165.service.exceptions.SaesServiceException;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
