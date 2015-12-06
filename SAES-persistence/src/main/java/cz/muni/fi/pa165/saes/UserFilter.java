@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * @author MajoCAM
  */
+@lombok.EqualsAndHashCode
 public class UserFilter {
     
     private Integer minAge;
