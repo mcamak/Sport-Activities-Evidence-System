@@ -67,6 +67,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         user.setName("Pepa");
         user.setSex(Gender.MALE);
         user.setWeight(100);
+        user.setId(12899L);
 
         userDTO = new UserDTO();
         userDTO.setAge(user.getAge());
@@ -88,7 +89,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testCreate() {
+    public void testSignIn() {
         userFacade.signIn(userCreateDTO, "password");
         verify(userService).signIn(user, "password");
     }
