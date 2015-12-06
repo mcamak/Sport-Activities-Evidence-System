@@ -9,6 +9,8 @@
         <module>SAES-persistence</module>
         <module>SAES-service</module>
         <module>SAES-api</module>
+        <module>SAES-rest</module>
+        <module>SAES-spring-mvc</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
