@@ -6,6 +6,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -89,5 +90,10 @@ public class ActivityRecordDaoImpl implements ActivityRecordDao {
             throw new IllegalArgumentException("Parameter ID is null. ");
         }
         return em.find(ActivityRecord.class, id);
+    }
+
+    @Override
+    public List<ActivityRecord> findAll() {
+        return em.createQuery("SELECT a FROM ActivityRecord a", ActivityRecord.class).getResultList();
     }
 }

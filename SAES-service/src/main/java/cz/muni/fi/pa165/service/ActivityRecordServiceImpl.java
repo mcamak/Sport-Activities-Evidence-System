@@ -4,6 +4,8 @@ import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.User;
+import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
+import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +21,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Inject
     private ActivityRecordDao activityRecordDao;
-    
+
     @Inject
     private UserDao userDao;
 
@@ -45,11 +47,20 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
+    public List<ActivityRecord> findAll() {
+        try {
+            return activityRecordDao.findAll();
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when finding all activity records. ", e);
+        }
+    }
+
+    @Override
     public void removeUserFromActivityRecord(Long activityId, Long userId) {
         ActivityRecord record = activityRecordDao.findActivityRecord(activityId);
         User user = userDao.findUser(userId);
         record.removeUser(user);
         activityRecordDao.update(record);
     }
-    
+
 }

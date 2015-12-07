@@ -7,7 +7,6 @@ package cz.fi.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
-import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;

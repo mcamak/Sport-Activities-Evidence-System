@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +19,8 @@ public interface ActivityRecordService {
     public void update(ActivityRecord activityRecord);
 
     public void delete(ActivityRecord activityRecord);
+    
+    public List<ActivityRecord> findAll();
 
     public void removeUserFromActivityRecord(Long activityId, Long userId);
 

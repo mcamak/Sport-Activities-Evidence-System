@@ -10,12 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author Marian Camak
  */
 @Entity
+@Table(name = "ActivityRecord")
 public class ActivityRecord {
 
     @Id
@@ -75,10 +77,7 @@ public class ActivityRecord {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.timeSeconds);
-        hash = 41 * hash + this.distance;
-        hash = 41 * hash + Objects.hashCode(this.activity);
-        hash = 41 * hash + Objects.hashCode(this.users);
+        hash = 41 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -86,21 +85,9 @@ public class ActivityRecord {
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
-        }
-        if (!(obj instanceof ActivityRecord)) {
+        } else if (!(obj instanceof ActivityRecord)) {
             return false;
-        }
-        final ActivityRecord other = (ActivityRecord) obj;
-        if (!Objects.equals(this.timeSeconds, other.getTimeSeconds())) {
-            return false;
-        }
-        if (this.distance != other.getDistance()) {
-            return false;
-        }
-        if (!Objects.equals(this.activity, other.getActivity())) {
-            return false;
-        }
-        if (!Objects.equals(this.users, other.getUsers())) {
+        } else if (!Objects.equals(this.id, ((ActivityRecord) obj).getId())) {
             return false;
         }
         return true;

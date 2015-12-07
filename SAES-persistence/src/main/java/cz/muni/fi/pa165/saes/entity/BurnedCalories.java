@@ -6,12 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Jan S.
  */
 @Entity
+@Table(name = "BurnedCalories")
 public class BurnedCalories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
