@@ -8,6 +8,9 @@
 /SAES-persistence/target/*
 /SportActivityEvidenceSystem/target/*
 
+/.idea
+*.iml
+
 .project
 .settings/*
 */.classpath
