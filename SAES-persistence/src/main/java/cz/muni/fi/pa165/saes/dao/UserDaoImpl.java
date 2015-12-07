@@ -2,11 +2,12 @@ package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
-import java.util.List;
+import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 /**
  *
@@ -126,20 +127,20 @@ public class UserDaoImpl implements UserDao {
                 condition += " AND u.weight > :minWeight";
             }
         }
-                
-        Query query = em.createQuery(queryString + condition);
+
+        Query query = em.createQuery(queryString + condition, User.class);
         if(filter.getMaxAge() != null) {
-            query.setParameter(":maxAge", filter.getMaxAge());
+            query.setParameter("maxAge", filter.getMaxAge());
         }
         if(filter.getMinAge() != null) {
-            query.setParameter(":minAge", filter.getMinAge());
+            query.setParameter("minAge", filter.getMinAge());
         }
         if(filter.getMaxWeight()!= null) {
-            query.setParameter(":maxWeight", filter.getMaxWeight());
+            query.setParameter("maxWeight", filter.getMaxWeight());
         }
         if(filter.getMinWeight()!= null) {
-            query.setParameter(":minWeight", filter.getMinWeight());
+            query.setParameter("minWeight", filter.getMinWeight());
         }
-        return query.getResultList();
+        return (List<User>) query.getResultList();
     }
 }
