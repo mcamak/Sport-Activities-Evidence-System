@@ -1,21 +1,27 @@
 package cz.fi.muni.fi.pa165.service.service;
 
 import cz.muni.fi.pa165.saes.UserFilter;
+import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
-import cz.muni.fi.pa165.service.UserService;
+import cz.muni.fi.pa165.service.UserServiceImpl;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import enums.Gender;
-import java.util.List;
-import javax.inject.Inject;
-import static org.mockito.Mockito.verify;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  *
@@ -24,11 +30,15 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
-    @Inject
-    private UserService userService;
+    @Mock
+    private UserDao userDao;
+
+    @InjectMocks
+    private UserServiceImpl userService;
 
     User user1;
     User user2;
+    List<User> allUsers;
 
     @BeforeMethod
     public void setUp() {
@@ -47,6 +57,10 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         user2.setName("Petr Močůvka");
         user2.setWeight(72);
         user2.setPasswordHash("ještěDivnějšíHash");
+
+        allUsers = new ArrayList<>();
+        allUsers.add(user1);
+        allUsers.add(user2);
     }
 
     /**
@@ -54,17 +68,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-
         userService.create(user1);
-        userService.create(user2);
-
-        // do we find righ ammount of activities? 
-        List<User> foundSportActivityList = userService.findAll();
-        assertTrue(foundSportActivityList.size() >= 2);
-
-        // do we have right activities?
-        assertTrue(foundSportActivityList.contains(user1));
-        assertTrue(foundSportActivityList.contains(user2));
+        verify(userDao).createUser(user1);
     }
 
     /**
@@ -72,6 +77,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullTest() {
+        Mockito.doThrow(new IllegalArgumentException()).when(userDao).createUser(null);
         userService.create(null);
     }
 
@@ -80,11 +86,13 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void findByIdTest() {
-        userService.create(user1);
-        boolean isRightUserFound
-                = user1.equals(userService.findById(user1.getId()));
+        when(userDao.findUser(0L)).thenReturn(this.user1);
 
-        assertTrue(isRightUserFound);
+        User result = userService.findById(0L);
+        verify(userDao).findUser(0L);
+        verifyNoMoreInteractions(userDao);
+
+        assertEquals(result, user1);
     }
 
     /**
@@ -92,6 +100,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
+        when(userDao.findUser(null)).thenThrow(IllegalArgumentException.class);
         userService.findById(null);
     }
 
@@ -100,12 +109,9 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void updateTest() {
-        userService.create(user1);
-        user1.setSex(Gender.FEMALE);
+        user1.setId(1L);
         userService.update(user1);
-        User userFound = userService.findById(user1.getId());
-
-        assertEquals(userFound, user1);
+        verify(userDao).updateUser(user1);
     }
 
     /**
@@ -113,6 +119,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
+        Mockito.doThrow(new IllegalArgumentException()).when(userDao).updateUser(null);
         userService.update(null);
     }
 
@@ -121,16 +128,9 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void deleteTest() {
-
-        userService.create(user1);
-        Long burdnedCaloriesId = user1.getId();
-
-        boolean containsBeforeDelete = userService.findById(burdnedCaloriesId) != null;
+        user1.setId(1l);
         userService.delete(user1);
-        boolean containsAfterDelete = userService.findById(burdnedCaloriesId) != null;
-
-        System.out.print("POL " + containsAfterDelete);
-        assertNotEquals(containsBeforeDelete, containsAfterDelete);
+        verify(userDao).deleteUser(user1);
     }
 
     /**
@@ -138,6 +138,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
+        Mockito.doThrow(new IllegalArgumentException()).when(userDao).deleteUser(null);
         userService.delete(null);
     }
 
@@ -146,43 +147,35 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void findAllTest() {
-        userService.create(user1);
-        userService.create(user2);
+        when(userDao.findAllUsers()).thenReturn(allUsers);
 
-        // do we find righ ammount of activities?
-        List<User> foundRecordsList = userService.findAll();
-        assertTrue(foundRecordsList.size() >= 2);
-
-        // do we have right activities?
-        assertTrue(foundRecordsList.contains(user1));
-        assertTrue(foundRecordsList.contains(user2));
+        List<User> result = userService.findAll();
+        assertEquals(result.size(), 2);
+        assertTrue(result.contains(user1));
+        assertTrue(result.contains(user2));
     }
 
     /**
      * Tests finding by parameters
      */
-//    @Test
-//    public void findByParametersTest() {
-//        userService.create(user1);
-//        userService.create(user2);
-//
-//        UserFilter userFilter = new UserFilter();
-//        userFilter.setMinAge(user1.getAge() - 1);
-//        userFilter.setMaxAge(user2.getAge() + 1);
-//        
-//        System.out.println("BEKL "+userService.findByParameters(userFilter).size());
-//
-//        assertTrue(userService.findByParameters(userFilter).size() == 2);
-//
-//    }
+    @Test
+    public void findByParametersTest() {
+
+        UserFilter userFilter = new UserFilter();
+        userFilter.setMinAge(user1.getAge() - 1);
+        userFilter.setMaxAge(user2.getAge() + 1);
+
+        when(userDao.findUsersByParameters(any(UserFilter.class))).thenReturn(allUsers);
+        assertTrue(userService.findByParameters(userFilter).size() == 2);
+    }
 
     // TODO
     /**
-     * Tests finding all records
+     * Tests authenticate
      */
 //    @Test
 //    public void authenticateTest() {
-//        userService.create(user1);
+//        user1.setId(userService.create(user1));
 //        assertTrue(userService.authenticate(user1.getId(), user1.getPasswordHash()));
 //    }
 }
