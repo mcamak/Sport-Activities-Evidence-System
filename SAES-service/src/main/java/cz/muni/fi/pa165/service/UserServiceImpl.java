@@ -48,6 +48,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authenticate(Long userId, String password) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User id is null. ");
+        }
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password is null or empty8. ");
+        }
         User user = findById(userId);
         return validatePassword(password, user.getPasswordHash());
     }
