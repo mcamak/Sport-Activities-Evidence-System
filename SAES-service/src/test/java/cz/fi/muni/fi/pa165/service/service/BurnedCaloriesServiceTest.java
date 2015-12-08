@@ -133,7 +133,6 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
         burnedCaloriesService.delete(burnedCalories);
         boolean containsAfterDelete = burnedCaloriesService.findById(burdnedCaloriesId) != null;
 
-        System.out.print("POL " + containsAfterDelete);
         assertNotEquals(containsBeforeDelete, containsAfterDelete);
     }
 
