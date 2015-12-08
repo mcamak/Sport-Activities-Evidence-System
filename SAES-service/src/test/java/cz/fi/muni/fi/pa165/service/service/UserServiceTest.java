@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  *
@@ -70,12 +69,27 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests creating with null argument
+     * Tests creating with null user
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void createNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(userDao).createUser(null);
-        userService.create(null, null);
+    public void createNullUserTest() {
+        userService.create(null, "pass");
+    }
+
+    /**
+     * Tests creating with null password
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void createNullPassTest() {
+        userService.create(user1, null);
+    }
+
+    /**
+     * Tests creating with empty password
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void createEmptyPassTest() {
+        userService.create(user1, "");
     }
 
     /**
@@ -97,7 +111,6 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
-        when(userDao.findUser(null)).thenThrow(IllegalArgumentException.class);
         userService.findById(null);
     }
 
@@ -116,7 +129,6 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(userDao).updateUser(null);
         userService.update(null);
     }
 
@@ -135,7 +147,6 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(userDao).deleteUser(null);
         userService.delete(null);
     }
 
@@ -166,7 +177,6 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         assertTrue(userService.findByParameters(userFilter).size() == 2);
     }
 
-    // TODO
     /**
      * Tests authenticate
      */
@@ -178,5 +188,31 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
         when(userDao.findUser(1L)).thenReturn(user1);
         assertTrue(userService.authenticate(user1.getId(), "password"));
+    }
+
+    /**
+     * Tests authenticate with wrong pass
+     */
+    @Test
+    public void authenticateWithWrongPassTest() {
+        Mockito.doNothing().when(userDao).createUser(user1);
+        userService.create(user1, "password");
+        user1.setId(1L);
+
+        when(userDao.findUser(1L)).thenReturn(user1);
+        assertFalse(userService.authenticate(user1.getId(), "passWrong"));
+    }
+
+    /**
+     * Tests authenticate with empty pass
+     */
+    @Test
+    public void authenticateWithEmptyPassTest() {
+        Mockito.doNothing().when(userDao).createUser(user1);
+        userService.create(user1, "password");
+        user1.setId(1L);
+
+        when(userDao.findUser(1L)).thenReturn(user1);
+        assertFalse(userService.authenticate(user1.getId(), "passWrong"));
     }
 }
