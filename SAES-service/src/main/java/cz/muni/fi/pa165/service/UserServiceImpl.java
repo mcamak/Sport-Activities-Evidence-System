@@ -52,7 +52,12 @@ public class UserServiceImpl implements UserService {
         User user = findById(userId);
         if (validatePassword(oldPassword, user.getPasswordHash())) {
             user.setPasswordHash(createHash(newPassword));
-            userDao.updateUser(user);
+
+            try {
+                userDao.updateUser(user);
+            } catch (Exception e) {
+                throw new SaesDataAccessException("Failed when changing password of user. ", e);
+            }
         } else {
             throw new SaesServiceException("Your old password doesn't match with stored password. ");
         }

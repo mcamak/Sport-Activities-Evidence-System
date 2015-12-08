@@ -7,6 +7,7 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
+import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,11 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
             throw new IllegalArgumentException("Burned calories with this ID already exists.");
         }
 
-        burnedCaloriesDao.create(burnedCalories);
-
+        try {
+            burnedCaloriesDao.create(burnedCalories);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when creating burned calories. ", e);
+        }
     }
 
     @Override
@@ -44,7 +48,12 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
         if (burnedCalories.getId() == null) {
             throw new IllegalArgumentException("Id of burned calories is null. Cannot be removed.");
         }
-        burnedCaloriesDao.delete(burnedCalories);
+
+        try {
+            burnedCaloriesDao.delete(burnedCalories);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when deleting burned calories. ", e);
+        }
     }
 
     @Override
@@ -55,8 +64,12 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
         if (burnedCalories.getId() == null) {
             throw new IllegalArgumentException("Id of burned calories is null. Cannot be updated.");
         }
-        burnedCaloriesDao.update(burnedCalories);
 
+        try {
+            burnedCaloriesDao.update(burnedCalories);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when updating burned calories. ", e);
+        }
     }
 
     @Override
@@ -64,13 +77,23 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
         if (id == null) {
             throw new IllegalArgumentException("ID is null");
         }
-        return burnedCaloriesDao.findById(id);
+
+        try {
+            return burnedCaloriesDao.findById(id);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when finding burned calories. ", e);
+        }
 
     }
 
     @Override
     public List<BurnedCalories> findAll() {
-        return burnedCaloriesDao.findAll();
+
+        try {
+            return burnedCaloriesDao.findAll();
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when finding all burned calories. ", e);
+        }
     }
 
 }

@@ -27,23 +27,40 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     public ActivityRecord create(ActivityRecord activityRecord) {
-        activityRecordDao.create(activityRecord);
+        try {
+            activityRecordDao.create(activityRecord);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when creating activity record. ", e);
+        }
+
         return activityRecord;
     }
 
     @Override
     public void delete(ActivityRecord activityRecord) {
-        activityRecordDao.delete(activityRecord);
+        try {
+            activityRecordDao.delete(activityRecord);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when deleteting activity record. ", e);
+        }
     }
 
     @Override
     public ActivityRecord findById(Long id) {
-        return activityRecordDao.findActivityRecord(id);
+        try {
+            return activityRecordDao.findActivityRecord(id);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when finding activity record. ", e);
+        }
     }
 
     @Override
     public void update(ActivityRecord activityRecord) {
-        activityRecordDao.update(activityRecord);
+        try {
+            activityRecordDao.update(activityRecord);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when finding activity record. ", e);
+        }
     }
 
     @Override
@@ -57,10 +74,15 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     public void removeUserFromActivityRecord(Long activityId, Long userId) {
-        ActivityRecord record = activityRecordDao.findActivityRecord(activityId);
-        User user = userDao.findUser(userId);
-        record.removeUser(user);
-        activityRecordDao.update(record);
+        try {
+            ActivityRecord record = activityRecordDao.findActivityRecord(activityId);
+            User user = userDao.findUser(userId);
+            record.removeUser(user);
+            activityRecordDao.update(record);
+        } catch (Exception e) {
+            throw new SaesDataAccessException("Failed when removing user from activity record. ", e);
+        }
+
     }
 
 }

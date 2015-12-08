@@ -6,6 +6,7 @@ import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.ActivityRecordServiceImpl;
+import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import enums.Gender;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.List;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -92,9 +92,9 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
     /**
      * Tests creating with null argument
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void createNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(activityRecordDAO).create(null);
+        Mockito.doThrow(new SaesDataAccessException("")).when(activityRecordDAO).create(null);
         activityRecordService.create(null);
     }
 
@@ -116,9 +116,9 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
     /**
      * Tests finding by null id
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void findByIdNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(activityRecordDAO).findActivityRecord(null);
+        Mockito.doThrow(new SaesDataAccessException("")).when(activityRecordDAO).findActivityRecord(null);
         activityRecordService.findById(null);
     }
 
@@ -134,9 +134,9 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
     /**
      * Tests updating with null argument
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void updateNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(activityRecordDAO).update(null);
+        Mockito.doThrow(new SaesDataAccessException("")).when(activityRecordDAO).update(null);
         activityRecordService.update(null);
     }
 
@@ -152,9 +152,9 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
     /**
      * Tests deleting with null argument
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void deleteNullTest() {
-        Mockito.doThrow(new IllegalArgumentException()).when(activityRecordDAO).delete(null);
+        Mockito.doThrow(new SaesDataAccessException("")).when(activityRecordDAO).delete(null);
         activityRecordService.delete(null);
     }
 

@@ -4,6 +4,7 @@ import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.BurnedCaloriesService;
 import cz.muni.fi.pa165.service.SportActivityService;
+import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import java.util.List;
 import javax.inject.Inject;

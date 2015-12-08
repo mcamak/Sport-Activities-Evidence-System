@@ -2,6 +2,7 @@ package cz.fi.muni.fi.pa165.service.service;
 
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.SportActivityService;
+import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import java.util.List;
 import javax.inject.Inject;
@@ -54,7 +55,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests creating null activity
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void createSportActivityNullTest() {
         sportActivityService.create(null);
     }
@@ -76,7 +77,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests finding activity with null
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void findByIdNullTest() {
         sportActivityService.findById(null);
     }
@@ -101,7 +102,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests deleting null activity
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = SaesDataAccessException.class)
     public void deleteNullTest() {
         sportActivityService.delete(null);
     }
