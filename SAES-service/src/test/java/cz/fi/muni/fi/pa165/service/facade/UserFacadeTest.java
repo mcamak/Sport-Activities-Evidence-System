@@ -12,24 +12,26 @@ import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserService;
+import cz.muni.fi.pa165.service.facade.UserFacadeImpl;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import enums.Gender;
-import javax.inject.Inject;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
-import static org.testng.Assert.assertEquals;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+
+import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
 
 /**
  *
@@ -38,11 +40,12 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
-    @Inject
-    private UserFacade userFacade;
-
     @Mock
     private UserService userService;
+
+    @Inject
+    @InjectMocks
+    private UserFacade userFacade;
 
     private User user;
     private UserDTO userDTO;
@@ -54,7 +57,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         MockitoAnnotations.initMocks(this);
         if (AopUtils.isAopProxy(userFacade)
                 && userFacade instanceof Advised) {
-            userFacade = (UserFacade) ((Advised) userFacade)
+            userFacade = (UserFacadeImpl) ((Advised) userFacade)
                     .getTargetSource().getTarget();
         }
         ReflectionTestUtils.setField(userFacade,
@@ -98,8 +101,8 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void createTest() {
-        userFacade.create(userCreateDTO, user.getPasswordHash());
-        verify(userService).create(user);
+        userFacade.create(userCreateDTO, "pass");
+        verify(userService).create(user, "pass");
     }
 
     @Test

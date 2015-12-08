@@ -6,13 +6,14 @@ import cz.muni.fi.pa165.dto.UserLogInDTO;
 import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
-import enums.Gender;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
-import java.util.List;
-import javax.inject.Inject;
+import enums.Gender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * @author MajoCAM
@@ -37,11 +38,8 @@ public class UserFacadeImpl implements UserFacade {
         }
         
         User user = bms.mapTo(u, User.class);
-        
-        // FIXME make hash from password
-        user.setPasswordHash(password);
-        
-        return userService.create(user);
+
+        return userService.create(user, password);
     }
 
     @Override

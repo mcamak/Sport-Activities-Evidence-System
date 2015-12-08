@@ -5,14 +5,15 @@ import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
 import cz.muni.fi.pa165.service.exceptions.SaesServiceException;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.inject.Inject;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.List;
 
 /**
  * @author Jan S.
@@ -25,14 +26,18 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public Long create(User user) {
+    public Long create(User user, String password) {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
         if (user.getId() != null) {
             throw new IllegalArgumentException("User ID is not null. ");
         }
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password is not null or empty. ");
+        }
         try {
+            user.setPasswordHash(createHash(password));
             userDao.createUser(user);
         } catch (Exception e) {
             throw new SaesDataAccessException("Failed when creating user. ", e);

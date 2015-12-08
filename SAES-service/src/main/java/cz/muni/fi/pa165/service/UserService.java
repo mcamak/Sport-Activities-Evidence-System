@@ -2,8 +2,9 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Jan S.
@@ -14,9 +15,10 @@ public interface UserService {
     /**
      * Creates new user.
      * @param user - user to be created
+     * @param password - plain password
      * @return ID assigned to newly created user
      */
-    public Long create(User user);
+    public Long create(User user, String password);
     
     /**
      * Log in user.

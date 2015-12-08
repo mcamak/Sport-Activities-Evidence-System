@@ -14,8 +14,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -46,14 +48,12 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         user1.setSex(Gender.MALE);
         user1.setName("František Ukažho");
         user1.setWeight(85);
-        user1.setPasswordHash("divnejHash");
 
         user2 = new User();
         user2.setAge(99);
         user2.setSex(Gender.MALE);
         user2.setName("Petr Močůvka");
         user2.setWeight(72);
-        user2.setPasswordHash("ještěDivnějšíHash");
 
         allUsers = new ArrayList<>();
         allUsers.add(user1);
@@ -65,7 +65,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-        userService.create(user1);
+        userService.create(user1, "pass");
         verify(userDao).createUser(user1);
     }
 
@@ -75,7 +75,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullTest() {
         Mockito.doThrow(new IllegalArgumentException()).when(userDao).createUser(null);
-        userService.create(null);
+        userService.create(null, null);
     }
 
     /**
@@ -170,9 +170,13 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests authenticate
      */
-//    @Test
-//    public void authenticateTest() {
-//        user1.setId(userService.create(user1));
-//        assertTrue(userService.authenticate(user1.getId(), user1.getPasswordHash()));
-//    }
+    @Test
+    public void authenticateTest() {
+        Mockito.doNothing().when(userDao).createUser(user1);
+        userService.create(user1, "password");
+        user1.setId(1L);
+
+        when(userDao.findUser(1L)).thenReturn(user1);
+        assertTrue(userService.authenticate(user1.getId(), "password"));
+    }
 }
