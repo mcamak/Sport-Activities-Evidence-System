@@ -12,19 +12,19 @@ import java.util.List;
 public interface UserFacade {
 
     /**
-     * Sign in new user with password.
+     * Signs in new user with password.
      *
      * @param u user to be signed in
-     * @param password - unencrypted password
+     * @param password - un-encrypted password
      * @return ID assigned to the user
      */
     public Long create(UserCreateDTO u, String password);
 
     /**
-     * Log in an user
+     * Logs in an user
      *
      * @param logIn login info containing user id and password
-     * @return true if user was succefully logged in, false otherwise
+     * @return true if user was successfully logged in, false otherwise
      */
     public boolean logIn(UserLogInDTO logIn);
 
@@ -62,7 +62,7 @@ public interface UserFacade {
     /**
      * Returns a list of all users.
      *
-     * @return
+     * @return list of found users
      */
     public List<UserDTO> findAll();
 

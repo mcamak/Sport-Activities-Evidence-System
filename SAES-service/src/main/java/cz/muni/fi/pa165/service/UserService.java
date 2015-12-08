@@ -22,7 +22,7 @@ public interface UserService {
      * Log in user.
      * @param userId id of user logging in
      * @param password plain password
-     * @return true if user was succefully logged in, false otherwise
+     * @return true if user was successfully logged in, false otherwise
      */
     public boolean authenticate(Long userId, String password);
     

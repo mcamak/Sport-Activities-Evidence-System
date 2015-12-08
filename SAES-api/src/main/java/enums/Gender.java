@@ -1,6 +1,7 @@
 package enums;
 
 /**
+ * Represents human's Gender
  *
  * @author MajoCAM
  */
