@@ -13,6 +13,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>cz.muni.fi.pa165</groupId>
+            <artifactId>SAES-api</artifactId>
+            <version>${project.parent.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-api</artifactId>
             <version>8.0.28</version>
