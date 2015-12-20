@@ -38,7 +38,8 @@ public class DataLoaderImpl implements DataLoader {
     public void loadData() throws IOException {
         userService.create(constructUser("admin", 22, 75, Gender.MALE), "admin");
         userService.create(constructUser("Peter", 25, 85, Gender.MALE), "heslo1");
-        userService.create(constructUser("Maria", 22, 58, Gender.FEMALE), "heslo2");
+        User u1 = constructUser("Maria", 22, 58, Gender.FEMALE);
+        userService.create(u1, "heslo2");
 
         SportActivity a1 = constructActivity("Football");
         activityService.create(a1);
@@ -57,14 +58,15 @@ public class DataLoaderImpl implements DataLoader {
         caloriesService.create(constructBurnedCalory(a1, 85, 490));
 
         //TODO add user to createRecordService, so we can trace records by user
-//        recordService.create(constructRecord(a1, 30, 1800));
+        recordService.create(constructRecord(a1, u1, 30, 1800));
     }
 
-    private ActivityRecord constructRecord(SportActivity activity, int distance, long time) {
+    private ActivityRecord constructRecord(SportActivity activity, User user, int distance, long time) {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(activity);
         record.setDistance(distance);
         record.setTimeSeconds(time);
+        record.addUser(user);
         return record;
     }
 
