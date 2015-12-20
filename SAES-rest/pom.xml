@@ -10,6 +10,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>SAES-rest</artifactId>
+    <packaging>war</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/SAES-rest</path>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -19,9 +33,13 @@
         </dependency>
         <dependency>
             <groupId>cz.muni.fi.pa165</groupId>
+            <artifactId>SAES-data</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cz.muni.fi.pa165</groupId>
             <artifactId>SAES-service</artifactId>
             <version>${project.parent.version}</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
@@ -33,7 +51,6 @@
             <artifactId>spring-webmvc</artifactId>
             <version>4.2.3.RELEASE</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
