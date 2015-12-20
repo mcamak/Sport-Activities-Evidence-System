@@ -1,16 +1,7 @@
 package cz.muni.fi.pa165.saes.entity;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.*;
 
 /**
  *
@@ -68,6 +59,10 @@ public class ActivityRecord {
 
     public void addUser(User user) {
         this.users.add(user);
+    }
+
+    public void addUsers(Collection<User> users) {
+        this.users.addAll(users);
     }
 
     public void removeUser(User user) {
