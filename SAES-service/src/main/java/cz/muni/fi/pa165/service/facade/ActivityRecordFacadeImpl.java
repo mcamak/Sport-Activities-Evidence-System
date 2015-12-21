@@ -11,6 +11,7 @@ import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.service.ActivityRecordService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
+import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,12 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade {
     @Override
     public void removeUserFromActivityRecord(Long userId, Long recordId) {
         activityRecordService.removeUserFromActivityRecord(userId, recordId);
+    }
+
+    @Override
+    public List<ActivityRecordDTO> findAll() {
+        return bms.mapTo(activityRecordService.findAll(), ActivityRecordDTO.class);
+        
     }
 
 }
