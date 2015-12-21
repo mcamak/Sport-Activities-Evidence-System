@@ -7,6 +7,7 @@ package cz.muni.fi.pa165.facade;
 
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
+import java.util.List;
 
 /**
  *
@@ -44,6 +45,13 @@ public interface ActivityRecordFacade {
      * @param activityRecordId - ID of activity record to be deleted
      */
     public void delete(Long activityRecordId);
+    
+    /**
+     * Finds all activity records
+     *
+     * @return list of found activity records
+     */
+    public List<ActivityRecordDTO> findAll();
 
     /**
      * Removes user from given activity record
