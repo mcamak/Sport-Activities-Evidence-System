@@ -186,6 +186,31 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
+     * Test deleting by sport activity
+     */
+    @Test
+    public void testDeleteBySportActivity() {
+        SportActivity activity = new SportActivity();
+        activity.setName("Test activity");
+        activityDao.createSportActivity(activity);
+        assertNotNull(activityDao.findSportActivity(activity.getId()));
+
+        ActivityRecord record1 = setActivityRecord();
+        record1.setActivity(activity);
+        recordDao.create(record1);
+        assertNotNull(recordDao.findActivityRecord(record1.getId()));
+
+        ActivityRecord record2 = setActivityRecord();
+        record1.setActivity(activity);
+        recordDao.create(record2);
+        assertNotNull(recordDao.findActivityRecord(record2.getId()));
+
+        recordDao.deleteRecordsBySportActivity(activity);
+        // TODO lines
+        assertTrue(recordDao.findRecordsBySportActivity(activity).isEmpty());
+    }
+
+    /**
      * Test updating activity record
      */
     @Test

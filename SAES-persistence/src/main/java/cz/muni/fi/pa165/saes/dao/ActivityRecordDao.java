@@ -63,6 +63,13 @@ public interface ActivityRecordDao {
     void deleteUserRecords(User user);
 
     /**
+     * Delete records by sport activity.
+     *
+     * @param activity by which the records will be deleted
+     */
+    void deleteRecordsBySportActivity(SportActivity activity);
+
+    /**
      * Update activity record in DB
      *
      * @param activityRecord record to be updated

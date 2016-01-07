@@ -112,6 +112,25 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
+     * Test deleting by sport activity
+     */
+    @Test
+    public void testDeleteBySportActivity() {
+        BurnedCalories bCal1 = createNewRandomBurnedCalory();
+        burnCalDao.create(bCal1);
+        assertNotNull(burnCalDao.findById(bCal1.getId()));
+
+        BurnedCalories bCal2 = createNewRandomBurnedCalory();
+        burnCalDao.create(bCal2);
+        assertNotNull(burnCalDao.findById(bCal2.getId()));
+
+        burnCalDao.deleteBySportActivity(sportActivity);
+        // TODO lines
+        assertTrue(burnCalDao.findBySportActivity(sportActivity).isEmpty());
+        assertTrue(burnCalDao.findAll().isEmpty());
+    }
+
+    /**
      * Test deleting burned category with null category .
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -136,6 +155,35 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
         assertNotNull(burnCalDao.findById(bCal.getId()));
+    }
+
+    /**
+     * Test find burned calories by sport activity
+     */
+    @Test
+    public void testFindBurnedCaloriesBySportActivity() {
+        SportActivity activity = new SportActivity();
+        activity.setName("Test activity");
+        activityDao.createSportActivity(activity);
+
+        BurnedCalories bCal1 = createNewRandomBurnedCalory();
+        bCal1.setActivity(activity);
+        burnCalDao.create(bCal1);
+        assertNotNull(burnCalDao.findById(bCal1.getId()));
+
+        BurnedCalories bCal2 = createNewRandomBurnedCalory();
+        bCal2.setActivity(activity);
+        burnCalDao.create(bCal2);
+        assertNotNull(burnCalDao.findById(bCal2.getId()));
+
+        BurnedCalories bCal3 = createNewRandomBurnedCalory();
+        burnCalDao.create(bCal3);
+        assertNotNull(burnCalDao.findById(bCal3.getId()));
+
+        List<BurnedCalories> results = burnCalDao.findBySportActivity(activity);
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(bCal1));
+        assertTrue(results.contains(bCal2));
     }
 
     /**

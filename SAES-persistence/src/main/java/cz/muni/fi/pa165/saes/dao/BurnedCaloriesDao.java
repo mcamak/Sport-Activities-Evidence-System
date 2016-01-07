@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
 
 import java.util.List;
 
@@ -28,9 +29,9 @@ public interface BurnedCaloriesDao {
     /**
      * Remove burnedCalories belonging to a sport activity
      *
-     * @param activityId - sport activity which burned calories will be removed
+     * @param activity - sport activity which burned calories will be removed
      */
-    void deleteBySportActivity(Long activityId);
+    void deleteBySportActivity(SportActivity activity);
 
     /**
      * Retrieve burnedCalories with given id from database
@@ -43,10 +44,10 @@ public interface BurnedCaloriesDao {
     /**
      * Retrieve burnedCalories by sport activity they belong to.
      *
-     * @param activityId - id of the sport activity
+     * @param activity - sport activity which burned calories will be returned
      * @return burned calories of a sport activity
      */
-    List<BurnedCalories> findBySportActivity(Long activityId);
+    List<BurnedCalories> findBySportActivity(SportActivity activity);
 
     /**
      * Retrieve all BurnedCalories in the database.

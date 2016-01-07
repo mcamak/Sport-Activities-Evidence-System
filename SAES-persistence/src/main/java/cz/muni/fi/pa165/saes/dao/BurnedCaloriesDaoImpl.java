@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,12 +55,12 @@ public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
     }
 
     @Override
-    public void deleteBySportActivity(Long activityId) {
-        if (activityId == null) {
-            throw new IllegalArgumentException("Activity ID is null. ");
+    public void deleteBySportActivity(SportActivity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity is null. ");
         }
-        em.createQuery("DELETE FROM BurnedCalories b WHERE b.activity = :activityId")
-                .setParameter("activityId", activityId)
+        em.createQuery("DELETE FROM BurnedCalories b WHERE b.activity = :activity")
+                .setParameter("activity", activity)
                 .executeUpdate();
     }
 
@@ -72,12 +73,12 @@ public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
     }
 
     @Override
-    public List<BurnedCalories> findBySportActivity(Long activityId) {
-        if (activityId == null) {
-            throw new IllegalArgumentException("Activity ID is null. ");
+    public List<BurnedCalories> findBySportActivity(SportActivity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity is null. ");
         }
-        return em.createQuery("SELECT b FROM BurnedCalories b WHERE b.activity = :activityId", BurnedCalories.class)
-                .setParameter("activityId", activityId)
+        return em.createQuery("SELECT b FROM BurnedCalories b WHERE b.activity = :activity", BurnedCalories.class)
+                .setParameter("activity", activity)
                 .getResultList();
     }
 

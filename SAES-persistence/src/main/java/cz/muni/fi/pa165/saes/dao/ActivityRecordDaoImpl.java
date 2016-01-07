@@ -69,6 +69,16 @@ public class ActivityRecordDaoImpl implements ActivityRecordDao {
     }
 
     @Override
+    public void deleteRecordsBySportActivity(SportActivity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity is null. ");
+        }
+        em.createQuery("DELETE FROM ActivityRecord a WHERE a.activity = :activity")
+                .setParameter("activity", activity)
+                .executeUpdate();
+    }
+
+    @Override
     public void update(ActivityRecord activityRecord) {
         if (activityRecord == null) {
             throw new IllegalArgumentException("Activity record is null. ");

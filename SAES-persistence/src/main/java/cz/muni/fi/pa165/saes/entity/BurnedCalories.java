@@ -14,7 +14,7 @@ public class BurnedCalories {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private SportActivity activity;
     private int bodyWeight;
     private int caloriesBurned;
