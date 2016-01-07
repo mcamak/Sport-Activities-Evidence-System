@@ -1,7 +1,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
-import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
+
 import java.util.List;
 
 /**
@@ -17,14 +17,14 @@ public interface UserDao {
      *
      * @param user - instance of User that will be stored
      */
-    public void createUser(User user);
+    void createUser(User user);
 
     /**
      * Removes user from database
      *
      * @param user - instance of User to be removed from database
      */
-    public void deleteUser(User user);
+    void deleteUser(User user);
 
     /**
      * Retrieves User with proper id from database
@@ -32,27 +32,19 @@ public interface UserDao {
      * @param id - id of the User stored in database
      * @return retrieved user
      */
-    public User findUser(Long id);
+    User findUser(Long id);
 
     /**
      * Retrieves a collection of all users
      *
      * @return collection of users
      */
-    public List<User> findAllUsers();
-
-    /**
-     * Retrieves a filtered collection of users.
-     *
-     * @param filter by which the collection will be filtered
-     * @return filtered collection of users
-     */
-    public List<User> findUsersByParameters(UserFilter filter);
+    List<User> findAllUsers();
 
     /**
      * Updates user in the database
      *
      * @param user - all changes to this user will be projected to the database
      */
-    public void updateUser(User user);
+    void updateUser(User user);
 }

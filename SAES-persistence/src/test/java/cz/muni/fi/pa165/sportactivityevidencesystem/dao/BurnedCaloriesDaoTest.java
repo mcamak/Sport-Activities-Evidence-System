@@ -1,25 +1,24 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
-import cz.muni.fi.pa165.saes.dao.SportActivityDao;
-import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
+import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
+import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import org.testng.annotations.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.testng.Assert.*;
 
 /**
  *
@@ -29,18 +28,18 @@ import org.testng.annotations.BeforeMethod;
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
-    
+
     @PersistenceContext
     public EntityManager em;
 
     @Inject
     private BurnedCaloriesDao burnCalDao;
-    
+
     @Inject
     private SportActivityDao activityDao;
 
     private SportActivity sportActivity;
-    
+
     @BeforeMethod
     public void setUpMethod() {
         sportActivity = new SportActivity();
@@ -146,13 +145,13 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     public void testFindBurnedCategoryWithNullId() {
         burnCalDao.findById(null);
     }
-    
+
     /**
      * Test finding all burned categories.
      */
     @Test
     public void testFindAllBurnedCategories() {
-        BurnedCalories bCal1 = createNewRandomBurnedCalory();        
+        BurnedCalories bCal1 = createNewRandomBurnedCalory();
         BurnedCalories bCal2 = createNewRandomBurnedCalory();
         burnCalDao.create(bCal1);
         List<BurnedCalories> all = burnCalDao.findAll();
@@ -164,7 +163,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
         assertTrue(all.contains(bCal1));
         assertTrue(all.contains(bCal2));
     }
-    
+
     /**
      * Test finding all burned categories with no categories.
      */
@@ -248,7 +247,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
         bCal.setCaloriesBurned(-40);
         burnCalDao.update(bCal);
     }
-    
+
     private BurnedCalories createNewRandomBurnedCalory() {
         BurnedCalories bCal = new BurnedCalories();
         bCal.setActivity(sportActivity);

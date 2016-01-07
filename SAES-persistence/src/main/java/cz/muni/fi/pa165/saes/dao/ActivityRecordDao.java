@@ -6,6 +6,9 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
+import cz.muni.fi.pa165.saes.entity.User;
+
 import java.util.List;
 
 /**
@@ -17,37 +20,59 @@ public interface ActivityRecordDao {
     /**
      * Create activity record in DB
      *
-     * @param activityRecord
+     * @param activityRecord record to be created
      */
-    public void create(ActivityRecord activityRecord);
+    void create(ActivityRecord activityRecord);
 
     /**
      * Find activity record by id
      *
-     * @param id
+     * @param id of the record
      * @return activity record with given id
      */
-    public ActivityRecord findActivityRecord(Long id);
+    ActivityRecord findActivityRecord(Long id);
+
+    /**
+     * Find records of an user.
+     *
+     * @param user which record will be returned
+     * @return collection of user's records
+     */
+    List<ActivityRecord> findRecordsByUser(User user);
+
+    /**
+     * Find records by Sport Activity
+     *
+     * @param activity which records will be returned
+     * @return collection of records of activity
+     */
+    List<ActivityRecord> findRecordsBySportActivity(SportActivity activity);
 
     /**
      * Delete activity record form DB
      *
-     * @param actvityRecord
+     * @param actvityRecord record to be deleted
      */
-    public void delete(ActivityRecord actvityRecord);
+    void delete(ActivityRecord actvityRecord);
+
+    /**
+     * Delete all user's records
+     *
+     * @param user which records will be deleted
+     */
+    void deleteUserRecords(User user);
 
     /**
      * Update activity record in DB
      *
-     * @param activityRecord
+     * @param activityRecord record to be updated
      */
-    public void update(ActivityRecord activityRecord);
+    void update(ActivityRecord activityRecord);
 
     /**
      * Finds all records.
      *
      * @return list of found activity records
      */
-    public List<ActivityRecord> findAll();
-
+    List<ActivityRecord> findAll();
 }

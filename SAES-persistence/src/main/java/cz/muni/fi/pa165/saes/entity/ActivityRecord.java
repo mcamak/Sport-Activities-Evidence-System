@@ -1,78 +1,42 @@
 package cz.muni.fi.pa165.saes.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.*;
+import java.util.Objects;
 
 /**
  *
  * @author Marian Camak
  */
 @Entity
-@Table(name = "ActivityRecord")
+@Getter
+@Setter
 public class ActivityRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long timeSeconds;
-
-    private int distance;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private SportActivity activity;
 
-    @OneToMany
-    private final Set<User> users = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getTimeSeconds() {
-        return timeSeconds;
-    }
-
-    public void setTimeSeconds(Long timeSeconds) {
-        this.timeSeconds = timeSeconds;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    public SportActivity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(SportActivity activity) {
-        this.activity = activity;
-    }
-
-    public Set<User> getUsers() {
-        return Collections.unmodifiableSet(users);
-    }
-
-    public void addUser(User user) {
-        this.users.add(user);
-    }
-
-    public void addUsers(Collection<User> users) {
-        this.users.addAll(users);
-    }
-
-    public void removeUser(User user) {
-        this.users.remove(user);
-    }
+    private long timeSeconds;
+    private Integer distance;
+    private int burnedCalories;
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.id);
+        hash = 41 * hash + ((activity == null) ? 0 : activity.hashCode());
+        hash = 41 * hash + ((user == null) ? 0 : user.hashCode());
+        hash = 41 * hash + Objects.hashCode(this.timeSeconds);
+        hash = 41 * hash + Objects.hashCode(this.distance);
+        hash = 41 * hash + Objects.hashCode(this.burnedCalories);
         return hash;
     }
 
@@ -80,9 +44,24 @@ public class ActivityRecord {
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
-        } else if (!(obj instanceof ActivityRecord)) {
+        }
+        if (!(obj instanceof ActivityRecord)) {
             return false;
-        } else if (!Objects.equals(this.id, ((ActivityRecord) obj).getId())) {
+        }
+        final ActivityRecord other = (ActivityRecord) obj;
+        if (!Objects.equals(this.activity, other.getActivity())) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.getUser())) {
+            return false;
+        }
+        if (!Objects.equals(this.timeSeconds, other.getTimeSeconds())) {
+            return false;
+        }
+        if (!Objects.equals(this.distance, other.getDistance())) {
+            return false;
+        }
+        if (!Objects.equals(this.burnedCalories, other.getBurnedCalories())) {
             return false;
         }
         return true;

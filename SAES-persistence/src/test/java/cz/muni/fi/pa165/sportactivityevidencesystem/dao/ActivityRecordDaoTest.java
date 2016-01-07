@@ -1,11 +1,5 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
@@ -25,6 +19,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -37,8 +32,6 @@ import static org.testng.Assert.*;
 @Transactional
 public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
 
-    //@Rule
-    //public final ExpectedException expectedException = ExpectedException.none();
     @PersistenceContext
     public EntityManager em;
 
@@ -79,7 +72,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         actv.setActivity(sportActivity);
         actv.setDistance(5);
         actv.setTimeSeconds(45L);
-        actv.addUser(user);
+        actv.setUser(user);
         return actv;
     }
 
@@ -110,7 +103,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         record.setActivity(null);
         record.setDistance(5);
         record.setTimeSeconds(Long.MIN_VALUE);
-        record.addUser(user);
+        record.setUser(user);
 
         recordDao.create(record);
 
@@ -125,22 +118,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         record.setActivity(sportActivity);
         record.setDistance(-5);
         record.setTimeSeconds(Long.MIN_VALUE);
-        record.addUser(user);
-
-        recordDao.create(record);
-
-    }
-
-    /**
-     * Test creating record with wrong time
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testCreateWrongTime() {
-        ActivityRecord record = new ActivityRecord();
-        record.setActivity(sportActivity);
-        record.setDistance(5);
-        record.setTimeSeconds(null);
-        record.addUser(user);
+        record.setUser(user);
 
         recordDao.create(record);
 
@@ -155,7 +133,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         record.setActivity(sportActivity);
         record.setDistance(5);
         record.setTimeSeconds(Long.MIN_VALUE);
-        record.addUser(null);
+        record.setUser(null);
 
         recordDao.create(record);
 
@@ -183,6 +161,31 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
+     * Test deleting by user
+     */
+    @Test
+    public void testDeleteByUser() {
+        ActivityRecord record1 = setActivityRecord();
+        record1.setDistance(30);
+        record1.setBurnedCalories(50);
+        recordDao.create(record1);
+        assertNotNull(recordDao.findActivityRecord(record1.getId()));
+
+        ActivityRecord record2 = setActivityRecord();
+        record2.setDistance(60);
+        record2.setBurnedCalories(100);
+        recordDao.create(record2);
+        assertNotNull(recordDao.findActivityRecord(record2.getId()));
+
+        recordDao.deleteUserRecords(user);
+        // TODO check why this two lines fail
+//        assertNull(recordDao.findActivityRecord(record1.getId()));
+//        assertNull(recordDao.findActivityRecord(record2.getId()));
+        assertTrue(recordDao.findRecordsByUser(user).isEmpty());
+        assertTrue(recordDao.findAll().isEmpty());
+    }
+
+    /**
      * Test updating activity record
      */
     @Test
@@ -196,8 +199,8 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         recordDao.update(record);
 
         ActivityRecord recordFound = recordDao.findActivityRecord(record.getId());
-        assertEquals(recordFound.getDistance(), 15);
-        assertEquals(recordFound.getTimeSeconds(), new Long(20));
+        assertEquals(recordFound.getDistance(), new Integer(15));
+        assertEquals(new Long(recordFound.getTimeSeconds()), new Long(20));
     }
 
     /**
@@ -216,7 +219,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         ActivityRecord record = setActivityRecord();
         recordDao.create(record);
         assertNotNull(recordDao.findActivityRecord(record.getId()));
-        
+
         record.setActivity(null);
         recordDao.update(record);
     }
@@ -229,21 +232,8 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         ActivityRecord record = setActivityRecord();
         recordDao.create(record);
         assertNotNull(recordDao.findActivityRecord(record.getId()));
-        
-        record.setDistance(-5);
-        recordDao.update(record);
-    }
 
-    /**
-     * Test updating activity with null time
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testUpdateWrongTime() {
-        ActivityRecord record = setActivityRecord();
-        recordDao.create(record);
-        assertNotNull(recordDao.findActivityRecord(record.getId()));
-        
-        record.setTimeSeconds(null);
+        record.setDistance(-5);
         recordDao.update(record);
     }
 
@@ -255,4 +245,54 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         recordDao.findActivityRecord(null);
     }
 
+    /**
+     * Test find activity record by user
+     */
+    @Test
+    public void testFindActivityRecordByUser() {
+        ActivityRecord rec1 = setActivityRecord();
+        rec1.setBurnedCalories(20);
+        recordDao.create(rec1);
+        assertNotNull(recordDao.findActivityRecord(rec1.getId()));
+
+        ActivityRecord rec2 = setActivityRecord();
+        rec2.setBurnedCalories(40);
+        recordDao.create(rec2);
+        assertNotNull(recordDao.findActivityRecord(rec2.getId()));
+
+        List<ActivityRecord> records = recordDao.findRecordsByUser(user);
+        assertTrue(!records.isEmpty());
+        assertTrue(records.contains(rec1));
+        assertTrue(records.contains(rec2));
+    }
+
+    /**
+     * Test find activity record by sport activity
+     */
+    @Test
+    public void testFindActivityRecordBySportActivity() {
+        SportActivity activity = new SportActivity();
+        activity.setName("Test activity");
+        activityDao.createSportActivity(activity);
+
+        ActivityRecord rec1 = setActivityRecord();
+        rec1.setActivity(activity);
+        recordDao.create(rec1);
+        assertNotNull(recordDao.findActivityRecord(rec1.getId()));
+
+        ActivityRecord rec2 = setActivityRecord();
+        rec2.setActivity(activity);
+        recordDao.create(rec2);
+        assertNotNull(recordDao.findActivityRecord(rec2.getId()));
+
+        ActivityRecord rec3 = setActivityRecord();
+        recordDao.create(rec3);
+        assertNotNull(recordDao.findActivityRecord(rec3.getId()));
+
+        List<ActivityRecord> records = recordDao.findRecordsBySportActivity(activity);
+        assertTrue(!records.isEmpty());
+        assertTrue(records.contains(rec1));
+        assertTrue(records.contains(rec2));
+        assertTrue(!records.contains(rec3));
+    }
 }

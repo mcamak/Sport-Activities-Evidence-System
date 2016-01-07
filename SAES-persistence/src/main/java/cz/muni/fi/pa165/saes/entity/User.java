@@ -1,26 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.saes.entity;
 
 import enums.Gender;
+
+import javax.persistence.*;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  *
  * @author Barbora B. Entity of user - name, age, weight and sex
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users") // user is a reserved word
 public class User {
 
     @Id
@@ -42,7 +32,7 @@ public class User {
     public String getName() {
         return name;
     }
-    
+
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -85,7 +75,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int hash = 7;        
+        int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.name);
         hash = 97 * hash + Objects.hashCode(this.passwordHash);
         hash = 97 * hash + Objects.hashCode(this.sex);

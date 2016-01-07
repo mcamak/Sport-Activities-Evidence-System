@@ -1,18 +1,18 @@
 package cz.muni.fi.pa165.saes.dao;
 
-import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 /**
  *
  * @author Marian Camak
  */
+@Transactional
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -93,54 +93,5 @@ public class UserDaoImpl implements UserDao {
             throw new IllegalArgumentException("User bodyweight is lower than zero. ");
         }
         em.merge(user);
-    }
-
-    @Override
-    public List<User> findUsersByParameters(UserFilter filter) {
-        String queryString = "SELECT u FROM User u";
-        String condition = "";
-        if(filter.getMaxAge() != null) {
-            if(condition.isEmpty()) {
-                condition += " WHERE u.age < :maxAge";
-            } else {
-                condition += " AND u.age < :maxAge";
-            }
-        }
-        if(filter.getMinAge() != null) {
-            if(condition.isEmpty()) {
-                condition += " WHERE u.age > :minAge";
-            } else {
-                condition += " AND u.age > :minAge";
-            }
-        }
-        if(filter.getMaxWeight() != null) {
-            if(condition.isEmpty()) {
-                condition += " WHERE u.weight < :maxWeight";
-            } else {
-                condition += " AND u.weight < :maxWeight";
-            }
-        }
-        if(filter.getMinWeight() != null) {
-            if(condition.isEmpty()) {
-                condition += " WHERE u.weight > :minWeight";
-            } else {
-                condition += " AND u.weight > :minWeight";
-            }
-        }
-
-        Query query = em.createQuery(queryString + condition, User.class);
-        if(filter.getMaxAge() != null) {
-            query.setParameter("maxAge", filter.getMaxAge());
-        }
-        if(filter.getMinAge() != null) {
-            query.setParameter("minAge", filter.getMinAge());
-        }
-        if(filter.getMaxWeight()!= null) {
-            query.setParameter("maxWeight", filter.getMaxWeight());
-        }
-        if(filter.getMinWeight()!= null) {
-            query.setParameter("minWeight", filter.getMinWeight());
-        }
-        return (List<User>) query.getResultList();
     }
 }

@@ -1,12 +1,7 @@
 package cz.muni.fi.pa165.saes.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  *
@@ -18,12 +13,12 @@ public class BurnedCalories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne
-    private SportActivity activity;    
-    private int bodyWeight;    
+    private SportActivity activity;
+    private int bodyWeight;
     private int caloriesBurned;
-    
+
     public Long getId() {
         return id;
     }
@@ -81,6 +76,4 @@ public class BurnedCalories {
         }
         return true;
     }
-    
-    
 }

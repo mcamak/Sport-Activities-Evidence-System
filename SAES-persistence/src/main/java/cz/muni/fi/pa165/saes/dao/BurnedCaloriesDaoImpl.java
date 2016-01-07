@@ -1,11 +1,12 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Implementation of BurnedCaloriesDao
@@ -53,11 +54,31 @@ public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
     }
 
     @Override
+    public void deleteBySportActivity(Long activityId) {
+        if (activityId == null) {
+            throw new IllegalArgumentException("Activity ID is null. ");
+        }
+        em.createQuery("DELETE FROM BurnedCalories b WHERE b.activity = :activityId")
+                .setParameter("activityId", activityId)
+                .executeUpdate();
+    }
+
+    @Override
     public BurnedCalories findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("ID is null. ");
         }
         return em.find(BurnedCalories.class, id);
+    }
+
+    @Override
+    public List<BurnedCalories> findBySportActivity(Long activityId) {
+        if (activityId == null) {
+            throw new IllegalArgumentException("Activity ID is null. ");
+        }
+        return em.createQuery("SELECT b FROM BurnedCalories b WHERE b.activity = :activityId", BurnedCalories.class)
+                .setParameter("activityId", activityId)
+                .getResultList();
     }
 
     @Override

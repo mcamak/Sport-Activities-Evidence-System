@@ -1,25 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
-import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
+import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import org.testng.annotations.Test;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
+import static org.testng.Assert.*;
 
 /**
  *
@@ -31,10 +26,10 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
-    
+
     @Inject
     SportActivityDao sportActivityDao;
-    
+
     /**
      * Test creating sport activity
      */
@@ -46,7 +41,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
         assertTrue( sportActivityDao.findSportActivity( sact.getId() ).getName().equals( "Running" ) );
         sportActivityDao.deleteSportActivity(sact);
     }
-    
+
     /**
      * Test creating null sport activity
      */
@@ -54,7 +49,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     public void testCreateSportActivityNull(){
         sportActivityDao.createSportActivity(null);
     }
-    
+
     /**
      * Test deleting sport activity
      */
@@ -64,7 +59,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
         sact.setName("Running");
         sportActivityDao.deleteSportActivity(sact);
     }
-    
+
     /**
      * Test deleting null sport activity
      */
@@ -72,7 +67,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     public void deleteSportActivityNull(){
         sportActivityDao.deleteSportActivity(null);
     }
-    
+
     /**
      * Find sport activity by id
      */
@@ -81,10 +76,10 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
         SportActivity sact = new SportActivity();
         sact.setName("Running");
         sportActivityDao.createSportActivity(sact);
-        
+
         assertNotNull(sportActivityDao.findSportActivity(sact.getId()));
     }
-    
+
     /**
      * Test find sport activity with null
      */
@@ -92,7 +87,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     public void testFindSportActivityNull(){
         sportActivityDao.findSportActivity(null);
     }
-    
+
     /**
      * Test updating sport activity
      */
@@ -101,12 +96,12 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
         SportActivity sact = new SportActivity();
         sact.setName("Running");
         sportActivityDao.createSportActivity(sact);
-        
+
         sact.setName("Football");
         sportActivityDao.updateSportActivity(sact);
         assertEquals("Football",sact.getName());
     }
-    
+
     /**
      * Test updating null
      */
@@ -114,5 +109,5 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     public void testUpdateSportActivityNull(){
         sportActivityDao.updateSportActivity(null);
     }
-    
+
 }
