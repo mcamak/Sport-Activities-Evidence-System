@@ -7,15 +7,15 @@ package cz.fi.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
+import cz.muni.fi.pa165.exceptions.EntityReferenceException;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.SportActivityService;
+import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import javax.inject.Inject;
+import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
@@ -27,18 +27,25 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import javax.inject.Inject;
+
+import static org.mockito.Mockito.*;
+
 /**
- *
  * @author B. Bajtosova
  */
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
 
-    @Inject
-    private SportActivityFacade sportActivityFacade;
-
     @Mock
     private SportActivityService sportActivityService;
+
+    @Mock
+    private BeanMappingService mappingService;
+
+    @Inject
+    @InjectMocks
+    private SportActivityFacade sportActivityFacade;
 
     private SportActivity sportActivity;
     private SportActivityDTO sportActivityDTO;
@@ -59,8 +66,10 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
 
     @BeforeMethod
     public void setUpMethod() {
+        MockitoAnnotations.initMocks(this);
 
         sportActivity = new SportActivity();
+        sportActivity.setId(777L);
         sportActivity.setName("Chess");
 
         sportActivityDTO = new SportActivityDTO();
@@ -81,28 +90,29 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createSportActivityTest() {
+        when(mappingService.mapTo(sportActivityCreateDTO, SportActivity.class)).thenReturn(sportActivity);
         sportActivityFacade.create(sportActivityCreateDTO);
-        verify(sportActivityService).create(sportActivity);
+        verify(mappingService).mapTo(sportActivityCreateDTO, SportActivity.class);
+        verify(sportActivityService).create(Matchers.any(SportActivity.class));
     }
 
     /**
-     * Test changing name of activity
+     * Test update activity
      */
     @Test
-    public void changeActivityNameTest() {
-        sportActivityFacade.update(sportActivityDTO, "Jumping");
-        verify(sportActivityService).changeName(sportActivity, "Jumping");
+    public void updateActivityTest() {
+        sportActivityFacade.update(sportActivityDTO);
+        verify(mappingService).mapTo(sportActivityDTO, SportActivity.class);
+        verify(sportActivityService).update(Matchers.any(SportActivity.class));
     }
 
     /**
      * Test deleting sport activity
      */
     @Test
-    public void deleteSportActivityTest() {
-        Long sportActivityId = sportActivityDTO.getId();
-        sportActivityFacade.delete(sportActivityId);
-        SportActivity foundSportActivity = sportActivityService.findById(sportActivityId);
-        verify(sportActivityService).delete(foundSportActivity);
+    public void deleteSportActivityTest() throws EntityReferenceException {
+        sportActivityFacade.delete(sportActivity.getId());
+        verify(sportActivityService).delete(sportActivity.getId());
     }
 
     /**
@@ -119,9 +129,9 @@ public class SportActivityFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void getActivityWithIdTest() {
-        Long sportActivityId = sportActivityDTO.getId();
-        when(sportActivityService.findById(sportActivityId)).thenReturn(sportActivity);
-        sportActivityFacade.findById(sportActivityId);
-        verify(sportActivityService).findById(sportActivityId);
+        when(sportActivityService.findById(sportActivity.getId())).thenReturn(sportActivity);
+        sportActivityFacade.findById(sportActivity.getId());
+        verify(sportActivityService).findById(sportActivity.getId());
+        verify(mappingService).mapTo(sportActivity, SportActivityDTO.class);
     }
 }

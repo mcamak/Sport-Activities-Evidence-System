@@ -2,21 +2,21 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.inject.Inject;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Jan S.
  */
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Inject
@@ -24,6 +24,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user, String password) {
+        if (user == null) {
+            throw new IllegalArgumentException("User is null. ");
+        }
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password is null or empty. ");
+        }
         user.setPasswordHash(createHash(password));
         userDao.createUser(user);
     }
@@ -34,8 +40,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isAdmin(User u) {
-        return findById(u.getId()).isAdmin();
+    public boolean isAdmin(Long id) {
+        User user = userDao.findUser(id);
+        if (user == null) {
+            throw new InvalidDataAccessApiUsageException("User with ID: " + id + " wasn't found. ");
+        }
+        return user.isAdmin();
     }
 
     @Override
@@ -58,7 +68,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return userDao.findAllUsers();
+        List<User> users = userDao.findAllUsers();
+        if (users != null && users.size() > 1) {
+            Collections.sort(users);
+        }
+        return users;
     }
 
     private static String createHash(String password) {

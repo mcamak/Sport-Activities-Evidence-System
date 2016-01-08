@@ -5,8 +5,6 @@
  */
 package cz.muni.fi.pa165.dto;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -20,14 +18,16 @@ import javax.validation.constraints.NotNull;
 public class ActivityRecordCreateDTO {
 
     @NotNull
+    @Min(0)
     private Long timeSeconds;
 
     @Min(0)
-    private int distance;
+    private Integer distance;
 
     @NotNull
     private SportActivityDTO activity;
 
-    private final Set<UserDTO> users = new HashSet<>();
+    @NotNull
+    private UserDTO user;
 
 }

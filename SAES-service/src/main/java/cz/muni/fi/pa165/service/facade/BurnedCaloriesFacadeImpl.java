@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.BurnedCaloriesCreateDTO;
@@ -11,9 +6,11 @@ import cz.muni.fi.pa165.facade.BurnedCaloriesFacade;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.service.BurnedCaloriesService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
-import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  *
@@ -42,12 +39,22 @@ public class BurnedCaloriesFacadeImpl implements BurnedCaloriesFacade {
     }
 
     @Override
+    public List<BurnedCaloriesDTO> findBySportActivity(Long activityId) {
+        return bms.mapTo(burnedCaloriesService.findBySportActivity(activityId), BurnedCaloriesDTO.class);
+    }
+
+    @Override
+    public List<BurnedCaloriesDTO> findAll() {
+        return bms.mapTo(burnedCaloriesService.findAll(), BurnedCaloriesDTO.class);
+    }
+
+    @Override
     public void update(BurnedCaloriesDTO burnedCaloriesDTO) {
         burnedCaloriesService.update(bms.mapTo(burnedCaloriesDTO, BurnedCalories.class));
     }
 
     @Override
-    public void delete(BurnedCaloriesDTO burnedCaloriesDTO) {
-        burnedCaloriesService.delete(bms.mapTo(burnedCaloriesDTO, BurnedCalories.class));
+    public void delete(Long id) {
+        burnedCaloriesService.delete(id);
     }
 }

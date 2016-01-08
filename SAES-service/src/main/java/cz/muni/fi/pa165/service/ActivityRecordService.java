@@ -16,9 +16,9 @@ public interface ActivityRecordService {
     /**
      * Creates new activity record
      *
-     * @param activityRecord record to be created
+     * @param record record to be created
      */
-    void create(ActivityRecord activityRecord);
+    void create(ActivityRecord record);
 
     /**
      * Finds activity record with given ID
@@ -39,9 +39,9 @@ public interface ActivityRecordService {
     /**
      * Updates given activity record
      *
-     * @param activityRecord to be updated
+     * @param record to be updated
      */
-    void update(ActivityRecord activityRecord);
+    void update(ActivityRecord record);
 
     /**
      * Deletes given activity record

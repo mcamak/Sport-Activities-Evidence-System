@@ -1,21 +1,20 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.exceptions.SaesServiceException;
 import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import cz.muni.fi.pa165.service.exceptions.SaesServiceException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Barborka
  */
 @Service
-@Transactional
 public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
 
     @Inject
@@ -25,21 +24,21 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
     private SportActivityDao sportActivityDao;
 
     @Override
-    public void create(BurnedCalories burnedCalories) {
-        burnedCaloriesDao.create(burnedCalories);
+    public void create(BurnedCalories calories) {
+        burnedCaloriesDao.create(calories);
     }
 
     @Override
     public void delete(Long id) {
-        BurnedCalories burnedCalories = burnedCaloriesDao.findById(id);
-        if (burnedCalories != null) {
-            burnedCaloriesDao.delete(burnedCalories);
+        BurnedCalories calories = burnedCaloriesDao.findById(id);
+        if (calories != null) {
+            burnedCaloriesDao.delete(calories);
         }
     }
 
     @Override
-    public void update(BurnedCalories burnedCalories) {
-        burnedCaloriesDao.update(burnedCalories);
+    public void update(BurnedCalories calories) {
+        burnedCaloriesDao.update(calories);
     }
 
     @Override
@@ -53,12 +52,19 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
         if (activity == null) {
             throw new SaesServiceException("Sport activity with ID: " + activityId + " was not found. ");
         }
-        return burnedCaloriesDao.findBySportActivity(activity);
+        List<BurnedCalories> calories = burnedCaloriesDao.findBySportActivity(activity);
+        if (calories != null && calories.size() > 1) {
+            Collections.sort(calories);
+        }
+        return calories;
     }
 
     @Override
     public List<BurnedCalories> findAll() {
-        return burnedCaloriesDao.findAll();
+        List<BurnedCalories> calories = burnedCaloriesDao.findAll();
+        if (calories != null && calories.size() > 1) {
+            Collections.sort(calories);
+        }
+        return calories;
     }
-
 }

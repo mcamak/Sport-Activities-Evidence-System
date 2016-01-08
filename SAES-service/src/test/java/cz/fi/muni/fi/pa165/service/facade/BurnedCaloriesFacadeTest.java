@@ -12,23 +12,26 @@ import cz.muni.fi.pa165.facade.BurnedCaloriesFacade;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.BurnedCaloriesService;
+import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import javax.inject.Inject;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
-import static org.testng.Assert.assertEquals;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -37,11 +40,15 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
 
-    @Inject
-    private BurnedCaloriesFacade burnedCaloriesFacade;
-
     @Mock
     private BurnedCaloriesService burnedCaloriesService;
+
+    @Mock
+    private BeanMappingService mappingService;
+
+    @Inject
+    @InjectMocks
+    private BurnedCaloriesFacade burnedCaloriesFacade;
 
     private BurnedCalories burnedCalories;
     private BurnedCaloriesDTO burnedCaloriesDTO;
@@ -62,20 +69,24 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
 
     @BeforeMethod
     public void setUpMethod() {
+        MockitoAnnotations.initMocks(this);
 
         SportActivity sportActivity = new SportActivity();
         sportActivity.setName("Test");
+        sportActivity.setId(99L);
 
         SportActivityDTO sportActivityDTO = new SportActivityDTO();
         sportActivityDTO.setName(sportActivity.getName());
         sportActivityDTO.setId(99L);
 
         burnedCalories = new BurnedCalories();
+        burnedCalories.setId(890L);
         burnedCalories.setBodyWeight(100);
         burnedCalories.setCaloriesBurned(5000);
         burnedCalories.setActivity(sportActivity);
 
         burnedCaloriesDTO = new BurnedCaloriesDTO();
+        burnedCaloriesDTO.setId(burnedCalories.getId());
         burnedCaloriesDTO.setBodyWeight(burnedCalories.getBodyWeight());
         burnedCaloriesDTO.setCaloriesBurned(burnedCalories.getCaloriesBurned());
         burnedCaloriesDTO.setActivity(sportActivityDTO);
@@ -93,30 +104,40 @@ public class BurnedCaloriesFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testCreate() {
+        when(mappingService.mapTo(burnedCaloriesCreateDTO, BurnedCalories.class)).thenReturn(burnedCalories);
         burnedCaloriesFacade.create(burnedCaloriesCreateDTO);
         verify(burnedCaloriesService).create(burnedCalories);
     }
 
     @Test
     public void testFindById() {
-        Long id = burnedCalories.getId();
-        burnedCaloriesDTO.setId(id);
-        when(burnedCaloriesService.findById(id)).thenReturn(burnedCalories);
-        BurnedCaloriesDTO foundBurnedCalories = burnedCaloriesFacade.findById(id);
-        assertEquals(foundBurnedCalories, burnedCaloriesDTO);
+        when(burnedCaloriesService.findById(burnedCalories.getId())).thenReturn(burnedCalories);
+        burnedCaloriesFacade.findById(burnedCalories.getId());
+        verify(mappingService).mapTo(burnedCalories, BurnedCaloriesDTO.class);
+    }
+
+    @Test
+    public void testFindBySportActivity() {
+        List<BurnedCalories> calories = new ArrayList<>();
+        calories.add(burnedCalories);
+        when(burnedCaloriesService.findBySportActivity(55L)).thenReturn(calories);
+        burnedCaloriesFacade.findBySportActivity(55L);
+        verify(burnedCaloriesService).findBySportActivity(55L);
+        verify(mappingService).mapTo(calories, BurnedCaloriesDTO.class);
     }
 
     @Test
     public void testUpdate() {
-        burnedCaloriesDTO.setId(99L);
+        when(mappingService.mapTo(burnedCaloriesDTO, BurnedCalories.class)).thenReturn(burnedCalories);
         burnedCaloriesFacade.update(burnedCaloriesDTO);
+        verify(mappingService).mapTo(burnedCaloriesDTO, BurnedCalories.class);
         verify(burnedCaloriesService).update(burnedCalories);
     }
 
     @Test
     public void testDelete() {
-        burnedCaloriesFacade.delete(burnedCaloriesDTO);
-        verify(burnedCaloriesService).delete(burnedCalories);
+        burnedCaloriesFacade.delete(burnedCaloriesDTO.getId());
+        verify(burnedCaloriesService).delete(burnedCalories.getId());
     }
 
 }

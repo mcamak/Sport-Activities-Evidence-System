@@ -28,8 +28,10 @@ public interface UserService {
 
     /**
      * Check whether the user is admin or not.
+     *
+     * @param id id of user
      */
-    boolean isAdmin(User u);
+    boolean isAdmin(Long id);
 
     /**
      * Remove given user.

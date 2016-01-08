@@ -1,15 +1,15 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.exceptions.EntityReferenceException;
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import cz.muni.fi.pa165.service.exceptions.EntityReferenceException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,7 +18,6 @@ import java.util.List;
  * @author MajoCAM
  */
 @Service
-@Transactional
 public class SportActivityServiceImpl implements SportActivityService {
 
     @Inject
@@ -31,10 +30,8 @@ public class SportActivityServiceImpl implements SportActivityService {
     private ActivityRecordDao activityRecordDao;
 
     @Override
-    public SportActivity create(SportActivity activity) {
+    public void create(SportActivity activity) {
         sportActivityDao.createSportActivity(activity);
-
-        return activity;
     }
 
     @Override
@@ -59,7 +56,11 @@ public class SportActivityServiceImpl implements SportActivityService {
 
     @Override
     public List<SportActivity> findAll() {
-        return sportActivityDao.findAll();
+        List<SportActivity> activities = sportActivityDao.findAll();
+        if (activities != null && activities.size() > 1) {
+            Collections.sort(activities);
+        }
+        return activities;
     }
 
     @Override

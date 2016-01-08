@@ -1,7 +1,7 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.exceptions.EntityReferenceException;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import cz.muni.fi.pa165.service.exceptions.EntityReferenceException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +16,8 @@ public interface SportActivityService {
      * Creates new sport activity
      *
      * @param activity to be created
-     * @return ID of newly created activity
      */
-    SportActivity create(SportActivity activity);
+    void create(SportActivity activity);
 
     /**
      * Finds sport activity with given ID

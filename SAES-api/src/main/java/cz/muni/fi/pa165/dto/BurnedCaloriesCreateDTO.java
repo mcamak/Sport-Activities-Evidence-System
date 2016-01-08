@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.dto;
 
 import javax.validation.constraints.Max;
@@ -18,13 +13,14 @@ import javax.validation.constraints.NotNull;
 @lombok.EqualsAndHashCode
 public class BurnedCaloriesCreateDTO {
 
+    @NotNull
     @Min(0)
     @Max(999)
-    private int bodyWeight;
+    private Integer bodyWeight;
 
     @NotNull
     @Min(0)
-    private int caloriesBurned;
+    private Integer caloriesBurned;
 
     @NotNull
     private SportActivityDTO activity;

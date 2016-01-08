@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
@@ -11,10 +6,11 @@ import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.service.ActivityRecordService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
-import java.util.List;
-import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  *
@@ -31,38 +27,34 @@ public class ActivityRecordFacadeImpl implements ActivityRecordFacade {
     private BeanMappingService bms;
 
     @Override
-    public Long create(ActivityRecordCreateDTO recordDTO) {
-        ActivityRecord newActivity = bms.mapTo(recordDTO, ActivityRecord.class);
-        activityRecordService.create(newActivity);
-        return newActivity.getId();
-
+    public Long create(ActivityRecordCreateDTO recordCreateDTO) {
+        ActivityRecord created = bms.mapTo(recordCreateDTO, ActivityRecord.class);
+        activityRecordService.create(created);
+        return created.getId();
     }
 
     @Override
-    public void delete(Long activityRecordId) {
-        activityRecordService.delete(activityRecordService.findById(activityRecordId));
+    public void delete(Long recordId) {
+        activityRecordService.delete(recordId);
     }
 
     @Override
-    public ActivityRecordDTO findById(Long id) {
-        return bms.mapTo(activityRecordService.findById(id), ActivityRecordDTO.class);
+    public ActivityRecordDTO findById(Long recordId) {
+        return bms.mapTo(activityRecordService.findById(recordId), ActivityRecordDTO.class);
     }
 
     @Override
-    public void update(ActivityRecordDTO activityRecord) {
-        activityRecordService.update(bms.mapTo(activityRecord, ActivityRecord.class));
-
+    public List<ActivityRecordDTO> findByUser(Long userId) {
+        return bms.mapTo(activityRecordService.findByUser(userId), ActivityRecordDTO.class);
     }
 
     @Override
-    public void removeUserFromActivityRecord(Long userId, Long recordId) {
-        activityRecordService.removeUserFromActivityRecord(userId, recordId);
+    public void update(ActivityRecordDTO recordDTO) {
+        activityRecordService.update(bms.mapTo(recordDTO, ActivityRecord.class));
     }
 
     @Override
     public List<ActivityRecordDTO> findAll() {
         return bms.mapTo(activityRecordService.findAll(), ActivityRecordDTO.class);
-        
     }
-
 }

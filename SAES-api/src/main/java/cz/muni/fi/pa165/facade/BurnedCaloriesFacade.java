@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.facade;
 
-import cz.muni.fi.pa165.dto.BurnedCaloriesDTO;
 import cz.muni.fi.pa165.dto.BurnedCaloriesCreateDTO;
+import cz.muni.fi.pa165.dto.BurnedCaloriesDTO;
+
+import java.util.List;
 
 /**
  *
@@ -17,31 +14,45 @@ public interface BurnedCaloriesFacade {
     /**
      * Creates burned calories.
      *
-     * @param burnedCalories
+     * @param burnedCalories to be created
      * @return ID of created record.
      */
-    public Long create(BurnedCaloriesCreateDTO burnedCalories);
+    Long create(BurnedCaloriesCreateDTO burnedCalories);
 
     /**
      * Find burned calories by id.
      *
-     * @param id
+     * @param id of the burned calory
      * @return burned calories with given id
      */
-    public BurnedCaloriesDTO findById(Long id);
+    BurnedCaloriesDTO findById(Long id);
+
+    /**
+     * Find burned calories by sport activity.
+     *
+     * @param activityId of sport activity
+     * @return burned calories of a sport activity
+     */
+    List<BurnedCaloriesDTO> findBySportActivity(Long activityId);
+
+    /**
+     * Find all burned calories.
+     *
+     * @return all burned calories
+     */
+    List<BurnedCaloriesDTO> findAll();
 
     /**
      * Update burned calories.
      *
-     * @param burnedCaloriesDTO
+     * @param burnedCaloriesDTO containing data to be updated
      */
-    public void update(BurnedCaloriesDTO burnedCaloriesDTO);
+    void update(BurnedCaloriesDTO burnedCaloriesDTO);
 
     /**
      * Deletes burned calories.
      *
-     * @param burnedCaloriesDTO
+     * @param id of burned calory
      */
-    public void delete(BurnedCaloriesDTO burnedCaloriesDTO);
-
+    void delete(Long id);
 }

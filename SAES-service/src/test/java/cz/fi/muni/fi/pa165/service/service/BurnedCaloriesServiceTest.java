@@ -1,21 +1,26 @@
 package cz.fi.muni.fi.pa165.service.service;
 
+import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
+import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import cz.muni.fi.pa165.service.BurnedCaloriesService;
-import cz.muni.fi.pa165.service.SportActivityService;
-import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
+import cz.muni.fi.pa165.service.BurnedCaloriesServiceImpl;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import java.util.List;
-import javax.inject.Inject;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertTrue;
 
 /**
  *
@@ -24,33 +29,45 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests {
 
-    @Inject
-    private SportActivityService sportActivityService;
+    @Mock
+    private SportActivityDao activityDao;
 
-    @Inject
-    private BurnedCaloriesService burnedCaloriesService;
+    @Mock
+    private BurnedCaloriesDao caloriesDao;
+
+    @InjectMocks
+    private BurnedCaloriesServiceImpl burnedCaloriesService;
 
     BurnedCalories burnedCalories;
     BurnedCalories burnedCalories2;
+
+    List<BurnedCalories> allCalories;
+
+    SportActivity sportActivity;
 
     @BeforeMethod
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        SportActivity sportActivity = new SportActivity();
+        sportActivity = new SportActivity();
+        sportActivity.setId(898L);
         sportActivity.setName("Running");
 
-        sportActivityService.create(sportActivity);
-
         burnedCalories = new BurnedCalories();
+        burnedCalories.setId(334L);
         burnedCalories.setActivity(sportActivity);
         burnedCalories.setBodyWeight(100);
         burnedCalories.setCaloriesBurned(10000);
 
         burnedCalories2 = new BurnedCalories();
+        burnedCalories2.setId(335L);
         burnedCalories2.setActivity(sportActivity);
         burnedCalories2.setBodyWeight(100);
         burnedCalories2.setCaloriesBurned(822);
+
+        allCalories = new ArrayList<>();
+        allCalories.add(burnedCalories);
+        allCalories.add(burnedCalories2);
     }
 
     /**
@@ -58,17 +75,8 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void createTest() {
-
         burnedCaloriesService.create(burnedCalories);
-        burnedCaloriesService.create(burnedCalories2);
-
-        // do we find righ ammount of activities? 
-        List<BurnedCalories> foundSportActivityList = burnedCaloriesService.findAll();
-        assertTrue(foundSportActivityList.size() >= 2);
-
-        // do we have right activities?
-        assertTrue(foundSportActivityList.contains(burnedCalories));
-        assertTrue(foundSportActivityList.contains(burnedCalories2));
+        verify(caloriesDao).create(burnedCalories);
     }
 
     /**
@@ -76,6 +84,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).create(null);
         burnedCaloriesService.create(null);
     }
 
@@ -84,11 +93,8 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void findByIdTest() {
-        burnedCaloriesService.create(burnedCalories);
-        boolean isRightBurnedCaloriesFound
-                = burnedCalories.equals(burnedCaloriesService.findById(burnedCalories.getId()));
-
-        assertTrue(isRightBurnedCaloriesFound);
+        burnedCaloriesService.findById(burnedCalories.getId());
+        verify(caloriesDao).findById(burnedCalories.getId());
     }
 
     /**
@@ -96,7 +102,21 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).findById(null);
         burnedCaloriesService.findById(null);
+    }
+
+    /**
+     * Tests finding burned calories by sport activity
+     */
+    @Test
+    public void findBySportActivityTest() {
+        when(activityDao.findSportActivity(sportActivity.getId())).thenReturn(sportActivity);
+        when(caloriesDao.findBySportActivity(sportActivity)).thenReturn(allCalories);
+        List<BurnedCalories> result = burnedCaloriesService.findBySportActivity(sportActivity.getId());
+        assertTrue(result.size() == allCalories.size());
+        assertTrue(result.contains(burnedCalories));
+        assertTrue(result.contains(burnedCalories2));
     }
 
     /**
@@ -104,12 +124,8 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void updateTest() {
-        burnedCaloriesService.create(burnedCalories);
-        burnedCalories.setCaloriesBurned(99999);
         burnedCaloriesService.update(burnedCalories);
-        BurnedCalories burnedCaloriesFound = burnedCaloriesService.findById(burnedCalories.getId());
-
-        assertEquals(burnedCaloriesFound, burnedCalories);
+        verify(caloriesDao).update(burnedCalories);
     }
 
     /**
@@ -117,6 +133,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).update(null);
         burnedCaloriesService.update(null);
     }
 
@@ -125,15 +142,9 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void deleteTest() {
-
-        burnedCaloriesService.create(burnedCalories);
-        Long burdnedCaloriesId = burnedCalories.getId();
-
-        boolean containsBeforeDelete = burnedCaloriesService.findById(burdnedCaloriesId) != null;
-        burnedCaloriesService.delete(burnedCalories);
-        boolean containsAfterDelete = burnedCaloriesService.findById(burdnedCaloriesId) != null;
-
-        assertNotEquals(containsBeforeDelete, containsAfterDelete);
+        when(caloriesDao.findById(burnedCalories.getId())).thenReturn(burnedCalories);
+        burnedCaloriesService.delete(burnedCalories.getId());
+        verify(caloriesDao).delete(burnedCalories);
     }
 
     /**
@@ -141,6 +152,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao.findById(null));
         burnedCaloriesService.delete(null);
     }
 
@@ -149,15 +161,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void findAllTest() {
-        burnedCaloriesService.create(burnedCalories);
-        burnedCaloriesService.create(burnedCalories2);
-
-        // do we find righ ammount of activities?
-        List<BurnedCalories> foundBurnedCaloriesList = burnedCaloriesService.findAll();
-        assertTrue(foundBurnedCaloriesList.size() >= 2);
-
-        // do we have right activities?
-        assertTrue(foundBurnedCaloriesList.contains(burnedCalories));
-        assertTrue(foundBurnedCaloriesList.contains(burnedCalories2));
+        burnedCaloriesService.findAll();
+        verify(caloriesDao).findAll();
     }
 }

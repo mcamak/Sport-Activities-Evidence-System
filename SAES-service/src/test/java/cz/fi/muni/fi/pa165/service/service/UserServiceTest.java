@@ -1,6 +1,5 @@
 package cz.fi.muni.fi.pa165.service.service;
 
-import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserServiceImpl;
@@ -47,12 +46,14 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         user1.setSex(Gender.MALE);
         user1.setName("František Ukažho");
         user1.setWeight(85);
+        user1.setAdmin(true);
 
         user2 = new User();
         user2.setAge(99);
         user2.setSex(Gender.MALE);
         user2.setName("Petr Močůvka");
         user2.setWeight(72);
+        user2.setAdmin(false);
 
         allUsers = new ArrayList<>();
         allUsers.add(user1);
@@ -64,7 +65,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-        userService.create(user1, "pass");
+        userService.register(user1, "pass");
         verify(userDao).createUser(user1);
     }
 
@@ -73,7 +74,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullUserTest() {
-        userService.create(null, "pass");
+        userService.register(null, "pass");
     }
 
     /**
@@ -81,7 +82,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullPassTest() {
-        userService.create(user1, null);
+        userService.register(user1, null);
     }
 
     /**
@@ -89,7 +90,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createEmptyPassTest() {
-        userService.create(user1, "");
+        userService.register(user1, "");
     }
 
     /**
@@ -111,6 +112,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(userDao).findUser(null);
         userService.findById(null);
     }
 
@@ -129,6 +131,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(userDao).updateUser(null);
         userService.update(null);
     }
 
@@ -138,7 +141,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void deleteTest() {
         user1.setId(1l);
-        userService.delete(user1);
+        when(userDao.findUser(1l)).thenReturn(user1);
+        userService.delete(user1.getId());
         verify(userDao).deleteUser(user1);
     }
 
@@ -147,6 +151,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(userDao).findUser(null);
         userService.delete(null);
     }
 
@@ -164,30 +169,16 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests finding by parameters
-     */
-    @Test
-    public void findByParametersTest() {
-
-        UserFilter userFilter = new UserFilter();
-        userFilter.setMinAge(user1.getAge() - 1);
-        userFilter.setMaxAge(user2.getAge() + 1);
-
-        when(userDao.findUsersByParameters(any(UserFilter.class))).thenReturn(allUsers);
-        assertTrue(userService.findByParameters(userFilter).size() == 2);
-    }
-
-    /**
      * Tests authenticate
      */
     @Test
     public void authenticateTest() {
         Mockito.doNothing().when(userDao).createUser(user1);
-        userService.create(user1, "password");
+        userService.register(user1, "password");
         user1.setId(1L);
 
         when(userDao.findUser(1L)).thenReturn(user1);
-        assertTrue(userService.authenticate(user1.getId(), "password"));
+        assertTrue(userService.authenticate(user1, "password"));
     }
 
     /**
@@ -196,11 +187,11 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void authenticateWithWrongPassTest() {
         Mockito.doNothing().when(userDao).createUser(user1);
-        userService.create(user1, "password");
+        userService.register(user1, "password");
         user1.setId(1L);
 
         when(userDao.findUser(1L)).thenReturn(user1);
-        assertFalse(userService.authenticate(user1.getId(), "passWrong"));
+        assertFalse(userService.authenticate(user1, "passWrong"));
     }
 
     /**
@@ -209,10 +200,22 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void authenticateWithEmptyPassTest() {
         Mockito.doNothing().when(userDao).createUser(user1);
-        userService.create(user1, "password");
+        userService.register(user1, "password");
         user1.setId(1L);
 
         when(userDao.findUser(1L)).thenReturn(user1);
-        assertFalse(userService.authenticate(user1.getId(), "passWrong"));
+        assertFalse(userService.authenticate(user1, "passWrong"));
+    }
+
+    /**
+     * Tests isAdmin
+     */
+    @Test
+    public void isAdminTest() {
+        when(userDao.findUser(user1.getId())).thenReturn(user1);
+        assertTrue(userService.isAdmin(user1.getId()));
+
+        when(userDao.findUser(user2.getId())).thenReturn(user2);
+        assertFalse(userService.isAdmin(user2.getId()));
     }
 }

@@ -2,14 +2,16 @@ package cz.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
+import cz.muni.fi.pa165.exceptions.EntityReferenceException;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
-import java.util.List;
-import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  *
@@ -33,13 +35,13 @@ public class SportActivityFacadeImpl implements SportActivityFacade {
     }
 
     @Override
-    public void update(SportActivityDTO old, String newName) {
-        sportActivityService.changeName(bms.mapTo(old, SportActivity.class), newName);
+    public void update(SportActivityDTO activity) {
+        sportActivityService.update(bms.mapTo(activity, SportActivity.class));
     }
 
     @Override
-    public void delete(Long activityId) {
-        sportActivityService.delete(sportActivityService.findById(activityId));
+    public void delete(Long activityId) throws EntityReferenceException {
+        sportActivityService.delete(activityId);
     }
 
     @Override

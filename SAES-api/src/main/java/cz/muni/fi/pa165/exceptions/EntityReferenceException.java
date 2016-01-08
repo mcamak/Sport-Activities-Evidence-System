@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.service.exceptions;
+package cz.muni.fi.pa165.exceptions;
 
 /**
  * Created by Marian Camak on 8. 1. 2016.

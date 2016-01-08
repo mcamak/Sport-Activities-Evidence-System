@@ -2,6 +2,8 @@ package cz.muni.fi.pa165.facade;
 
 import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.dto.SportActivityDTO;
+import cz.muni.fi.pa165.exceptions.EntityReferenceException;
+
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ public interface SportActivityFacade {
      * @param sportActivityCreateDTO - sport activity DTO without ID
      * @return ID of newly created sport activity
      */
-    public Long create(SportActivityCreateDTO sportActivityCreateDTO);
+    Long create(SportActivityCreateDTO sportActivityCreateDTO);
 
     /**
      * Finds sport activity with given ID
@@ -24,28 +26,26 @@ public interface SportActivityFacade {
      * @param id - if of sport activity to be found
      * @return found sport activity
      */
-    public SportActivityDTO findById(Long id);
+    SportActivityDTO findById(Long id);
 
     /**
      * Updates sport activity
      *
-     * @param old - sport activity DTO
-     * @param newName - new name of sport activity
+     * @param activity - sport activity DTO
      */
-    public void update(SportActivityDTO old, String newName);
+    void update(SportActivityDTO activity);
 
     /**
-     * Deletes sport activity with given ID
+     * Deletes sport activity with given ID and all records that have this activity set
      *
      * @param activityId - ID of activity to be deleted
      */
-    public void delete(Long activityId);
+    void delete(Long activityId) throws EntityReferenceException;
 
     /**
      * Finds all sport activities
      *
      * @return list of found activities
      */
-    public List<SportActivityDTO> findAll();
-
+    List<SportActivityDTO> findAll();
 }

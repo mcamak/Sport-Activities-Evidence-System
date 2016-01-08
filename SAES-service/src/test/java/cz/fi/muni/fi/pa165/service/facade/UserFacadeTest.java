@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fi.muni.fi.pa165.service.facade;
 
 import cz.muni.fi.pa165.dto.UserCreateDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.dto.UserLogInDTO;
 import cz.muni.fi.pa165.facade.UserFacade;
-import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.facade.UserFacadeImpl;
+import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import enums.Gender;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.aop.framework.Advised;
@@ -31,7 +27,7 @@ import org.testng.annotations.Test;
 import javax.inject.Inject;
 
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  *
@@ -42,6 +38,9 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private BeanMappingService beanMappingService;
 
     @Inject
     @InjectMocks
@@ -67,12 +66,14 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     @BeforeMethod
     public void setUpMethod() {
+        MockitoAnnotations.initMocks(this);
 
         user = new User();
         user.setAge(100);
         user.setName("Pepa");
         user.setSex(Gender.MALE);
         user.setWeight(100);
+        user.setAdmin(true);
         user.setId(12899L);
         user.setPasswordHash("kobliha");
 
@@ -102,36 +103,40 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     @Test
     public void createTest() {
         userFacade.create(userCreateDTO, "pass");
-        verify(userService).create(user, "pass");
+        verify(beanMappingService).mapTo(userCreateDTO, User.class);
+        verify(userService).register(Matchers.any(User.class), Matchers.same("pass"));
     }
 
     @Test
     public void logInTest() {
+        when(userService.findById(user.getId())).thenReturn(user);
         userFacade.logIn(userLogInDTO);
-        verify(userService).authenticate(userLogInDTO.getId(), userLogInDTO.getPassword());
-    }
-
-    @Test
-    public void changePasswordTest() {
-        userFacade.changePassword(user.getId(), user.getPasswordHash(), "kocka");
-        verify(userService).changePassword(user.getId(), user.getPasswordHash(), "kocka");
+        verify(userService).authenticate(user, userLogInDTO.getPassword());
     }
 
     @Test
     public void findByIdTest() {
+        when(userService.findById(user.getId())).thenReturn(user);
+        userFacade.findById(user.getId());
+        verify(userService).findById(user.getId());
+        verify(beanMappingService).mapTo(user, UserDTO.class);
+    }
+
+    @Test
+    public void isAdminTest() {
         Long userId = user.getId();
-        userDTO.setId(userId);
-        when(userService.findById(userId)).thenReturn(user);
-        UserDTO foundBurnedCalories = userFacade.findById(userId);
-        assertEquals(foundBurnedCalories, userDTO);
+        when(userService.isAdmin(userId)).thenReturn(true);
+        assertTrue(userFacade.isAdmin(userId));
+        verify(userService).isAdmin(userId);
     }
 
     @Test
     public void updateTest() {
-        user.setId(99L);
-        userDTO.setId(user.getId());
+        userDTO.setAge(33);
         userFacade.update(userDTO);
-        verify(userService).update(user);
+
+        verify(beanMappingService).mapTo(userDTO, User.class);
+        verify(userService).update(Matchers.any(User.class));
     }
 
     @Test
@@ -139,7 +144,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         Long userId = user.getId();
         when(userService.findById(userId)).thenReturn(user);
         userFacade.delete(userId);
-        verify(userService).delete(user);
+        verify(userService).delete(userId);
     }
 
     @Test
@@ -147,24 +152,4 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         userFacade.findAll();
         verify(userService).findAll();
     }
-
-    @Test
-    public void findByParametersTest() {
-
-        UserFilter userFilter = new UserFilter();
-        userFilter.addGender(user.getSex());
-        userFilter.setMinAge(user.getAge());
-        userFilter.setMaxAge(user.getAge());
-        userFilter.setMinWeight(user.getWeight());
-        userFilter.setMaxWeight(user.getWeight());
-
-        userFacade.findByParameters(user.getSex(),
-                user.getAge(),
-                user.getAge(),
-                user.getWeight(),
-                user.getWeight());
-
-        verify(userService).findByParameters(userFilter);
-    }
-
 }
