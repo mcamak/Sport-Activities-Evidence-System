@@ -8,6 +8,7 @@ import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
 import enums.Gender;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -72,6 +73,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         actv.setActivity(sportActivity);
         actv.setDistance(5);
         actv.setTimeSeconds(45L);
+        actv.setBurnedCalories(240);
         actv.setUser(user);
         return actv;
     }
@@ -89,7 +91,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating activity record with null parameter
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateWithNull() {
         recordDao.create(null);
     }
@@ -97,7 +99,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating record with null sport activity
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateNullActivity() {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(null);
@@ -106,13 +108,12 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         record.setUser(user);
 
         recordDao.create(record);
-
     }
 
     /**
      * Test creating record with wrong distance
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateWrongDistance() {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
@@ -127,7 +128,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating record with null user
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateNullUser() {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
@@ -136,13 +137,12 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         record.setUser(null);
 
         recordDao.create(record);
-
     }
 
     /**
      * Test deleting record with null parameter
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testDeleteNull() {
         recordDao.delete(null);
     }
@@ -225,13 +225,13 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
 
         ActivityRecord recordFound = recordDao.findActivityRecord(record.getId());
         assertEquals(recordFound.getDistance(), new Integer(15));
-        assertEquals(new Long(recordFound.getTimeSeconds()), new Long(20));
+        assertEquals(recordFound.getTimeSeconds(), new Long(20));
     }
 
     /**
      * Test updating activity with null
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateNull() {
         recordDao.update(null);
     }
@@ -239,7 +239,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating activity with null sport activity
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateNullActivity() {
         ActivityRecord record = setActivityRecord();
         recordDao.create(record);
@@ -252,7 +252,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating activity with wrong distance
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateWrongDistance() {
         ActivityRecord record = setActivityRecord();
         recordDao.create(record);
@@ -265,7 +265,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test getting activity record by null id
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testFindActivityRecordNull() {
         recordDao.findActivityRecord(null);
     }

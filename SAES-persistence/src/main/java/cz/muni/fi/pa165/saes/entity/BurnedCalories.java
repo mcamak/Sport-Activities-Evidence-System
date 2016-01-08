@@ -1,5 +1,8 @@
 package cz.muni.fi.pa165.saes.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -8,7 +11,8 @@ import java.util.Objects;
  * @author Jan S.
  */
 @Entity
-@Table(name = "BurnedCalories")
+@Getter
+@Setter
 public class BurnedCalories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,43 +20,15 @@ public class BurnedCalories {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private SportActivity activity;
-    private int bodyWeight;
-    private int caloriesBurned;
-
-    public Long getId() {
-        return id;
-    }
-
-    public SportActivity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(SportActivity activity) {
-        this.activity = activity;
-    }
-
-    public int getBodyWeight() {
-        return bodyWeight;
-    }
-
-    public void setBodyWeight(int bodyWeight) {
-        this.bodyWeight = bodyWeight;
-    }
-
-    public int getCaloriesBurned() {
-        return caloriesBurned;
-    }
-
-    public void setCaloriesBurned(int caloriesBurned) {
-        this.caloriesBurned = caloriesBurned;
-    }
+    private Integer bodyWeight;
+    private Integer caloriesBurned;
 
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 59 * hash + Objects.hashCode(this.activity);
-        hash = 59 * hash + this.bodyWeight;
-        hash = 59 * hash + this.caloriesBurned;
+        hash = 59 * hash + Objects.hashCode(this.bodyWeight);
+        hash = 59 * hash + Objects.hashCode(this.caloriesBurned);
         return hash;
     }
 
@@ -65,13 +41,13 @@ public class BurnedCalories {
             return false;
         }
         final BurnedCalories other = (BurnedCalories) obj;
-        if (!Objects.equals(this.activity, other.activity)) {
+        if (!Objects.equals(this.activity, other.getActivity())) {
             return false;
         }
-        if (this.bodyWeight != other.bodyWeight) {
+        if (!Objects.equals(this.bodyWeight, other.getBodyWeight())) {
             return false;
         }
-        if (this.caloriesBurned != other.caloriesBurned) {
+        if (!Objects.equals(this.caloriesBurned, other.getCaloriesBurned())) {
             return false;
         }
         return true;

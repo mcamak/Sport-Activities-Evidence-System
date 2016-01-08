@@ -4,6 +4,7 @@ import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import enums.Gender;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -48,7 +49,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with null argument.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNullArgument() {
         userDao.createUser(null);
     }
@@ -56,7 +57,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with null name.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNullName() {
         User u = createNewRandomUser();
         u.setName(null);
@@ -66,7 +67,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with empty name.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithEmptyName() {
         User u = createNewRandomUser();
         u.setName("");
@@ -76,7 +77,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with null password hash.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNullPasswordHash() {
         User u = createNewRandomUser();
         u.setPasswordHash(null);
@@ -86,7 +87,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with negative age.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNegativeAge() {
         User u = createNewRandomUser();
         u.setAge(-5);
@@ -96,7 +97,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with null sex.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNullSex() {
         User u = createNewRandomUser();
         u.setSex(null);
@@ -106,7 +107,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating user with negative age.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNegativeWeight() {
         User u = createNewRandomUser();
         u.setWeight(-20);
@@ -130,15 +131,15 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         User found = userDao.findUser(user.getId());
         Assert.assertEquals("Adam", found.getName());
         Assert.assertEquals("PasswordHash", found.getPasswordHash());
-        Assert.assertEquals(20, found.getAge());
+        Assert.assertEquals(new Integer(20), found.getAge());
         Assert.assertEquals(Gender.MALE, found.getSex());
-        Assert.assertEquals(70, found.getWeight());
+        Assert.assertEquals(new Integer(70), found.getWeight());
     }
     
     /**
      * Test get user with null ID.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testGetUserWithNullId() {
         userDao.findUser(null);
     }
@@ -186,7 +187,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test delete user with null parameter.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testDeleteUserWithNull() {
         userDao.deleteUser(null);
     }
@@ -194,7 +195,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test delete user with null ID.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testDeleteUserWithNullId() {
         User u = createNewRandomUser();
         userDao.deleteUser(u);
@@ -203,7 +204,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test deleting user without ID.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testDeleteWithoutId() {
         User user = new User();
         userDao.deleteUser(user);
@@ -225,7 +226,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with null ID.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithoutId() {
         User user = createNewRandomUser();
         userDao.updateUser(user);
@@ -234,7 +235,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with null name.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithNullName() {
         User user = createNewRandomUser();
         userDao.createUser(user);
@@ -246,7 +247,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with null password hash.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithNullPasswordHash() {
         User user = createNewRandomUser();
         userDao.createUser(user);
@@ -258,7 +259,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with empty name.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithEmptyName() {
         User user = createNewRandomUser();
         userDao.createUser(user);
@@ -270,7 +271,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with null sex.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithNullSex() {
         User user = createNewRandomUser();
         userDao.createUser(user);
@@ -282,7 +283,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with negative age.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithNegativeAge() {
         User user = createNewRandomUser();
         userDao.createUser(user);
@@ -294,7 +295,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating user with negative weight.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateUserWithNegativeWeight() {
         User user = createNewRandomUser();
         userDao.createUser(user);

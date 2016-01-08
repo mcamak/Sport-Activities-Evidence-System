@@ -5,6 +5,7 @@ import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -45,7 +46,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating null sport activity
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateSportActivityNull(){
         sportActivityDao.createSportActivity(null);
     }
@@ -63,7 +64,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test deleting null sport activity
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void deleteSportActivityNull(){
         sportActivityDao.deleteSportActivity(null);
     }
@@ -83,7 +84,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test find sport activity with null
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testFindSportActivityNull(){
         sportActivityDao.findSportActivity(null);
     }
@@ -105,7 +106,7 @@ public class SportActivityDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating null
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateSportActivityNull(){
         sportActivityDao.updateSportActivity(null);
     }

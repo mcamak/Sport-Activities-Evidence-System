@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * DAO for burned calories.
  *
- * @author Tomas Effenberger
+ * @author Marian Camak
  */
 public interface BurnedCaloriesDao {
 

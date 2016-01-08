@@ -5,6 +5,7 @@ import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -60,26 +61,15 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating burned calory with null calory.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateBurnedCaloryWithNullParameter() {
         burnCalDao.create(null);
     }
 
     /**
-     * Test creating burned calory with null sport activity.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testCreateBurnedCaloryWithNullSportActivity() {
-        BurnedCalories bCal = createNewRandomBurnedCalory();
-        bCal.setActivity(null);
-
-        burnCalDao.create(bCal);
-    }
-
-    /**
      * Test creating burned calory with negative body weight.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateBurnedCaloryWithNegativeBodyWeight() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         bCal.setBodyWeight(-50);
@@ -90,7 +80,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test creating burned calory with negative calories burned.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testCreateBurnedCaloryWithNegativeCaloriesBurned() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         bCal.setCaloriesBurned(-50);
@@ -133,7 +123,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test deleting burned category with null category .
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testDeleteBurnedCaloryWithNullCategory() {
         burnCalDao.delete(null);
     }
@@ -141,7 +131,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test deleting burned category with null category id.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testDeleteBurnedCaloryWithNullId() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.delete(bCal);
@@ -189,7 +179,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test finding burned category with null ID.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testFindBurnedCategoryWithNullId() {
         burnCalDao.findById(null);
     }
@@ -236,14 +226,14 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
         burnCalDao.update(bCal);
 
         BurnedCalories found = burnCalDao.findById(bCal.getId());
-        assertEquals(70, found.getBodyWeight());
-        assertEquals(40, found.getCaloriesBurned());
+        assertEquals(new Integer(70), found.getBodyWeight());
+        assertEquals(new Integer(40), found.getCaloriesBurned());
     }
 
     /**
      * Test updating burned category with null category.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateBurnedCategoryWithNullCategory() {
         burnCalDao.update(null);
     }
@@ -251,7 +241,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating burned category with null category id.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateBurnedCategoryWithNullCategoryId() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.update(bCal);
@@ -260,7 +250,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating burned category with null sport activity.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateBurnedCategoryWithNullSportActivity() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
@@ -273,7 +263,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating burned category with negative body weight.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateBurnedCategoryWithNegativeBodyWeight() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);
@@ -286,7 +276,7 @@ public class BurnedCaloriesDaoTest extends AbstractTestNGSpringContextTests {
     /**
      * Test updating burned category with negative calories burned.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessException.class)
     public void testUpdateBurnedCategoryWithNegativeCaloriesBurned() {
         BurnedCalories bCal = createNewRandomBurnedCalory();
         burnCalDao.create(bCal);

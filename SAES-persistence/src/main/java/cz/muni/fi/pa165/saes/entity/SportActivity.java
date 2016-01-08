@@ -1,7 +1,12 @@
 package cz.muni.fi.pa165.saes.entity;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Entity class for representation of a sport activity.
@@ -9,26 +14,15 @@ import java.io.Serializable;
  * @author Tomas Effenberger
  */
 @Entity
-@Table(name = "SportActivity")
-public class SportActivity implements Serializable {
+@Getter
+@Setter
+public class SportActivity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -48,5 +42,4 @@ public class SportActivity implements Serializable {
         hash = 73 * hash + name.hashCode();
         return hash;
     }
-
 }

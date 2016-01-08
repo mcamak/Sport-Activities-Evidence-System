@@ -25,9 +25,9 @@ public class ActivityRecord {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    private long timeSeconds;
+    private Long timeSeconds;
     private Integer distance;
-    private int burnedCalories;
+    private Integer burnedCalories;
 
     @Override
     public int hashCode() {

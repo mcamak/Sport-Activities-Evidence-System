@@ -1,6 +1,8 @@
 package cz.muni.fi.pa165.saes.entity;
 
 import enums.Gender;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,7 +12,9 @@ import java.util.Objects;
  * @author Barbora B. Entity of user - name, age, weight and sex
  */
 @Entity
-@Table(name = "users") // user is a reserved word
+@Getter
+@Setter
+@Table(name = "users") // user is a reserved word, have to change the table name
 public class User {
 
     @Id
@@ -22,56 +26,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender sex;
 
-    private int age;
-    private int weight;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public Gender getSex() {
-        return sex;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public void setSex(Gender sex) {
-        this.sex = sex;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+    private Integer age;
+    private Integer weight;
+    private boolean admin = false;
 
     @Override
     public int hashCode() {
@@ -81,6 +38,7 @@ public class User {
         hash = 97 * hash + Objects.hashCode(this.sex);
         hash = 97 * hash + Objects.hashCode(this.age);
         hash = 97 * hash + Objects.hashCode(this.weight);
+        hash = 97 * hash + Objects.hashCode(this.admin);
         return hash;
     }
 
@@ -93,16 +51,19 @@ public class User {
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.name, other.getName())) {
             return false;
         }
-        if (this.sex != other.sex) {
+        if (this.sex != other.getSex()) {
             return false;
         }
-        if (!Objects.equals(this.age, other.age)) {
+        if (!Objects.equals(this.age, other.getAge())) {
             return false;
         }
-        if (!Objects.equals(this.weight, other.weight)) {
+        if (!Objects.equals(this.weight, other.getWeight())) {
+            return false;
+        }
+        if (this.admin != other.isAdmin()) {
             return false;
         }
         return true;

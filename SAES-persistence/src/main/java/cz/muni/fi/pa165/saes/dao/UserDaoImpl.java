@@ -21,26 +21,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User is null. ");
-        }
+        checkUser(user);
         if (user.getId() != null) {
             throw new IllegalArgumentException("User ID is not null. User is already stored in DB. ");
-        }
-        if (user.getName() == null || user.getName().isEmpty()) {
-            throw new IllegalArgumentException("User name is null or empty. ");
-        }
-        if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()) {
-            throw new IllegalArgumentException("Password hash is null or empty. ");
-        }
-        if (user.getAge() < 0) {
-            throw new IllegalArgumentException("User age is negative. ");
-        }
-        if (user.getSex() == null) {
-            throw new IllegalArgumentException("Gender of user is null. ");
-        }
-        if (user.getWeight() < 0) {
-            throw new IllegalArgumentException("User bodyweight is lower than zero. ");
         }
         em.persist(user);
     }
@@ -71,11 +54,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User is null. ");
-        }
+        checkUser(user);
         if (user.getId() == null) {
             throw new IllegalArgumentException("User ID is null. First create an user. ");
+        }
+        em.merge(user);
+    }
+
+    private void checkUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User is null. ");
         }
         if (user.getName() == null || user.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
@@ -83,15 +71,20 @@ public class UserDaoImpl implements UserDao {
         if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()) {
             throw new IllegalArgumentException("Password hash is null or empty. ");
         }
+        if (user.getAge() == null) {
+            throw new IllegalArgumentException("User age is null. ");
+        }
         if (user.getAge() < 0) {
             throw new IllegalArgumentException("User age is negative. ");
         }
         if (user.getSex() == null) {
             throw new IllegalArgumentException("Gender of user is null. ");
         }
+        if (user.getWeight() == null) {
+            throw new IllegalArgumentException("User bodyweight is null. ");
+        }
         if (user.getWeight() < 0) {
             throw new IllegalArgumentException("User bodyweight is lower than zero. ");
         }
-        em.merge(user);
     }
 }

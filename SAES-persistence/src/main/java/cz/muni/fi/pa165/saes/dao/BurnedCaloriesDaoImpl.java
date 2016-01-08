@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * Implementation of BurnedCaloriesDao
  *
- * @author Tomas Effenberger
+ * @author Marian Camak
  */
-@Repository
 @Transactional
+@Repository
 public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
 
     @PersistenceContext
@@ -23,22 +23,10 @@ public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
 
     @Override
     public void create(BurnedCalories burnedCalories) {
-        if (burnedCalories == null) {
-            throw new IllegalArgumentException("BurnedCalories is null. ");
-        }
+        checkBurnedCalories(burnedCalories);
         if (burnedCalories.getId() != null) {
             throw new IllegalArgumentException("BurnedCalories's ID is not null, object is already persisted in DB. ");
         }
-        if (burnedCalories.getActivity() == null) {
-            throw new IllegalArgumentException("BurnedCalories's sport activity is null. ");
-        }
-        if (burnedCalories.getBodyWeight() < 0) {
-            throw new IllegalArgumentException("BurnedCalories's body weight is negative. ");
-        }
-        if (burnedCalories.getCaloriesBurned() < 0) {
-            throw new IllegalArgumentException("BurnedCalories's calories burned is negative. ");
-        }
-
         em.persist(burnedCalories);
     }
 
@@ -84,20 +72,9 @@ public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
 
     @Override
     public void update(BurnedCalories burnedCalories) {
-        if (burnedCalories == null) {
-            throw new IllegalArgumentException("BurnedCalories is null. ");
-        }
+        checkBurnedCalories(burnedCalories);
         if (burnedCalories.getId() == null) {
             throw new IllegalArgumentException("BurnedCalories's ID is null, first create object. ");
-        }
-        if (burnedCalories.getActivity() == null) {
-            throw new IllegalArgumentException("BurnedCalories's sport activity is null. ");
-        }
-        if (burnedCalories.getBodyWeight() < 0) {
-            throw new IllegalArgumentException("BurnedCalories's body weight is negative. ");
-        }
-        if (burnedCalories.getCaloriesBurned() < 0) {
-            throw new IllegalArgumentException("BurnedCalories's calories burned is negative. ");
         }
         em.merge(burnedCalories);
     }
@@ -107,5 +84,26 @@ public class BurnedCaloriesDaoImpl implements BurnedCaloriesDao {
         return em.createQuery("SELECT b FROM BurnedCalories b",
                 BurnedCalories.class)
                 .getResultList();
+    }
+
+    private void checkBurnedCalories(BurnedCalories calories) {
+        if (calories == null) {
+            throw new IllegalArgumentException("BurnedCalories is null. ");
+        }
+        if (calories.getActivity() == null) {
+            throw new IllegalArgumentException("BurnedCalories's sport activity is null. ");
+        }
+        if (calories.getBodyWeight() == null) {
+            throw new IllegalArgumentException("BurnedCalories's body weight is null. ");
+        }
+        if (calories.getBodyWeight() < 0) {
+            throw new IllegalArgumentException("BurnedCalories's body weight is negative. ");
+        }
+        if (calories.getCaloriesBurned() == null) {
+            throw new IllegalArgumentException("BurnedCalories's calories burned is null. ");
+        }
+        if (calories.getCaloriesBurned() < 0) {
+            throw new IllegalArgumentException("BurnedCalories's calories burned is negative. ");
+        }
     }
 }
