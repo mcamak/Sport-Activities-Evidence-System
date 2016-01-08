@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-public class ActivityRecord {
+public class ActivityRecord implements Comparable<ActivityRecord> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,5 +65,12 @@ public class ActivityRecord {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(ActivityRecord o) {
+        return this.activity.compareTo(o.getActivity()) != 0 ?
+                this.activity.compareTo(o.getActivity()) :
+                this.burnedCalories.compareTo(o.getBurnedCalories());
     }
 }

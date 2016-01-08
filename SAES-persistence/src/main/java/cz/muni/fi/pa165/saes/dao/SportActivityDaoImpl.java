@@ -31,7 +31,10 @@ public class SportActivityDaoImpl implements SportActivityDao {
 
     @Override
     public void deleteSportActivity(SportActivity activity) {
-        em.remove(em.contains(activity) ? activity : em.merge(activity));
+        if (activity == null) {
+            throw new IllegalArgumentException("Sport activity is null. ");
+        }
+        em.remove(activity);
     }
 
     @Override
@@ -45,6 +48,9 @@ public class SportActivityDaoImpl implements SportActivityDao {
 
     @Override
     public SportActivity findSportActivity(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
         return em.find(SportActivity.class, id);
     }
 

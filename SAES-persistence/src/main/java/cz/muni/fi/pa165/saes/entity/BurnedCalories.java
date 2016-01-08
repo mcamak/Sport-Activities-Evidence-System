@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-public class BurnedCalories {
+public class BurnedCalories implements Comparable<BurnedCalories> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,5 +51,12 @@ public class BurnedCalories {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(BurnedCalories o) {
+        return this.activity.compareTo(o.getActivity()) != 0 ?
+                this.activity.compareTo(o.getActivity()) :
+                this.bodyWeight.compareTo(o.getBodyWeight());
     }
 }

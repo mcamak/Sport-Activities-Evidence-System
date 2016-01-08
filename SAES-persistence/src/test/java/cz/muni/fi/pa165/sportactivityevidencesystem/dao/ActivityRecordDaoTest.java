@@ -89,6 +89,17 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
+     * Test creating activity record with null distance
+     */
+    @Test
+    public void testCreateWithNullDistance() {
+        ActivityRecord record = setActivityRecord();
+        record.setDistance(null);
+        recordDao.create(record);
+        assertNotNull(record.getId());
+    }
+
+    /**
      * Test creating activity record with null parameter
      */
     @Test(expectedExceptions = DataAccessException.class)

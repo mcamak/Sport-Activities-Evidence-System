@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-public class SportActivity {
+public class SportActivity implements Comparable<SportActivity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +41,10 @@ public class SportActivity {
         int hash = 7;
         hash = 73 * hash + name.hashCode();
         return hash;
+    }
+
+    @Override
+    public int compareTo(SportActivity o) {
+        return this.name.compareTo(o.getName());
     }
 }

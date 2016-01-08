@@ -15,7 +15,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "users") // user is a reserved word, have to change the table name
-public class User {
+public class User implements Comparable<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class User {
 
     private Integer age;
     private Integer weight;
-    private boolean admin = false;
+    private boolean admin;
 
     @Override
     public int hashCode() {
@@ -67,5 +67,10 @@ public class User {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.name.compareTo(o.getName());
     }
 }
