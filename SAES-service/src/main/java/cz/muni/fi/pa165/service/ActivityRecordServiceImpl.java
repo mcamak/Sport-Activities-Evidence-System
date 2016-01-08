@@ -4,16 +4,17 @@ import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.User;
-import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
-import java.util.List;
-import javax.inject.Inject;
+import cz.muni.fi.pa165.service.exceptions.SaesServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Implementation of service for sport activity records.
  *
- * @author Tomas Effenberger
+ * @author Marian Camak
  */
 @Service
 @Transactional
@@ -26,63 +27,39 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     private UserDao userDao;
 
     @Override
-    public ActivityRecord create(ActivityRecord activityRecord) {
-        try {
-            activityRecordDao.create(activityRecord);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when creating activity record. ", e);
-        }
-
-        return activityRecord;
+    public void create(ActivityRecord activityRecord) {
+        activityRecordDao.create(activityRecord);
     }
 
     @Override
-    public void delete(ActivityRecord activityRecord) {
-        try {
-            activityRecordDao.delete(activityRecord);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when deleteting activity record. ", e);
+    public void delete(Long id) {
+        ActivityRecord record = activityRecordDao.findActivityRecord(id);
+        if (record != null) {
+            activityRecordDao.delete(record);
         }
     }
 
     @Override
     public ActivityRecord findById(Long id) {
-        try {
-            return activityRecordDao.findActivityRecord(id);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when finding activity record. ", e);
+        return activityRecordDao.findActivityRecord(id);
+    }
+
+    @Override
+    public List<ActivityRecord> findByUser(Long id) {
+        User user = userDao.findUser(id);
+        if (user == null) {
+            throw new SaesServiceException("User with ID: " + id + " wasn't found. ");
         }
+        return activityRecordDao.findRecordsByUser(user);
     }
 
     @Override
     public void update(ActivityRecord activityRecord) {
-        try {
-            activityRecordDao.update(activityRecord);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when finding activity record. ", e);
-        }
+        activityRecordDao.update(activityRecord);
     }
 
     @Override
     public List<ActivityRecord> findAll() {
-        try {
-            return activityRecordDao.findAll();
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when finding all activity records. ", e);
-        }
+        return activityRecordDao.findAll();
     }
-
-    @Override
-    public void removeUserFromActivityRecord(Long activityId, Long userId) {
-        try {
-            ActivityRecord record = activityRecordDao.findActivityRecord(activityId);
-            User user = userDao.findUser(userId);
-            record.removeUser(user);
-            activityRecordDao.update(record);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when removing user from activity record. ", e);
-        }
-
-    }
-
 }

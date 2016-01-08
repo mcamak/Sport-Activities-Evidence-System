@@ -1,13 +1,14 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Interface to service for sport activity records.
  *
- * @author Tomas Effenberger
+ * @author Marian Camak
  */
 @Service
 public interface ActivityRecordService {
@@ -15,46 +16,44 @@ public interface ActivityRecordService {
     /**
      * Creates new activity record
      *
-     * @param activityRecord
-     * @return ID of newly created activity record
+     * @param activityRecord record to be created
      */
-    public ActivityRecord create(ActivityRecord activityRecord);
+    void create(ActivityRecord activityRecord);
 
     /**
      * Finds activity record with given ID
      *
-     * @param id
+     * @param id of activity
      * @return found activity record
      */
-    public ActivityRecord findById(Long id);
+    ActivityRecord findById(Long id);
+
+    /**
+     * Finds activity records of an user
+     *
+     * @param id of user
+     * @return found activity records of the user
+     */
+    List<ActivityRecord> findByUser(Long id);
 
     /**
      * Updates given activity record
      *
-     * @param activityRecord
+     * @param activityRecord to be updated
      */
-    public void update(ActivityRecord activityRecord);
+    void update(ActivityRecord activityRecord);
 
     /**
      * Deletes given activity record
      *
-     * @param activityRecord
+     * @param id of the record to be deleted
      */
-    public void delete(ActivityRecord activityRecord);
+    void delete(Long id);
 
     /**
      * Finds all activity records
      *
      * @return list of found activity records
      */
-    public List<ActivityRecord> findAll();
-
-    /**
-     * Removes user from given activity record
-     *
-     * @param userId - ID of user to be removed from activity record
-     * @param activityId - ID of record from which user will be removed
-     */
-    public void removeUserFromActivityRecord(Long activityId, Long userId);
-
+    List<ActivityRecord> findAll();
 }

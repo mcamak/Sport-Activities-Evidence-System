@@ -1,10 +1,7 @@
 package cz.muni.fi.pa165.service;
 
-import cz.muni.fi.pa165.saes.UserFilter;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
-import cz.muni.fi.pa165.service.exceptions.SaesDataAccessException;
-import cz.muni.fi.pa165.service.exceptions.SaesServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,113 +23,42 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public Long create(User user, String password) {
-        if (user == null) {
-            throw new IllegalArgumentException("User is null. ");
-        }
-        if (user.getId() != null) {
-            throw new IllegalArgumentException("User ID is not null. ");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Password is not null or empty. ");
-        }
-        try {
-            user.setPasswordHash(createHash(password));
-            userDao.createUser(user);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when creating user. ", e);
-        }
-
-        return user.getId();
+    public void register(User user, String password) {
+        user.setPasswordHash(createHash(password));
+        userDao.createUser(user);
     }
 
     @Override
-    public boolean authenticate(Long userId, String password) {
-        if (userId == null) {
-            throw new IllegalArgumentException("User id is null. ");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Password is null or empty8. ");
-        }
-        User user = findById(userId);
+    public boolean authenticate(User user, String password) {
         return validatePassword(password, user.getPasswordHash());
     }
 
     @Override
-    public void changePassword(Long userId, String oldPassword, String newPassword) {
-        User user = findById(userId);
-        if (validatePassword(oldPassword, user.getPasswordHash())) {
-            user.setPasswordHash(createHash(newPassword));
-
-            try {
-                userDao.updateUser(user);
-            } catch (Exception e) {
-                throw new SaesDataAccessException("Failed when changing password of user. ", e);
-            }
-        } else {
-            throw new SaesServiceException("Your old password doesn't match with stored password. ");
-        }
+    public boolean isAdmin(User u) {
+        return findById(u.getId()).isAdmin();
     }
 
     @Override
-    public void delete(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User is null. ");
-        }
-        if (user.getId() == null) {
-            throw new IllegalArgumentException("User ID is null. Cannot be removed. ");
-        }
-        try {
+    public void delete(Long id) {
+        User user = userDao.findUser(id);
+        if (user != null) {
             userDao.deleteUser(user);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when deleting user. ", e);
         }
     }
 
     @Override
     public User findById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID is null. ");
-        }
-        try {
-            return userDao.findUser(id);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when finding user. ", e);
-        }
+        return userDao.findUser(id);
     }
 
     @Override
     public void update(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User is null. ");
-        }
-        if (user.getId() == null) {
-            throw new IllegalArgumentException("User ID is null. Persist user first. ");
-        }
-        User old = userDao.findUser(user.getId());
-        try {
-            userDao.updateUser(user);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when updating user. ", e);
-        }
+        userDao.updateUser(user);
     }
 
     @Override
     public List<User> findAll() {
-        try {
-            return userDao.findAllUsers();
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when finding all users. ", e);
-        }
-    }
-
-    @Override
-    public List<User> findByParameters(UserFilter filter) {
-        try {
-            return userDao.findUsersByParameters(filter);
-        } catch (Exception e) {
-            throw new SaesDataAccessException("Failed when finding user by parameters. ", e);
-        }
+        return userDao.findAllUsers();
     }
 
     private static String createHash(String password) {

@@ -1,8 +1,10 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.entity.SportActivity;
-import java.util.List;
+import cz.muni.fi.pa165.service.exceptions.EntityReferenceException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author MajoCAM
@@ -13,39 +15,40 @@ public interface SportActivityService {
     /**
      * Creates new sport activity
      *
-     * @param activity
+     * @param activity to be created
      * @return ID of newly created activity
      */
-    public SportActivity create(SportActivity activity);
+    SportActivity create(SportActivity activity);
 
     /**
      * Finds sport activity with given ID
      *
-     * @param id
+     * @param id of the activity
      * @return found sport activity
      */
-    public SportActivity findById(Long id);
+    SportActivity findById(Long id);
 
     /**
-     * Changes name of activity
+     * Update activity
      *
-     * @param activity
-     * @param newName
+     * @param activity to be updated
      */
-    public void changeName(SportActivity activity, String newName);
+    void update(SportActivity activity);
 
     /**
-     * Deletes sport activity
+     * Delete sport activity. Throws {@link EntityReferenceException}
+     * if there exist a record referencing this activity.
      *
-     * @param activity
+     * @param id id of activity to be deleted
+     * @throws EntityReferenceException when there exist a record with this sport activity
      */
-    public void delete(SportActivity activity);
+    void delete(Long id) throws EntityReferenceException;
 
     /**
      * Finds all sport activities
      *
      * @return list of all found sport activities
      */
-    public List<SportActivity> findAll();
+    List<SportActivity> findAll();
 
 }

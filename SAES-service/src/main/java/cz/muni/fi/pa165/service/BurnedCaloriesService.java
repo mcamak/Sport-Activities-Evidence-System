@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  *
@@ -19,37 +15,44 @@ public interface BurnedCaloriesService {
     /**
      * create burned calories
      *
-     * @param burnedCalories
+     * @param burnedCalories to be created
      */
-    public void create(BurnedCalories burnedCalories);
+    void create(BurnedCalories burnedCalories);
 
     /**
      * find burned calories by id
      *
-     * @param id
+     * @param id of the burned calory
      * @return burned calories with given id
      */
-    public BurnedCalories findById(Long id);
+    BurnedCalories findById(Long id);
+
+    /**
+     * find burned calories by sport activity
+     *
+     * @param activityId id of sport activity
+     * @return burned calories with given id
+     */
+    List<BurnedCalories> findBySportActivity(Long activityId);
 
     /**
      * update burned calories
      *
-     * @param burnedCalories
+     * @param burnedCalories to be updated
      */
-    public void update(BurnedCalories burnedCalories);
+    void update(BurnedCalories burnedCalories);
 
     /**
      * delete burned calories
      *
-     * @param burnedCalories
+     * @param id id of the burned calories
      */
-    public void delete(BurnedCalories burnedCalories);
+    void delete(Long id);
 
     /**
      * finds all records for burned calories
      *
      * @return list of all records
      */
-    public List<BurnedCalories> findAll();
-
+    List<BurnedCalories> findAll();
 }
