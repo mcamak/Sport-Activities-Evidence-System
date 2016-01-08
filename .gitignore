@@ -2,6 +2,7 @@
 *.log
 
 /SAES-api/target/*
+/SAES-data/target/*
 /SAES-rest/target/*
 /SAES-service/target/*
 /SAES-spring-mvc/target/*
