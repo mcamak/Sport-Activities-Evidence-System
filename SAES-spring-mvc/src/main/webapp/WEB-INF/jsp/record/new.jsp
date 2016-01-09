@@ -10,11 +10,11 @@
     <form:form method="post" action="${pageContext.request.contextPath}/record/new"
                modelAttribute="recordCreate" cssClass="form-horizontal">
         <div class="form-group">
-            <form:label path="activity" cssClass="col-sm-2 control-label">currency</form:label>
+            <form:label path="activity" cssClass="col-sm-2 control-label">Sport activity</form:label>
             <div class="col-sm-10">
                 <form:select path="activity" cssClass="form-control">
                     <c:forEach items="${activities}" var="c">
-                        <form:option value="${c}">${c}</form:option>
+                        <form:option value="${c.id}">${c}</form:option>
                     </c:forEach>
                 </form:select>
                 <form:errors path="activities" cssClass="error"/>
@@ -32,17 +32,6 @@
             <div class="col-sm-10">
                 <form:input path="distance" cssClass="form-control"/>
                 <form:errors path="distance" cssClass="help-block"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <form:label path="userId" cssClass="col-sm-2 control-label">Users</form:label>
-            <div class="col-sm-10">
-                <form:select path="userId" cssClass="form-control">
-                    <c:forEach items="${users}" var="c">
-                        <form:option value="${c.id}">${c.name}</form:option>
-                    </c:forEach>
-                </form:select>
-                <p class="help-block"><form:errors path="userId" cssClass="error"/></p>
             </div>
         </div>
 

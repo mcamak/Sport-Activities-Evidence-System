@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.mvc.controllers;
 
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
+import cz.muni.fi.pa165.dto.ActivityRecordDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import org.springframework.context.annotation.Import;
@@ -112,6 +113,30 @@ public class ActivityRecordController {
     public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
         recordFacade.delete(id);
         redirectAttributes.addFlashAttribute("alert_success", "Activity record '" + id + "' was deleted. ");
+        return "redirect:" + uriBuilder.path("/record/list").toUriString();
+    }
+
+    /**
+     * Updates sport activity
+     *
+     * @param model data to display
+     * @return JSP page
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(@Valid @ModelAttribute("recordUpdate") ActivityRecordDTO formBean, BindingResult bindingResult,
+                         Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+
+        if (bindingResult.hasErrors()) {
+            for (ObjectError ge : bindingResult.getGlobalErrors()) {
+                model.addAttribute(ge.getObjectName() + "_error", true);
+            }
+            for (FieldError fe : bindingResult.getFieldErrors()) {
+                model.addAttribute(fe.getField() + "_error", true);
+            }
+            return "category/new";
+        }
+        Long id = recordFacade.create(formBean);
+        redirectAttributes.addFlashAttribute("alert_success", "Activity record " + id + " was created. ");
         return "redirect:" + uriBuilder.path("/record/list").toUriString();
     }
 }

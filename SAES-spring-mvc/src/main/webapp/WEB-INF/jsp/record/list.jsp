@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <my:pagetemplate title="Activity records">
 <jsp:attribute name="body">
@@ -18,19 +19,36 @@
         <tr>
             <th>Id</th>
             <th>Sport activity</th>
-            <th>Distance</th>
+            <th>Burned calories</th>
             <th>Time</th>
+            <th>Distance</th>
+            <th>Operations</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${records}" var="record">
-            <tr>
-                <td>${record.id}</td>
-                <td><c:out value="${record.activity}"/></td>
-                <td><c:out value="${record.distance}"/></td>
-                <td><c:out value="${record.timeSeconds}"/></td>
-                <td>
-                    <my:a href="/record/view/${record.id}" class="btn btn-primary">View</my:a>
+            <tr class="tableRow">
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                    <c:out value="${record.id}"/>
+                </td>
+                <sec:authorize access="hasAnyRole('ADMIN')">
+                    <td onclick="location.href = '${pageContext.request.contextPath}/activity/view/${record.activity.id}';">
+                        <c:out value="${record.activity.name}"/>
+                    </td>
+                </sec:authorize>
+                <sec:authorize access="hasAnyRole('USER')">
+                    <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                        <c:out value="${record.activity.name}"/>
+                    </td>
+                </sec:authorize>
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                    <c:out value="${record.burnedCalories}"/>
+                </td>
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                    <c:out value="${record.distance}"/>
+                </td>
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                    <c:out value="${record.timeSeconds}"/>
                 </td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/record/delete/${record.id}">
