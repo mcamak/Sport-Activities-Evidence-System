@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeMethod;
@@ -44,14 +45,14 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         user1 = new User();
         user1.setAge(21);
         user1.setSex(Gender.MALE);
-        user1.setName("František Ukažho");
+        user1.setUsername("František Ukažho");
         user1.setWeight(85);
         user1.setAdmin(true);
 
         user2 = new User();
         user2.setAge(99);
         user2.setSex(Gender.MALE);
-        user2.setName("Petr Močůvka");
+        user2.setUsername("Petr Močůvka");
         user2.setWeight(72);
         user2.setAdmin(false);
 
@@ -112,7 +113,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(userDao).findUser(null);
+        Mockito.doThrow(DataAccessException.class).when(userDao).findUser(null);
         userService.findById(null);
     }
 
@@ -131,7 +132,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(userDao).updateUser(null);
+        Mockito.doThrow(DataAccessException.class).when(userDao).updateUser(null);
         userService.update(null);
     }
 
@@ -151,7 +152,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(userDao).findUser(null);
+        Mockito.doThrow(DataAccessException.class).when(userDao).findUser(null);
         userService.delete(null);
     }
 
@@ -212,6 +213,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void isAdminTest() {
+        user1.setId(66L);
+        user2.setId(67L);
         when(userDao.findUser(user1.getId())).thenReturn(user1);
         assertTrue(userService.isAdmin(user1.getId()));
 

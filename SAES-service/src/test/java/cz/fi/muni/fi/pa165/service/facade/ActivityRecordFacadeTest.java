@@ -83,11 +83,11 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
         user.setAge(25);
         user.setWeight(85);
         user.setSex(Gender.MALE);
-        user.setName("Peter Konvicka");
+        user.setUsername("Peter Konvicka");
 
         userDTO = new UserDTO();
         userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
+        userDTO.setUsername(user.getUsername());
         userDTO.setSex(user.getSex());
         userDTO.setWeight(user.getWeight());
         userDTO.setAge(user.getWeight());

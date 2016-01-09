@@ -17,8 +17,8 @@ public class UserCreateDTO {
 
     @NotNull
     @Size(min = 3, max = 50)
-    @Pattern(regexp="\\([A-zÀ-ÿ]{3,}\\s\\?\\)+")
-    String name;
+    @Pattern(regexp = "[A-z0-9]{3,}")
+    String username;
 
     @NotNull
     Gender sex;

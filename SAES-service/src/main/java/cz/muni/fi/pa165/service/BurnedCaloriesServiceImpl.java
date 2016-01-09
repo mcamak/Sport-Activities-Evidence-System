@@ -25,11 +25,17 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
 
     @Override
     public void create(BurnedCalories calories) {
+        if (calories == null) {
+            throw new IllegalArgumentException("Burned calories is null. ");
+        }
         burnedCaloriesDao.create(calories);
     }
 
     @Override
     public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
         BurnedCalories calories = burnedCaloriesDao.findById(id);
         if (calories != null) {
             burnedCaloriesDao.delete(calories);
@@ -38,16 +44,25 @@ public class BurnedCaloriesServiceImpl implements BurnedCaloriesService {
 
     @Override
     public void update(BurnedCalories calories) {
+        if (calories == null) {
+            throw new IllegalArgumentException("Burned calories is null. ");
+        }
         burnedCaloriesDao.update(calories);
     }
 
     @Override
     public BurnedCalories findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
         return burnedCaloriesDao.findById(id);
     }
 
     @Override
     public List<BurnedCalories> findBySportActivity(Long activityId) {
+        if (activityId == null) {
+            throw new IllegalArgumentException("Sport activity ID is null. ");
+        }
         SportActivity activity = sportActivityDao.findSportActivity(activityId);
         if (activity == null) {
             throw new SaesServiceException("Sport activity with ID: " + activityId + " was not found. ");

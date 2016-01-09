@@ -48,6 +48,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User findUserByName(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username is null or empty. ");
+        }
+        return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
+    }
+
+    @Override
     public List<User> findAllUsers() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
@@ -65,7 +75,7 @@ public class UserDaoImpl implements UserDao {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
-        if (user.getName() == null || user.getName().trim().isEmpty()) {
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
         }
         if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()) {

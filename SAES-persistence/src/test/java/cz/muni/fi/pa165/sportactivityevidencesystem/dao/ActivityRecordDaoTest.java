@@ -55,7 +55,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         activityDao.createSportActivity(sportActivity);
 
         user = new User();
-        user.setName("Peter");
+        user.setUsername("Peter");
         user.setPasswordHash("passwordHash");
         user.setAge(35);
         user.setSex(Gender.MALE);

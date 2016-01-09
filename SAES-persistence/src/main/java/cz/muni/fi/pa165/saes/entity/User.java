@@ -20,7 +20,7 @@ public class User implements Comparable<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String username;
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -33,7 +33,7 @@ public class User implements Comparable<User> {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.username);
         hash = 97 * hash + Objects.hashCode(this.passwordHash);
         hash = 97 * hash + Objects.hashCode(this.sex);
         hash = 97 * hash + Objects.hashCode(this.age);
@@ -51,7 +51,7 @@ public class User implements Comparable<User> {
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.name, other.getName())) {
+        if (!Objects.equals(this.username, other.getUsername())) {
             return false;
         }
         if (this.sex != other.getSex()) {
@@ -71,6 +71,6 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo(User o) {
-        return this.name.compareTo(o.getName());
+        return this.username.compareTo(o.getUsername());
     }
 }

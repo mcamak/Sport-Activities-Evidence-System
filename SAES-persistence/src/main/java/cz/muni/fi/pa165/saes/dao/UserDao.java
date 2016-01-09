@@ -35,6 +35,14 @@ public interface UserDao {
     User findUser(Long id);
 
     /**
+     * Searches for User by his username
+     *
+     * @param username - id of the User stored in database
+     * @return retrieved user
+     */
+    User findUserByName(String username);
+
+    /**
      * Retrieves a collection of all users
      *
      * @return collection of users

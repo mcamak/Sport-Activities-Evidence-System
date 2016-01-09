@@ -36,6 +36,14 @@ public interface UserFacade {
     UserDTO findById(Long id);
 
     /**
+     * Finds an user by username.
+     *
+     * @param username of user
+     * @return found user
+     */
+    UserDTO findByUsername(String username);
+
+    /**
      * Finds whether user is admin or not.
      *
      * @param id of user to check

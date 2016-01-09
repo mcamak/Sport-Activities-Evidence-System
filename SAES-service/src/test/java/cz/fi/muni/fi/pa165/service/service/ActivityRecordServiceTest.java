@@ -71,7 +71,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
         // FIXME it should be possible to add one user to multiple activity records
         user = new User();
         user.setAge(100);
-        user.setName("Pepa z Depa");
+        user.setUsername("Pepa z Depa");
         user.setPasswordHash("LOL");
         user.setSex(Gender.MALE);
         user.setWeight(56);
@@ -135,7 +135,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(activityRecordDAO).findActivityRecord(null);
+        Mockito.doThrow(DataAccessException.class).when(activityRecordDAO).findActivityRecord(null);
         activityRecordService.findById(null);
     }
 
@@ -156,7 +156,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(activityRecordDAO).update(null);
+        Mockito.doThrow(DataAccessException.class).when(activityRecordDAO).update(null);
         activityRecordService.update(null);
     }
 
@@ -165,6 +165,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void deleteTest() {
+        activityRecord1.setId(900L);
         when(activityRecordDAO.findActivityRecord(activityRecord1.getId())).thenReturn(activityRecord1);
         activityRecordService.delete(activityRecord1.getId());
         verify(activityRecordDAO).delete(activityRecord1);
@@ -185,7 +186,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(activityRecordDAO).findActivityRecord(null);
+        Mockito.doThrow(DataAccessException.class).when(activityRecordDAO).findActivityRecord(null);
         activityRecordService.delete(null);
     }
 
@@ -194,6 +195,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void findRecordsOfUser() {
+        user.setId(800L);
         activityRecord1.setBurnedCalories(200);
         activityRecord2.setBurnedCalories(230);
         when(userDAO.findUser(user.getId())).thenReturn(user);

@@ -60,7 +60,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNullName() {
         User u = createNewRandomUser();
-        u.setName(null);
+        u.setUsername(null);
         userDao.createUser(u);
     }
     
@@ -70,7 +70,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithEmptyName() {
         User u = createNewRandomUser();
-        u.setName("");
+        u.setUsername("");
         userDao.createUser(u);
     }
 
@@ -120,7 +120,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testGetUser() {
         User user = new User();
-        user.setName("Adam");
+        user.setUsername("Adam");
         user.setPasswordHash("PasswordHash");
         user.setAge(20);
         user.setSex(Gender.MALE);
@@ -129,7 +129,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         assertNotNull(user.getId());
         
         User found = userDao.findUser(user.getId());
-        Assert.assertEquals("Adam", found.getName());
+        Assert.assertEquals("Adam", found.getUsername());
         Assert.assertEquals("PasswordHash", found.getPasswordHash());
         Assert.assertEquals(new Integer(20), found.getAge());
         Assert.assertEquals(Gender.MALE, found.getSex());
@@ -143,7 +143,37 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     public void testGetUserWithNullId() {
         userDao.findUser(null);
     }
-    
+
+    /**
+     * Test finding user by name.
+     */
+    @Test
+    public void testFindUserByName() {
+        User user = new User();
+        user.setUsername("Adam");
+        user.setPasswordHash("PasswordHash");
+        user.setAge(20);
+        user.setSex(Gender.MALE);
+        user.setWeight(70);
+        userDao.createUser(user);
+        assertNotNull(user.getId());
+
+        User found = userDao.findUserByName(user.getUsername());
+        Assert.assertEquals("Adam", found.getUsername());
+        Assert.assertEquals("PasswordHash", found.getPasswordHash());
+        Assert.assertEquals(new Integer(20), found.getAge());
+        Assert.assertEquals(Gender.MALE, found.getSex());
+        Assert.assertEquals(new Integer(70), found.getWeight());
+    }
+
+    /**
+     * Test get user with null ID.
+     */
+    @Test(expectedExceptions = DataAccessException.class)
+    public void testFindUserByNullName() {
+        userDao.findUserByName(null);
+    }
+
     /**
      * Test find all users.
      */
@@ -218,9 +248,9 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         User user = createNewRandomUser();
         userDao.createUser(user);
         Assert.assertNotNull(userDao.findUser(user.getId()));
-        user.setName("John");
+        user.setUsername("John");
         userDao.updateUser(user);
-        Assert.assertEquals("John", em.find(User.class, user.getId()).getName());
+        Assert.assertEquals("John", em.find(User.class, user.getId()).getUsername());
     }
     
     /**
@@ -240,7 +270,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         User user = createNewRandomUser();
         userDao.createUser(user);
         assertNotNull(user.getId());
-        user.setName(null);
+        user.setUsername(null);
         userDao.updateUser(user);
     }
 
@@ -264,7 +294,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         User user = createNewRandomUser();
         userDao.createUser(user);
         assertNotNull(user.getId());
-        user.setName("");
+        user.setUsername("");
         userDao.updateUser(user);
     }
     
@@ -305,9 +335,9 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     }
     
     private User createNewRandomUser() {
-        String[] names = new String[]{"Peter", "Jan", "Martina", "Maria"};
-        User user = new User();        
-        user.setName(names[(int) (System.nanoTime() % 4)]);
+        String[] names = new String[]{"admin", "htsk932", "impotent", "Ignac35"};
+        User user = new User();
+        user.setUsername(names[(int) (System.nanoTime() % 4)]);
         user.setPasswordHash("PasswordHash");
         user.setAge((int) (System.nanoTime() % 150));
         user.setSex(System.nanoTime() % 2 == 0 ? Gender.MALE : Gender.FEMALE);

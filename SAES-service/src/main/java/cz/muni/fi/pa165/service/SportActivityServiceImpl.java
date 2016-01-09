@@ -31,11 +31,17 @@ public class SportActivityServiceImpl implements SportActivityService {
 
     @Override
     public void create(SportActivity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Sport activity is null. ");
+        }
         sportActivityDao.createSportActivity(activity);
     }
 
     @Override
     public void delete(Long id) throws EntityReferenceException {
+        if (id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
         SportActivity activity = sportActivityDao.findSportActivity(id);
         if (activity != null) {
             List<ActivityRecord> recordsBySportActivity = activityRecordDao.findRecordsBySportActivity(activity);
@@ -51,6 +57,9 @@ public class SportActivityServiceImpl implements SportActivityService {
 
     @Override
     public SportActivity findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID is null. ");
+        }
         return sportActivityDao.findSportActivity(id);
     }
 
@@ -65,6 +74,9 @@ public class SportActivityServiceImpl implements SportActivityService {
 
     @Override
     public void update(SportActivity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Sport activity is null. ");
+        }
         sportActivityDao.updateSportActivity(activity);
     }
 }

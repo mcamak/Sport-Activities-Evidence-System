@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeMethod;
@@ -84,7 +85,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).create(null);
+        Mockito.doThrow(DataAccessException.class).when(caloriesDao).create(null);
         burnedCaloriesService.create(null);
     }
 
@@ -102,7 +103,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).findById(null);
+        Mockito.doThrow(DataAccessException.class).when(caloriesDao).findById(null);
         burnedCaloriesService.findById(null);
     }
 
@@ -133,7 +134,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).update(null);
+        Mockito.doThrow(DataAccessException.class).when(caloriesDao).update(null);
         burnedCaloriesService.update(null);
     }
 
@@ -152,7 +153,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).findById(null);
+        Mockito.doThrow(DataAccessException.class).when(caloriesDao).findById(null);
         burnedCaloriesService.delete(null);
     }
 

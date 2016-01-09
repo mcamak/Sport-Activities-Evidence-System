@@ -39,6 +39,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id is null. ");
+        }
         ActivityRecord record = activityRecordDao.findActivityRecord(id);
         if (record != null) {
             activityRecordDao.delete(record);
@@ -47,11 +50,17 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     public ActivityRecord findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id is null. ");
+        }
         return activityRecordDao.findActivityRecord(id);
     }
 
     @Override
     public List<ActivityRecord> findByUser(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("User id is null. ");
+        }
         User user = userDao.findUser(id);
         if (user == null) {
             throw new SaesServiceException("User with ID: " + id + " wasn't found. ");

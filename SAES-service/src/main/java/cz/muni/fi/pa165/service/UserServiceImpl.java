@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.exceptions.SaesServiceException;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -30,17 +31,26 @@ public class UserServiceImpl implements UserService {
         if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Password is null or empty. ");
         }
+        if (userDao.findUserByName(user.getUsername()) != null) {
+            throw new SaesServiceException("User '" + user.getUsername() + "' already exists, choose another name. ");
+        }
         user.setPasswordHash(createHash(password));
         userDao.createUser(user);
     }
 
     @Override
     public boolean authenticate(User user, String password) {
+        if (user == null) {
+            throw new IllegalArgumentException("User is null. ");
+        }
         return validatePassword(password, user.getPasswordHash());
     }
 
     @Override
     public boolean isAdmin(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id is null. ");
+        }
         User user = userDao.findUser(id);
         if (user == null) {
             throw new InvalidDataAccessApiUsageException("User with ID: " + id + " wasn't found. ");
@@ -50,6 +60,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id is null. ");
+        }
         User user = userDao.findUser(id);
         if (user != null) {
             userDao.deleteUser(user);
@@ -58,11 +71,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id is null. ");
+        }
         return userDao.findUser(id);
     }
 
     @Override
+    public User findByUsername(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username is null. ");
+        }
+        return userDao.findUserByName(username);
+    }
+
+    @Override
     public void update(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User is null. ");
+        }
         userDao.updateUser(user);
     }
 

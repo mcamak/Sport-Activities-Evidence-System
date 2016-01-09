@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeMethod;
@@ -65,7 +66,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void createSportActivityNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(activityDao).createSportActivity(null);
+        Mockito.doThrow(DataAccessException.class).when(activityDao).createSportActivity(null);
         sportActivityService.create(null);
     }
 
@@ -88,7 +89,7 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIdNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(activityDao).findSportActivity(null);
+        Mockito.doThrow(DataAccessException.class).when(activityDao).findSportActivity(null);
         sportActivityService.findById(null);
     }
 
@@ -131,8 +132,8 @@ public class SportActivityServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() throws EntityReferenceException {
-        Mockito.doThrow(IllegalArgumentException.class).when(activityDao).findSportActivity(null);
-        Mockito.doThrow(IllegalArgumentException.class).when(activityDao).deleteSportActivity(null);
+        Mockito.doThrow(DataAccessException.class).when(activityDao).findSportActivity(null);
+        Mockito.doThrow(DataAccessException.class).when(activityDao).deleteSportActivity(null);
         sportActivityService.delete(null);
     }
 

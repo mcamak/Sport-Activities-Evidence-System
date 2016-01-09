@@ -70,7 +70,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
         user = new User();
         user.setAge(100);
-        user.setName("Pepa");
+        user.setUsername("Pepa");
         user.setSex(Gender.MALE);
         user.setWeight(100);
         user.setAdmin(true);
@@ -79,7 +79,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
         userDTO = new UserDTO();
         userDTO.setAge(user.getAge());
-        userDTO.setName(user.getName());
+        userDTO.setUsername(user.getUsername());
         userDTO.setSex(user.getSex());
         userDTO.setWeight(user.getWeight());
         userDTO.setId(user.getId());
@@ -90,7 +90,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
         userCreateDTO = new UserCreateDTO();
         userCreateDTO.setAge(user.getAge());
-        userCreateDTO.setName(user.getName());
+        userCreateDTO.setUsername(user.getUsername());
         userCreateDTO.setSex(user.getSex());
         userCreateDTO.setWeight(user.getWeight());
     }
@@ -119,6 +119,14 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         when(userService.findById(user.getId())).thenReturn(user);
         userFacade.findById(user.getId());
         verify(userService).findById(user.getId());
+        verify(beanMappingService).mapTo(user, UserDTO.class);
+    }
+
+    @Test
+    public void findByUsernameTest() {
+        when(userService.findByUsername(user.getUsername())).thenReturn(user);
+        userFacade.findByUsername(user.getUsername());
+        verify(userService).findByUsername(user.getUsername());
         verify(beanMappingService).mapTo(user, UserDTO.class);
     }
 

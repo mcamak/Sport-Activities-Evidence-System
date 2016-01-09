@@ -73,6 +73,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
+    public UserDTO findByUsername(String username) {
+        return bms.mapTo(userService.findByUsername(username), UserDTO.class);
+    }
+
+    @Override
     public boolean isAdmin(Long id) {
         return userService.isAdmin(id);
     }
