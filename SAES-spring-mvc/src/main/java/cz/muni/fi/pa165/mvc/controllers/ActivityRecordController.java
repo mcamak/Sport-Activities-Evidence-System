@@ -50,7 +50,12 @@ public class ActivityRecordController {
         model.addAttribute("recordCreate", new ActivityRecordCreateDTO());
         return "record/new";
     }
-
+    
+     /**
+     * Creates new sport activity
+     * @param model data to display
+     * @return JSP page
+     */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute("recordCreate") ActivityRecordCreateDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
