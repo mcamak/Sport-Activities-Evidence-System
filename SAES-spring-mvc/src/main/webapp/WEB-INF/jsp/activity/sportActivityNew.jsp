@@ -1,3 +1,8 @@
+<%-- 
+    Document   : BurnedCalories
+    Created on : 13.12.2015, 15:57:17
+    Author     : Barborka
+--%>
 
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" trimDirectiveWhitespaces="true" session="true"%>
 <%@taglib prefix="f" uri="http://java.sun.com/jsf/core"%>
@@ -6,33 +11,23 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-<tags:pagetemplate title="Book ${book.id} detail">
-<jsp:attribute name="body">
+<tags:pagetemplate title="New Sport Activity">
+    <jsp:attribute name="body">
 
-        <table class="table">
-            <tr>
-                <td class="col-md-2"><b>Id</b></td>
-                <td>${book.id}</td>
-            </tr>
-            <tr>
-                <td class="col-md-2"><b>Isbn</b></td>
-                <td>${book.isbn}</td>
-            </tr>
-            <tr>
-                <td class="col-md-2"><b>Author</b></td>
-                <td>${book.author}</td>
-            </tr>
-            <tr>
-                <td class="col-md-2"><b>Title</b></td>
-                <td><c:out value="${book.title}"/></td>
-            </tr>
-            <tr>
-                <td class="col-md-2"><b>Is available?</b></td>
-                <td><c:out value="${available ? \"Yes \" : \"No \"}"/></td>
-            </tr>
-            <tr>
-                <td><a href="${pageContext.request.contextPath}/book" class="btn btn-danger">Back</a></td>
-            </tr>
-        </table>
-</jsp:attribute>
+        <form:form method="post" action="${pageContext.request.contextPath}/sportActivity/create"
+                   modelAttribute="sportActivityCreate" cssClass="form-horizontal">
+            <div class="form-group ${name_error?'has-error':''}">
+                <form:label path="sportActivity" cssClass="col-sm-1 control-label">Sport Activity</form:label>
+                <div class="col-sm-4">
+                    <form:input path="sportActivity" cssClass="form-control"/>
+                    <form:errors path="sportActivity" cssClass="help-block"/>
+                </div>
+            </div>
+            
+            <a href="${pageContext.request.contextPath}/sportActivity" class="btn btn-danger">Back</a>
+            <button class="btn btn-primary" type="submit">Create sport activity</button>
+        </form:form>
+
+    </jsp:attribute>
 </tags:pagetemplate>
+

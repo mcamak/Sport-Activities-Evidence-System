@@ -7,13 +7,12 @@
 
 <tags:pagetemplate title="Sport Activity">
     <jsp:attribute name="body">
-
-
-        <a href="${pageContext.request.contextPath}/sportActivity/new" class="btn btn-primary">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            New Sport Activity
-        </a>
-        <hr>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a href="${pageContext.request.contextPath}/sportActivity/new" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                New Sport Activity
+            </a>
+        </sec:authorize>
 
         <table class="table table-hover table-condensed">
             <thead>
