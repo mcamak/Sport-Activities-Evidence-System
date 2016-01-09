@@ -2,7 +2,9 @@ package cz.muni.fi.pa165.mvc.controllers;
 
 
 import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
+import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.exceptions.EntityReferenceException;
+import cz.muni.fi.pa165.facade.BurnedCaloriesFacade;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 //import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +22,26 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+
+import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
+import static cz.muni.fi.pa165.mvc.security.Roles.USER;
+import cz.muni.fi.pa165.saes.entity.SportActivity;
+import org.springframework.security.access.annotation.Secured;
 /**
  *
  * @author Barbora B.
  */
 
 @Controller
+@Secured(ADMIN)
 @RequestMapping("/sportActivity")
 public class SportActivityController {
     
     @Autowired
     private SportActivityFacade sportActivityFacade;
+    
+    @Autowired
+    private BurnedCaloriesFacade burnedCaloriesFacade;
     
     /**
      * Prepares an empty form.
@@ -91,6 +102,7 @@ public class SportActivityController {
      * @param redirectAttributes
      * @return JSP page
      */
+    @Secured(ADMIN)
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
     public String remove(@PathVariable long activityId, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) throws EntityReferenceException {
         sportActivityFacade.delete(activityId);
