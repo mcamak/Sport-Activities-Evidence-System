@@ -2,9 +2,8 @@ package cz.muni.fi.pa165.mvc.controllers;
 
 
 import cz.muni.fi.pa165.dto.BurnedCaloriesCreateDTO;
-//import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
 import cz.muni.fi.pa165.facade.BurnedCaloriesFacade;
-//import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
+import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Controller;
@@ -18,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 /**
@@ -26,7 +26,7 @@ import org.springframework.validation.ObjectError;
  */
 
 @Controller
-//@Import({ServiceConfiguration.class})
+@Secured(ADMIN)
 @RequestMapping("/burnedCalories")
 public class BurnedCaloriesController {
     
@@ -83,6 +83,7 @@ public class BurnedCaloriesController {
      * @param redirectAttributes
      * @return JSP page
      */
+    @Secured(ADMIN)
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
     public String remove(@PathVariable("id") long caloriesId, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
         burnedCaloriesFacade.delete(caloriesId);
