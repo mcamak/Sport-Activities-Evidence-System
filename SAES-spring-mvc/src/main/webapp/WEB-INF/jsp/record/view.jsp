@@ -8,17 +8,25 @@
 
 <my:pagetemplate title="Activity record">
     <jsp:attribute name="body">
-    <form:form method="post" action="${pageContext.request.contextPath}/record/new"
+    <form:form method="post" action="${pageContext.request.contextPath}/record/update"
                modelAttribute="recordUpdate" cssClass="form-horizontal">
         <div class="form-group">
             <form:label path="activity" cssClass="col-sm-2 control-label">Sport activity</form:label>
             <div class="col-sm-10">
-                <form:select path="activity" cssClass="form-control">
+                <form:select path="activity" cssClass="form-control" itemValue="${record.activity.id}"
+                             itemLabel="${record.activity.name}">
                     <c:forEach items="${activities}" var="c">
                         <form:option value="${c.id}">${c}</form:option>
                     </c:forEach>
                 </form:select>
                 <form:errors path="activities" cssClass="error"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <form:label path="burnedCalories" cssClass="col-sm-2 control-label">Burned calories</form:label>
+            <div class="col-sm-10">
+                <form:input path="distance" cssClass="form-control" disabled="true"
+                            title="Value will be re-calculated after updating. "/>
             </div>
         </div>
         <div class="form-group ${time_error?'has-error':''}">
@@ -36,7 +44,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" type="submit">Create activity record</button>
+        <button class="btn btn-primary" type="submit">Update activity record</button>
     </form:form>
     </jsp:attribute>
 </my:pagetemplate>
