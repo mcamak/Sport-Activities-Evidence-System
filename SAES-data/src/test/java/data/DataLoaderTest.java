@@ -62,7 +62,7 @@ public class DataLoaderTest extends AbstractTestNGSpringContextTests {
         assertTrue(userDao.findAllUsers().size() > 0, "No no users. ");
 
         for (User user : userDao.findAllUsers()) {
-            assertTrue(recordDao.findRecordsByUser(user).size() > 0, "No records of user " + user.getName());
+            assertTrue(recordDao.findRecordsByUser(user).size() > 0, "No records of user " + user.getUsername());
         }
         for (SportActivity activity : activityDao.findAll()) {
             assertTrue(caloriesDao.findBySportActivity(activity).size() > 0, "No burned calories of activity " + activity.getName());

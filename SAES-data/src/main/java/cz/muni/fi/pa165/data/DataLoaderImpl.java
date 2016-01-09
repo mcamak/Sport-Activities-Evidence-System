@@ -167,7 +167,7 @@ public class DataLoaderImpl implements DataLoader {
 
     private User createUser(String name, String password, Gender sex, Integer age, Integer weight, boolean admin) {
         User user = new User();
-        user.setName(name);
+        user.setUsername(name);
         user.setSex(sex);
         user.setAge(age);
         user.setWeight(weight);
