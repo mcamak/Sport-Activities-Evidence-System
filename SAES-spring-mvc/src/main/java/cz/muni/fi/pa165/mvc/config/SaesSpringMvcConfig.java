@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.mvc.config;
 
 import cz.muni.fi.pa165.data.SaesDataConfiguration;
+import cz.muni.fi.pa165.mvc.security.SecurityConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@Import({SaesDataConfiguration.class})
+@Import({SaesDataConfiguration.class, SecurityConfig.class})
 @ComponentScan(basePackages = "cz.muni.fi.pa165.mvc.controllers")
 public class SaesSpringMvcConfig extends WebMvcConfigurerAdapter {
 

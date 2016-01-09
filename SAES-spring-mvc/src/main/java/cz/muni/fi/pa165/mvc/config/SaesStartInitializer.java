@@ -9,7 +9,12 @@ public class SaesStartInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{SaesStartInitializer.class};
+        return new Class[]{SaesSpringMvcConfig.class};
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return null;
     }
 
     @Override
@@ -22,10 +27,5 @@ public class SaesStartInitializer extends AbstractAnnotationConfigDispatcherServ
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("utf-8");
         return new Filter[]{encodingFilter};
-    }
-
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return null;
     }
 }
