@@ -7,13 +7,14 @@
 
 <tags:pagetemplate title="Burned Calories">
     <jsp:attribute name="body">
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+        
 
-
-        <a href="${pageContext.request.contextPath}/burnedCalories/new" class="btn btn-primary">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Burned Calories
-        </a>
-        <hr>
+            <a href="${pageContext.request.contextPath}/burnedCalories/new" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Burned Calories
+            </a>
+        </sec:authorize>
 
         <table class="table table-hover table-condensed">
             <thead>

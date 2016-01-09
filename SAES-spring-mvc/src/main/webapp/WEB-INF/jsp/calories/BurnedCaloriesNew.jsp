@@ -11,8 +11,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-<tags:pagetemplate title="Burned Calories">
+<tags:pagetemplate title="New Burned Calories">
     <jsp:attribute name="body">
+        
 
         <form:form method="post" action="${pageContext.request.contextPath}/burnedCalories/create"
                    modelAttribute="burnedCaloriesCreate" cssClass="form-horizontal">
