@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 @Import({SaesDataConfiguration.class, SecurityConfig.class})
-@ComponentScan(basePackages = "cz.muni.fi.pa165.mvc.controllers")
+@ComponentScan(basePackages = "cz.muni.fi.pa165.mvc")
 public class SaesSpringMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override

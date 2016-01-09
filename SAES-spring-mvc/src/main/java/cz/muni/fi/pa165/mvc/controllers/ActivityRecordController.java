@@ -2,6 +2,9 @@ package cz.muni.fi.pa165.mvc.controllers;
 
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
+import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +20,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
+import static cz.muni.fi.pa165.mvc.security.Roles.USER;
+
 /**
  * Created by Marian Camak (inQool) on 7. 12. 2015.
  */
 @Controller
+@Import({ServiceConfiguration.class})
+@Secured({ADMIN, USER})
 @RequestMapping("/record")
 public class ActivityRecordController {
 

@@ -5,6 +5,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="${pageContext.request.locale}">
@@ -33,82 +34,84 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}"><f:message key="nav.project"/></a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}">Sport Activity Evidence System</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/user/list/"><f:message key="nav.users"/></a>
-                <li><a href="/record/list/"><f:message key="nav.records"/></a>
-                    <%--<sec:authorize access="hasAnyRole('ADMIN')">--%>
-                <li><a href="/activity/list/"><f:message key="nav.activities"/></a>
-                <li><a href="/calories/list/"><f:message key="nav.calories"/></a>
-                    <%--</sec:authorize>--%>
+                <sec:authorize access="hasAnyRole('ADMIN')">
+                    <li class="${pageContext.request.requestURI.contains("/activity") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/activity">Sport Activity</a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasAnyRole('ADMIN','USER')">
+                    <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/record">Activity Record</a>
+                    </li>
+                    <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/user">User</a>
+                    </li>
+                </sec:authorize>
             </ul>
 
-            <%--<ul class="nav navbar-nav navbar-right">--%>
-            <%--<li>--%>
-            <%--<sec:authorize access="isAnonymous()">--%>
-            <%--<a href="${pageContext.request.contextPath}/login">Login</a>--%>
-            <%--</sec:authorize>--%>
-            <%--<sec:authorize access="isAuthenticated()">--%>
-            <%--<a href="${pageContext.request.contextPath}/logout">Logout <c:out--%>
-            <%--value="${pageContext.request.userPrincipal.name}"/></a>--%>
-            <%--</sec:authorize>--%>
-            <%--</li>--%>
-            <%--</ul>--%>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <sec:authorize access="isAnonymous()">
+                        <a href="${pageContext.request.contextPath}/login">Login</a>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <a href="${pageContext.request.contextPath}/logout">Logout <c:out
+                                value="${pageContext.request.userPrincipal.name}"/></a>
+                    </sec:authorize>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
 
-<div class="container">
-
-    <!-- page title -->
-    <c:if test="${not empty title}">
-        <div class="page-header">
-            <h1><c:out value="${title}"/></h1>
-        </div>
-    </c:if>
-
-    <!-- authenticated user info -->
-    <c:if test="${not empty authenticatedUser}">
+<!--page headline starts here-->
+<div class="container-fluid">
+    <div class="page-header" id="banner">
         <div class="row">
-            <div class="col-xs-6 col-sm-8 col-md-9 col-lg-10"></div>
-            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <c:out value="${authenticatedUser.name}"/>
-                    </div>
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1><c:out value="${title}"/></h1>
+
+                <p class="lead"></p>
+            </div>
+            <div class="col-lg-4 col-md-5 col-sm-6">
+                <div class="sponsor">
                 </div>
             </div>
         </div>
-    </c:if>
-
-    <!-- alerts -->
-    <c:if test="${not empty alert_danger}">
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <c:out value="${alert_danger}"/></div>
-    </c:if>
-    <c:if test="${not empty alert_info}">
-        <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>
-    </c:if>
-    <c:if test="${not empty alert_success}">
-        <div class="alert alert-success" role="alert"><c:out value="${alert_success}"/></div>
-    </c:if>
-    <c:if test="${not empty alert_warning}">
-        <div class="alert alert-warning" role="alert"><c:out value="${alert_warning}"/></div>
-    </c:if>
-
-    <!-- page body -->
-    <jsp:invoke fragment="body"/>
-
-    <!-- footer -->
-    <footer class="footer">
-        <p>&copy;&nbsp;<%=java.time.Year.now().toString()%>&nbsp;Masaryk University</p>
-    </footer>
+    </div>
 </div>
-<!-- javascripts placed at the end of the document so the pages load faster -->
+
+<!-- alerts -->
+<c:if test="${not empty alert_danger}">
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <c:out value="${alert_danger}"/></div>
+</c:if>
+<c:if test="${not empty alert_info}">
+    <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>
+</c:if>
+<c:if test="${not empty alert_success}">
+    <div class="alert alert-success" role="alert"><c:out value="${alert_success}"/></div>
+</c:if>
+<c:if test="${not empty alert_warning}">
+    <div class="alert alert-warning" role="alert"><c:out value="${alert_warning}"/></div>
+</c:if>
+
+<!-- page body -->
+<jsp:invoke fragment="body"/>
+
+<!-- footer -->
+<footer class="footer">
+    <p>&copy;&nbsp;<%=java.time.Year.now().toString()%>&nbsp;Masaryk University</p>
+</footer>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>
