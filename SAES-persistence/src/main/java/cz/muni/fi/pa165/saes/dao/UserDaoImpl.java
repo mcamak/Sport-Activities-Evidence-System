@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.saes.dao;
 
 import cz.muni.fi.pa165.saes.entity.User;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,9 +53,16 @@ public class UserDaoImpl implements UserDao {
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username is null or empty. ");
         }
-        return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+        List<User> users = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                 .setParameter("username", username)
-                .getSingleResult();
+                .getResultList();
+        if (users.isEmpty()) {
+            return null;
+        } else if (users.size() == 1) {
+            return users.get(0);
+        } else {
+            throw new DataIntegrityViolationException("More users with username '" + username + "' has been found. ");
+        }
     }
 
     @Override

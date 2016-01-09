@@ -337,7 +337,9 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     private User createNewRandomUser() {
         String[] names = new String[]{"admin", "htsk932", "impotent", "Ignac35"};
         User user = new User();
-        user.setUsername(names[(int) (System.nanoTime() % 4)]);
+        int index = (int) (System.nanoTime() % 4);
+        user.setUsername(names[index]);
+        names[index] += "1";
         user.setPasswordHash("PasswordHash");
         user.setAge((int) (System.nanoTime() % 150));
         user.setSex(System.nanoTime() % 2 == 0 ? Gender.MALE : Gender.FEMALE);
