@@ -72,7 +72,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         ActivityRecord actv = new ActivityRecord();
         actv.setActivity(sportActivity);
         actv.setDistance(5);
-        actv.setTimeSeconds(45L);
+        actv.setTime(45L);
         actv.setBurnedCalories(240);
         actv.setUser(user);
         return actv;
@@ -115,7 +115,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(null);
         record.setDistance(5);
-        record.setTimeSeconds(Long.MIN_VALUE);
+        record.setTime(Long.MIN_VALUE);
         record.setUser(user);
 
         recordDao.create(record);
@@ -129,7 +129,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
         record.setDistance(-5);
-        record.setTimeSeconds(Long.MIN_VALUE);
+        record.setTime(Long.MIN_VALUE);
         record.setUser(user);
 
         recordDao.create(record);
@@ -144,7 +144,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(sportActivity);
         record.setDistance(5);
-        record.setTimeSeconds(Long.MIN_VALUE);
+        record.setTime(Long.MIN_VALUE);
         record.setUser(null);
 
         recordDao.create(record);
@@ -231,12 +231,12 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
         assertNotNull(recordDao.findActivityRecord(record.getId()));
 
         record.setDistance(15);
-        record.setTimeSeconds(20L);
+        record.setTime(20L);
         recordDao.update(record);
 
         ActivityRecord recordFound = recordDao.findActivityRecord(record.getId());
         assertEquals(recordFound.getDistance(), new Integer(15));
-        assertEquals(recordFound.getTimeSeconds(), new Long(20));
+        assertEquals(recordFound.getTime(), new Long(20));
     }
 
     /**

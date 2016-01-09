@@ -94,20 +94,20 @@ public class ActivityRecordFacadeTest extends AbstractTestNGSpringContextTests {
 
         activityRecord = new ActivityRecord();
         activityRecord.setDistance(12000);
-        activityRecord.setTimeSeconds(888L);
+        activityRecord.setTime(888L);
         activityRecord.setActivity(sportActivity);
         activityRecord.setUser(user);
 
         activityRecordDTO = new ActivityRecordDTO();
         activityRecordDTO.setDistance(activityRecord.getDistance());
-        activityRecordDTO.setTimeSeconds(activityRecord.getTimeSeconds());
+        activityRecordDTO.setTime(activityRecord.getTime());
         activityRecordDTO.setActivity(sportActivityDTO);
         activityRecordDTO.setId(activityRecord.getId());
         activityRecordDTO.setUser(userDTO);
 
         activityRecordCreateDTO = new ActivityRecordCreateDTO();
         activityRecordCreateDTO.setDistance(activityRecord.getDistance());
-        activityRecordCreateDTO.setTimeSeconds(activityRecord.getTimeSeconds());
+        activityRecordCreateDTO.setTime(activityRecord.getTime());
         activityRecordCreateDTO.setActivity(sportActivityDTO);
         activityRecordCreateDTO.setUser(userDTO);
     }

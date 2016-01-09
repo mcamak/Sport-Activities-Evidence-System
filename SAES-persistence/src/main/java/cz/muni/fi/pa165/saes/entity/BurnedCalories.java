@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- *
+ * Information about burned calories based on weight for one hour of doing activity.
  * @author Jan S.
  */
 @Entity

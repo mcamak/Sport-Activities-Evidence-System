@@ -19,7 +19,7 @@ public class ActivityRecordCreateDTO {
 
     @NotNull
     @Min(0)
-    private Long timeSeconds;
+    private Long time;
 
     @Min(0)
     private Integer distance;

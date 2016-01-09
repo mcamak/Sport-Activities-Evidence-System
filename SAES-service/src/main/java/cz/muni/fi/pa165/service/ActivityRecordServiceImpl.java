@@ -88,6 +88,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         if (record.getActivity() == null) {
             throw new IllegalArgumentException("Record's sport activity is null. ");
         }
+        if (record.getTime() == null) {
+            throw new IllegalArgumentException("Record's time is null. ");
+        }
     }
 
     private void calculateCaloriesBurned(ActivityRecord record) {
@@ -103,6 +106,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 burned += (40 - user.getAge()) * 1.6;
                 break;
         }
+        burned *= (int) (record.getTime() / 60);
         record.setBurnedCalories(burned);
     }
 

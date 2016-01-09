@@ -152,7 +152,7 @@ public class BurnedCaloriesServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNullTest() {
-        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao.findById(null));
+        Mockito.doThrow(IllegalArgumentException.class).when(caloriesDao).findById(null);
         burnedCaloriesService.delete(null);
     }
 

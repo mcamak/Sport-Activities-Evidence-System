@@ -113,10 +113,10 @@ public class ActivityRecordDaoImpl implements ActivityRecordDao {
         if (record.getUser() == null) {
             throw new IllegalArgumentException("User is null. ");
         }
-        if (record.getTimeSeconds() == null) {
+        if (record.getTime() == null) {
             throw new IllegalArgumentException("Time seconds is null. ");
         }
-        if (record.getTimeSeconds() < 0) {
+        if (record.getTime() < 0) {
             throw new IllegalArgumentException("Time seconds is negative. ");
         }
         if (record.getDistance() != null && record.getDistance() < 0) {

@@ -79,12 +79,12 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
         activityRecord1 = new ActivityRecord();
         activityRecord1.setActivity(activity);
         activityRecord1.setDistance(10);
-        activityRecord1.setTimeSeconds(1000L);
+        activityRecord1.setTime(1000L);
         activityRecord1.setUser(user);
 
         activityRecord2 = new ActivityRecord();
         activityRecord2.setActivity(activity);
-        activityRecord2.setTimeSeconds(1000L);
+        activityRecord2.setTime(1000L);
         activityRecord2.setUser(user);
 
         activityRecordList = new ArrayList<>();

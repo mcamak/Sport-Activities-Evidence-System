@@ -25,8 +25,8 @@ public class ActivityRecord implements Comparable<ActivityRecord> {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    private Long timeSeconds;
-    private Integer distance;
+    private Long time; // [minute]
+    private Integer distance; // [meter]
     private Integer burnedCalories;
 
     @Override
@@ -34,7 +34,7 @@ public class ActivityRecord implements Comparable<ActivityRecord> {
         int hash = 5;
         hash = 41 * hash + ((activity == null) ? 0 : activity.hashCode());
         hash = 41 * hash + ((user == null) ? 0 : user.hashCode());
-        hash = 41 * hash + Objects.hashCode(this.timeSeconds);
+        hash = 41 * hash + Objects.hashCode(this.time);
         hash = 41 * hash + Objects.hashCode(this.distance);
         hash = 41 * hash + Objects.hashCode(this.burnedCalories);
         return hash;
@@ -55,7 +55,7 @@ public class ActivityRecord implements Comparable<ActivityRecord> {
         if (!Objects.equals(this.user, other.getUser())) {
             return false;
         }
-        if (!Objects.equals(this.timeSeconds, other.getTimeSeconds())) {
+        if (!Objects.equals(this.time, other.getTime())) {
             return false;
         }
         if (!Objects.equals(this.distance, other.getDistance())) {
