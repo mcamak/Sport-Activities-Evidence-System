@@ -32,11 +32,11 @@ public class UserController {
     private UserFacade userFacade;
 
     @RequestMapping(value = "/{pass}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final Long createUser(UserCreateDTO dto, @PathVariable("pass") String password) throws Exception {
+    public final void createUser(UserCreateDTO dto, @PathVariable("pass") String password) throws Exception {
 
         logger.info("REST: createUser...");
         try {
-            return userFacade.create(dto, password);
+            userFacade.create(dto, password);
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }

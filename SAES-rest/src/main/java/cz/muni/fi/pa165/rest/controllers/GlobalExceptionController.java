@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.rest.controllers;
 
 import cz.muni.fi.pa165.rest.exceptions.InvalidParameterException;
 import cz.muni.fi.pa165.rest.exceptions.ResourceNotFoundException;
-import cz.muni.fi.pa165.service.exceptions.SaesServiceException;
+import cz.muni.fi.pa165.exceptions.SaesServiceException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
