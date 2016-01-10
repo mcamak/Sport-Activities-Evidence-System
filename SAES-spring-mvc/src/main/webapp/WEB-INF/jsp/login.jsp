@@ -37,9 +37,13 @@
         <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/login">
             <fieldset>
                 <legend>Login</legend>
+                <div>
+                    <p class="help-block">You can also log in with as one of three pre-created users: admin/admin,
+                        erik/erik,
+                        maria/maria.</p>
+                </div>
                 <div class="form-group">
                     <label for="textInput" class="col-lg-2 control-label">Username</label>
-
                     <div class="col-lg-4">
                         <input type="text" class="form-control" id="textInput" placeholder="Username" name="username">
                     </div>
@@ -48,7 +52,6 @@
                 </div>
                 <div class="form-group">
                     <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-
                     <div class="col-lg-4">
                         <input type="password" class="form-control" id="inputPassword" placeholder="Password"
                                name="password">
@@ -56,9 +59,6 @@
                     <div class="col-lg-6">
                     </div>
                 </div>
-                <p class="text-center">You can log in with as one of three pre-created users: admin/admin, erik/erik,
-                    maria/maria.</p>
-
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <button type="submit" class="btn btn-primary">Login</button>

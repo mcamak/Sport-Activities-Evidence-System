@@ -20,6 +20,7 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
           crossorigin="anonymous">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
     <jsp:invoke fragment="head"/>
 </head>
 <body>
@@ -38,12 +39,12 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <sec:authorize access="hasAnyRole('ADMIN')">
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
                     <li class="${pageContext.request.requestURI.contains("/activity") ? 'active' : ''}">
                         <a href="${pageContext.request.contextPath}/activity">Sport Activity</a>
                     </li>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('ADMIN','USER')">
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
                     <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
                         <a href="${pageContext.request.contextPath}/record">Activity Record</a>
                     </li>
@@ -59,8 +60,8 @@
                         <a href="${pageContext.request.contextPath}/login">Login</a>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                        <a href="${pageContext.request.contextPath}/logout">Logout <c:out
-                                value="${pageContext.request.userPrincipal.name}"/></a>
+                        <a href="${pageContext.request.contextPath}/logout">Logout <strong><c:out
+                                value="${pageContext.request.userPrincipal.name}"/></strong></a>
                     </sec:authorize>
                 </li>
             </ul>
@@ -70,44 +71,46 @@
 
 <!--page headline starts here-->
 <div class="container-fluid">
-    <div class="page-header" id="banner">
-        <div class="row">
-            <div class="col-lg-8 col-md-7 col-sm-6">
-                <h1><c:out value="${title}"/></h1>
+    <!-- page title -->
+    <c:if test="${not empty title}">
+        <div class="page-header">
+            <h1><c:out value="${title}"/></h1>
+        </div>
+    </c:if>
 
-                <p class="lead"></p>
-            </div>
-            <div class="col-lg-4 col-md-5 col-sm-6">
-                <div class="sponsor">
+    <!-- authenticated user info -->
+    <c:if test="${not empty authenticatedUser}">
+        <div class="row">
+            <div class="col-xs-6 col-sm-8 col-md-9 col-lg-10"></div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <c:out value="${authenticatedUser.givenName} ${authenticatedUser.surname}"/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </c:if>
+
+    <!-- alerts -->
+    <c:if test="${not empty alert_danger}">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <c:out value="${alert_danger}"/></div>
+    </c:if>
+    <c:if test="${not empty alert_info}">
+        <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>
+    </c:if>
+    <c:if test="${not empty alert_success}">
+        <div class="alert alert-success" role="alert"><c:out value="${alert_success}"/></div>
+    </c:if>
+    <c:if test="${not empty alert_warning}">
+        <div class="alert alert-warning" role="alert"><c:out value="${alert_warning}"/></div>
+    </c:if>
+
+    <!-- page body -->
+    <jsp:invoke fragment="body"/>
 </div>
-
-<!-- alerts -->
-<c:if test="${not empty alert_danger}">
-    <div class="alert alert-danger" role="alert">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <c:out value="${alert_danger}"/></div>
-</c:if>
-<c:if test="${not empty alert_info}">
-    <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>
-</c:if>
-<c:if test="${not empty alert_success}">
-    <div class="alert alert-success" role="alert"><c:out value="${alert_success}"/></div>
-</c:if>
-<c:if test="${not empty alert_warning}">
-    <div class="alert alert-warning" role="alert"><c:out value="${alert_warning}"/></div>
-</c:if>
-
-<!-- page body -->
-<jsp:invoke fragment="body"/>
-
-<!-- footer -->
-<footer class="footer">
-    <p>&copy;&nbsp;<%=java.time.Year.now().toString()%>&nbsp;Masaryk University</p>
-</footer>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

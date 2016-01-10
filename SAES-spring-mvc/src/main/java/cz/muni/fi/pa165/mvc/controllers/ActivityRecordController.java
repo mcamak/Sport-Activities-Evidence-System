@@ -3,6 +3,7 @@ package cz.muni.fi.pa165.mvc.controllers;
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
+import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.access.annotation.Secured;
@@ -20,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.security.Principal;
 
 import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
 import static cz.muni.fi.pa165.mvc.security.Roles.USER;
@@ -36,15 +38,19 @@ public class ActivityRecordController {
     @Inject
     private ActivityRecordFacade recordFacade;
 
+    @Inject
+    private UserFacade userFacade;
+
     /**
      * Shows a list of activity records with the ability to add, delete or edit.
      *
      * @param model data to display
      * @return JSP page name
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model) {
-        model.addAttribute("records", recordFacade.findAll());
+    @RequestMapping(value = {"", "/", "/list"}, method = RequestMethod.GET)
+    public String list(Model model, Principal principal) {
+        principal.getName();
+        model.addAttribute("records", recordFacade.findByUser(userFacade.findByUsername(principal.getName()).getId()));
         return "record/list";
     }
 

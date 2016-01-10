@@ -9,12 +9,12 @@
 <my:pagetemplate title="Activity records">
 <jsp:attribute name="body">
 
-    <my:a href="/record/new" class="btn btn-primary">
+    <my:a href="/record/new" class="btn btn-primary btnNew">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         New activity record
     </my:a>
 
-    <table class="table">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th>Id</th>
@@ -31,12 +31,12 @@
                 <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
                     <c:out value="${record.id}"/>
                 </td>
-                <sec:authorize access="hasAnyRole('ADMIN')">
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
                     <td onclick="location.href = '${pageContext.request.contextPath}/activity/view/${record.activity.id}';">
-                        <c:out value="${record.activity.name}"/>
+                        <button class="btn"><c:out value="${record.activity.name}"/></button>
                     </td>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('USER')">
+                <sec:authorize access="hasAnyRole('ROLE_USER')">
                     <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
                         <c:out value="${record.activity.name}"/>
                     </td>
@@ -45,14 +45,14 @@
                     <c:out value="${record.burnedCalories}"/>
                 </td>
                 <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
-                    <c:out value="${record.distance}"/>
+                    <c:out value="${record.time}"/>
                 </td>
                 <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
-                    <c:out value="${record.timeSeconds}"/>
+                    <c:out value="${record.distance}"/>
                 </td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/record/delete/${record.id}">
-                        <button type="submit" class="btn btn-primary">Delete</button>
+                        <button type="submit" class="btn btn-default">Delete</button>
                     </form>
                 </td>
             </tr>
