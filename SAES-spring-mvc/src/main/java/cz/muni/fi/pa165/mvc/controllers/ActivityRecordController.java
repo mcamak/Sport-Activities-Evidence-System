@@ -2,9 +2,13 @@ package cz.muni.fi.pa165.mvc.controllers;
 
 import cz.muni.fi.pa165.dto.ActivityRecordCreateDTO;
 import cz.muni.fi.pa165.dto.ActivityRecordDTO;
+import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.ActivityRecordFacade;
+import cz.muni.fi.pa165.facade.SportActivityFacade;
 import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
 import static cz.muni.fi.pa165.mvc.security.Roles.USER;
@@ -35,8 +40,13 @@ import static cz.muni.fi.pa165.mvc.security.Roles.USER;
 @RequestMapping("/record")
 public class ActivityRecordController {
 
+    final static Logger logger = LoggerFactory.getLogger(ActivityRecordController.class);
+
     @Inject
     private ActivityRecordFacade recordFacade;
+
+    @Inject
+    private SportActivityFacade activityFacade;
 
     @Inject
     private UserFacade userFacade;
@@ -47,11 +57,16 @@ public class ActivityRecordController {
      * @param model data to display
      * @return JSP page name
      */
-    @RequestMapping(value = {"", "/", "/list"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String list(Model model, Principal principal) {
         principal.getName();
         model.addAttribute("records", recordFacade.findByUser(userFacade.findByUsername(principal.getName()).getId()));
         return "record/list";
+    }
+
+    @ModelAttribute("activities")
+    public List<SportActivityDTO> activities() {
+        return activityFacade.findAll();
     }
 
     /**
@@ -61,9 +76,25 @@ public class ActivityRecordController {
      * @return JSP page
      */
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String newCategory(Model model) {
-        model.addAttribute("recordCreate", new ActivityRecordCreateDTO());
+    public String newRecord(Model model) {
+        logger.info("new");
+        if (!model.containsAttribute("record")) {
+            model.addAttribute("record", new ActivityRecordCreateDTO());
+        }
         return "record/new";
+    }
+
+    /**
+     * Prepares an update form.
+     *
+     * @param model data to be displayed
+     * @return JSP page
+     */
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String updateRecord(@PathVariable long id, Model model) {
+        ActivityRecordDTO recordDTO = recordFacade.findById(id);
+        model.addAttribute("record", recordDTO);
+        return newRecord(model);
     }
     
      /**
@@ -72,7 +103,7 @@ public class ActivityRecordController {
      * @return JSP page
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute("recordCreate") ActivityRecordCreateDTO formBean, BindingResult bindingResult,
+    public String createRecord(@Valid @ModelAttribute("recordCreate") ActivityRecordCreateDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
 
         if (bindingResult.hasErrors()) {
@@ -82,29 +113,17 @@ public class ActivityRecordController {
             for (FieldError fe : bindingResult.getFieldErrors()) {
                 model.addAttribute(fe.getField() + "_error", true);
             }
-            return "category/new";
+            return "record/new";
         }
-        Long id = recordFacade.create(formBean);
-        redirectAttributes.addFlashAttribute("alert_success", "Activity record " + id + " was created. ");
+        if (formBean instanceof ActivityRecordDTO) {
+            ActivityRecordDTO updateDTO = (ActivityRecordDTO) formBean;
+            recordFacade.update(updateDTO);
+            redirectAttributes.addFlashAttribute("alert_success", "Activity record " + updateDTO.getId() + " was updated. ");
+        } else {
+            Long id = recordFacade.create(formBean);
+            redirectAttributes.addFlashAttribute("alert_success", "Activity record " + id + " was created. ");
+        }
         return "redirect:" + uriBuilder.path("/record/list").toUriString();
-    }
-
-    /**
-     * Shows one activity record
-     *
-     * @param id    of record
-     * @param model data to display
-     * @return JSP page
-     */
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public String view(@PathVariable long id, Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
-        try {
-            model.addAttribute("record", recordFacade.findById(id));
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("alert_danger", "Activity record '" + id + "' wasn't found. ");
-            return "redirect:" + uriBuilder.path("/record").toUriString();
-        }
-        return "record/view";
     }
 
     /**
@@ -119,30 +138,6 @@ public class ActivityRecordController {
     public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
         recordFacade.delete(id);
         redirectAttributes.addFlashAttribute("alert_success", "Activity record '" + id + "' was deleted. ");
-        return "redirect:" + uriBuilder.path("/record/list").toUriString();
-    }
-
-    /**
-     * Updates sport activity
-     *
-     * @param model data to display
-     * @return JSP page
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@Valid @ModelAttribute("recordUpdate") ActivityRecordDTO formBean, BindingResult bindingResult,
-                         Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
-
-        if (bindingResult.hasErrors()) {
-            for (ObjectError ge : bindingResult.getGlobalErrors()) {
-                model.addAttribute(ge.getObjectName() + "_error", true);
-            }
-            for (FieldError fe : bindingResult.getFieldErrors()) {
-                model.addAttribute(fe.getField() + "_error", true);
-            }
-            return "category/new";
-        }
-        Long id = recordFacade.create(formBean);
-        redirectAttributes.addFlashAttribute("alert_success", "Activity record " + id + " was created. ");
         return "redirect:" + uriBuilder.path("/record/list").toUriString();
     }
 }

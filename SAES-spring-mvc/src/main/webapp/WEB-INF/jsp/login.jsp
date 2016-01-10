@@ -29,43 +29,71 @@
     </c:if>
 
     <sec:authorize access="isAuthenticated()">
-        <p>You are logged in as <strong><c:out value="${pageContext.request.userPrincipal.name}"/></strong></p>
-        <a class="btn btn-info" href="${pageContext.request.contextPath}/logout">Logout</a>
+        <div class="text-center">
+            <p>You are logged in as <strong><c:out value="${pageContext.request.userPrincipal.name}"/></strong></p>
+            <button class="btn btn-primary btn-lg"
+                    onclick="location.href = '${pageContext.request.contextPath}/logout';">
+                Logout
+            </button>
+        </div>
     </sec:authorize>
 
     <sec:authorize access="isAnonymous()">
-        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/login">
-            <fieldset>
-                <legend>Login</legend>
-                <div>
-                    <p class="help-block">You can also log in with as one of three pre-created users: admin/admin,
-                        erik/erik,
-                        maria/maria.</p>
+        <div>
+            <p class="help-block">Welcome to our <span class=".bg-success">system for evidence of sport
+                        activities</span>. To start, log in as an existing user, or register a new user. <br>You can
+                also log in with as one of three pre-created users: <strong>admin/admin</strong>,
+                <strong>erik/erik</strong>, <strong>maria/maria</strong>.</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/login">
+                        <fieldset>
+                            <legend>Login</legend>
+                            <div class="form-group">
+                                <label for="textInput" class="col-lg-2 control-label">Username</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" class="form-control" id="textInput" placeholder="Username"
+                                           name="username">
+                                </div>
+                                <div class="col-lg-6">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+
+                                <div class="col-lg-4">
+                                    <input type="password" class="form-control" id="inputPassword"
+                                           placeholder="Password"
+                                           name="password">
+                                </div>
+                                <div class="col-lg-6">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-2">
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="textInput" class="col-lg-2 control-label">Username</label>
-                    <div class="col-lg-4">
-                        <input type="text" class="form-control" id="textInput" placeholder="Username" name="username">
-                    </div>
-                    <div class="col-lg-6">
-                    </div>
+                <div class="col-sm-6">
+                    <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/user/new">
+                        <fieldset>
+                            <legend>Register</legend>
+                            <div class="form-group text-center">
+                                <div class="col-lg-10 col-lg-offset-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">Register new user</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-                    <div class="col-lg-4">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password"
-                               name="password">
-                    </div>
-                    <div class="col-lg-6">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
+            </div>
+        </div>
     </sec:authorize>
 </jsp:attribute>
 </my:pagetemplate>

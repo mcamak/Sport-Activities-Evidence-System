@@ -28,7 +28,7 @@
         <tbody>
         <c:forEach items="${records}" var="record">
             <tr class="tableRow">
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
                     <c:out value="${record.id}"/>
                 </td>
                 <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
@@ -37,17 +37,17 @@
                     </td>
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('ROLE_USER')">
-                    <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                    <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
                         <c:out value="${record.activity.name}"/>
                     </td>
                 </sec:authorize>
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
                     <c:out value="${record.burnedCalories}"/>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
                     <c:out value="${record.time}"/>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/view/${record.id}';">
+                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
                     <c:out value="${record.distance}"/>
                 </td>
                 <td>

@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.mvc.security;
 
+import cz.muni.fi.pa165.facade.UserFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +23,9 @@ import static cz.muni.fi.pa165.mvc.security.Roles.USER;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Inject
+    UserFacade userFacade;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -45,7 +45,7 @@
                     </li>
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-                    <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
+                    <li class="${pageContext.request.requestURI.contains("/record/list") ? 'active' : ''}">
                         <a href="${pageContext.request.contextPath}/record">Activity Record</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
