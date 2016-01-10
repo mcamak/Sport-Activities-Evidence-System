@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Marian Camak
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping({"", "/"})
 public class DefaultController {
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String home(Model model) {
-        return "redirect:/record/list";
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String defaultView() {
+        return "redirect:/record";
     }
 
     @RequestMapping(value = "error/{code}")
