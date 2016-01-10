@@ -10,4 +10,15 @@
                 <goal>-X</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-clean install -offline -T 2C</actionName>
+            <displayName>clean install -offline -T 2C</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>-offline</goal>
+                <goal>-T</goal>
+                <goal>2C</goal>
+            </goals>
+        </action>
     </actions>
