@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
     <groupId>cz.muni.fi.pa165</groupId>
-
-    <artifactId>SportActivityEvidenceSystemParent</artifactId>
+    <artifactId>SAES-root</artifactId>
     <name>SportActivityEvidenceSystemParent</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -28,11 +29,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- plugin -->
-        <maven-compiler.version>3.3</maven-compiler.version>
-        <maven-surefire.version>2.19</maven-surefire.version>
         <maven-war.version>2.5</maven-war.version>
         <tomcat7-maven.version>2.2</tomcat7-maven.version>
-
+        <maven-compiler.version>3.3</maven-compiler.version>
+        <maven-surefire.version>2.19</maven-surefire.version>
+        
         <!-- spring bom -->
         <spring.platform-bom.version>1.1.4.RELEASE</spring.platform-bom.version>
 

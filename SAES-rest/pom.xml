@@ -3,15 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-        <artifactId>SportActivityEvidenceSystemParent</artifactId>
         <groupId>cz.muni.fi.pa165</groupId>
+        <artifactId>SAES-root</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>SAES-rest</artifactId>
-    <name>SAES Rest</name>
+    <name>SAES REST</name>
     <packaging>war</packaging>
 
     <build>
@@ -19,7 +19,6 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
                 <configuration>
                     <path>/SAES-rest</path>
                 </configuration>
@@ -32,12 +31,10 @@
         <dependency>
             <groupId>cz.muni.fi.pa165</groupId>
             <artifactId>SAES-data</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>cz.muni.fi.pa165</groupId>
             <artifactId>SAES-service</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
@@ -115,5 +112,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
