@@ -36,6 +36,8 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     @Inject
     private UserDao userDao;
 
+    private static final String[] names = new String[]{"admin", "htsk932", "impotent", "Ignac35"};
+
     /**
      * Test creating new user.
      */
@@ -335,7 +337,6 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     }
     
     private User createNewRandomUser() {
-        String[] names = new String[]{"admin", "htsk932", "impotent", "Ignac35"};
         User user = new User();
         int index = (int) (System.nanoTime() % 4);
         user.setUsername(names[index]);
@@ -346,5 +347,4 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         user.setWeight((int) (System.nanoTime() % 150));
         return user;
     }
-
 }
