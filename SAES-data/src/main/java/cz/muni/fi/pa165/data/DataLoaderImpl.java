@@ -177,11 +177,11 @@ public class DataLoaderImpl implements DataLoader {
         return user;
     }
 
-    private ActivityRecord createRecord(User user, SportActivity activity, Long timeSeconds, Integer distance) {
+    private ActivityRecord createRecord(User user, SportActivity activity, Long time, Integer distance) {
         ActivityRecord record = new ActivityRecord();
         record.setActivity(activity);
         record.setDistance(distance);
-        record.setTime(timeSeconds);
+        record.setTime(time);
         record.setUser(user);
         recordService.create(record);
 

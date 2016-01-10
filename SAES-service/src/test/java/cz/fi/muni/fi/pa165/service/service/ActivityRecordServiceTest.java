@@ -51,6 +51,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
 
     private SportActivity activity;
     private BurnedCalories calory;
+    private List<BurnedCalories> calories;
 
     private User user;
 
@@ -60,13 +61,42 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
 
         activity = new SportActivity();
         activity.setId(87L);
-        activity.setName("Running");
+        activity.setName("Music, playing guitar");
 
         calory = new BurnedCalories();
         calory.setId(88L);
         calory.setActivity(activity);
         calory.setBodyWeight(80);
         calory.setCaloriesBurned(530);
+
+        calories = new ArrayList<>();
+        BurnedCalories c1 = new BurnedCalories();
+        c1.setId(400L);
+        c1.setActivity(activity);
+        c1.setCaloriesBurned(177);
+        c1.setBodyWeight(60);
+        calories.add(c1);
+
+        BurnedCalories c2 = new BurnedCalories();
+        c2.setId(401L);
+        c2.setActivity(activity);
+        c2.setCaloriesBurned(211);
+        c2.setBodyWeight(70);
+        calories.add(c2);
+
+        BurnedCalories c3 = new BurnedCalories();
+        c3.setId(402L);
+        c3.setActivity(activity);
+        c3.setCaloriesBurned(245);
+        c3.setBodyWeight(80);
+        calories.add(c3);
+
+        BurnedCalories c4 = new BurnedCalories();
+        c4.setId(403L);
+        c4.setActivity(activity);
+        c4.setCaloriesBurned(279);
+        c4.setBodyWeight(90);
+        calories.add(c4);
 
         // FIXME it should be possible to add one user to multiple activity records
         user = new User();
@@ -97,12 +127,11 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void createTest() {
-        List<BurnedCalories> calories = new ArrayList<>();
-        calories.add(calory);
         when(caloriesDao.findBySportActivity(activityRecord1.getActivity())).thenReturn(calories);
 
         activityRecordService.create(activityRecord1);
         assertNotNull(activityRecord1.getBurnedCalories());
+        assertTrue(activityRecord1.getBurnedCalories() > 0);
         verify(activityRecordDAO).create(activityRecord1);
     }
 
@@ -144,10 +173,10 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
      */
     @Test
     public void updateTest() {
-        List<BurnedCalories> calories = new ArrayList<>();
-        calories.add(calory);
         when(caloriesDao.findBySportActivity(activity)).thenReturn(calories);
         activityRecordService.update(activityRecord1);
+        assertNotNull(activityRecord1.getBurnedCalories());
+        assertTrue(activityRecord1.getBurnedCalories() > 0);
         verify(activityRecordDAO).update(activityRecord1);
     }
 

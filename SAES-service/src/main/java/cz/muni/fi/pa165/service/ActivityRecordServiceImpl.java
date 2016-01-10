@@ -106,7 +106,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         checkRecord(record);
         User user = record.getUser();
         SportActivity activity = record.getActivity();
-        int burned = interpolateCalories(caloriesDao.findBySportActivity(activity), user.getWeight());
+        Double burned = interpolateCalories(caloriesDao.findBySportActivity(activity), user.getWeight());
         switch (user.getSex()) {
             case MALE:
                 burned += (40 - user.getAge()) * 2.3;
@@ -115,21 +115,26 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 burned += (40 - user.getAge()) * 1.6;
                 break;
         }
-        burned *= (int) (record.getTime() / 60);
-        record.setBurnedCalories(burned);
+        burned *= record.getTime() / 60F;
+        record.setBurnedCalories(burned.intValue());
     }
 
-    private int interpolateCalories(List<BurnedCalories> calories, int weight) {
+    private double interpolateCalories(List<BurnedCalories> calories, double weight) {
         if (calories == null || calories.isEmpty()) {
             throw new SaesServiceException("There is no burned calories assigned to your sport activity, " +
                     "cannot calculate calories you've burned. ");
         }
-        for (BurnedCalories calory : calories) {
-            if (weight < calory.getBodyWeight()) {
-                return weight / calory.getBodyWeight() * calory.getCaloriesBurned();
+        for (BurnedCalories calorie : calories) {
+            double calWeight = calorie.getBodyWeight();
+            double calBurned = calorie.getCaloriesBurned();
+            if (weight < calWeight) {
+                return weight / calWeight * calBurned;
             }
         }
-        BurnedCalories lastCalory = calories.get(calories.size() - 1);
-        return weight / lastCalory.getBodyWeight() * lastCalory.getCaloriesBurned();
+        BurnedCalories lastCalorie = calories.get(calories.size() - 1);
+        double calWeight = lastCalorie.getBodyWeight();
+        double calBurned = lastCalorie.getCaloriesBurned();
+
+        return weight / calWeight * calBurned;
     }
 }

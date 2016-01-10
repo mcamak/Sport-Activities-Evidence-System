@@ -6,6 +6,7 @@ import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
+import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -66,6 +68,10 @@ public class DataLoaderTest extends AbstractTestNGSpringContextTests {
         }
         for (SportActivity activity : activityDao.findAll()) {
             assertTrue(caloriesDao.findBySportActivity(activity).size() > 0, "No burned calories of activity " + activity.getName());
+        }
+        for (ActivityRecord record : recordDao.findAll()) {
+            assertNotNull(record.getBurnedCalories());
+            assertTrue(record.getBurnedCalories() > 0);
         }
 
         logger.debug("Test successfully finished.");
