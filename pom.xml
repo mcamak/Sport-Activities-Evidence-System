@@ -153,8 +153,6 @@
                     <configuration>
                         <source>${project.source}</source>
                         <target>${project.target}</target>
-                        <skip>true</skip>
-                        <skipMain>true</skipMain>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -171,21 +169,6 @@
                     <groupId>org.apache.tomcat.maven</groupId>
                     <artifactId>tomcat7-maven-plugin</artifactId>
                     <version>${tomcat7-maven.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>io.takari.maven.plugins</groupId>
-                    <artifactId>takari-lifecycle-plugin</artifactId>
-                    <extensions>true</extensions>
-                    <version>1.11.11</version>
-                    <executions>
-                        <execution>
-                            <id>compile</id>
-                            <goals>
-                                <goal>compile</goal>
-                                <goal>testCompile</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
