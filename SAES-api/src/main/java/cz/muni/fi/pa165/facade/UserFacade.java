@@ -15,9 +15,8 @@ public interface UserFacade {
      * Signs in new user with password.
      *
      * @param u user to be signed in
-     * @param password - un-encrypted password
      */
-    void create(UserCreateDTO u, String password);
+    void create(UserCreateDTO u);
 
     /**
      * Logs in an user

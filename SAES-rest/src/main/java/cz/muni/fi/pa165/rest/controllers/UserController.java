@@ -36,7 +36,8 @@ public class UserController {
 
         logger.info("REST: createUser...");
         try {
-            userFacade.create(dto, password);
+            dto.setPassword(password);
+            userFacade.create(dto);
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }
@@ -45,7 +46,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public final boolean logIn(UserLogInDTO dto) throws Exception {
 
-        logger.info("REST: log in user with id '" + dto.getId() + "'. ");
+        logger.info("REST: log in user with name '" + dto.getUsername() + "'. ");
         try {
             return userFacade.logIn(dto);
         } catch (IllegalArgumentException e) {

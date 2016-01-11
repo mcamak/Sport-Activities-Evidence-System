@@ -59,7 +59,6 @@ public class ActivityRecordController {
      */
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String list(Model model, Principal principal) {
-        principal.getName();
         model.addAttribute("records", recordFacade.findByUser(userFacade.findByUsername(principal.getName()).getId()));
         return "record/list";
     }
@@ -96,15 +95,16 @@ public class ActivityRecordController {
         model.addAttribute("record", recordDTO);
         return newRecord(model);
     }
-    
-     /**
+
+    /**
      * Creates new sport activity
+     *
      * @param model data to display
      * @return JSP page
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createRecord(@Valid @ModelAttribute("recordCreate") ActivityRecordCreateDTO formBean, BindingResult bindingResult,
-                         Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+    public String createRecord(@Valid @ModelAttribute("record") ActivityRecordCreateDTO formBean, BindingResult bindingResult,
+                               Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
 
         if (bindingResult.hasErrors()) {
             for (ObjectError ge : bindingResult.getGlobalErrors()) {
@@ -123,6 +123,32 @@ public class ActivityRecordController {
             Long id = recordFacade.create(formBean);
             redirectAttributes.addFlashAttribute("alert_success", "Activity record " + id + " was created. ");
         }
+        return "redirect:" + uriBuilder.path("/record/list").toUriString();
+    }
+
+    /**
+     * Creates new sport activity
+     *
+     * @param model data to display
+     * @return JSP page
+     */
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
+    public String UPDATE(@Valid @ModelAttribute("record") ActivityRecordCreateDTO formBean, BindingResult bindingResult,
+                         @PathVariable long id, Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+
+        if (bindingResult.hasErrors()) {
+            for (ObjectError ge : bindingResult.getGlobalErrors()) {
+                model.addAttribute(ge.getObjectName() + "_error", true);
+            }
+            for (FieldError fe : bindingResult.getFieldErrors()) {
+                model.addAttribute(fe.getField() + "_error", true);
+            }
+            return "record/new";
+        }
+        ActivityRecordDTO updateDTO = (ActivityRecordDTO) formBean;
+        updateDTO.setId(id);
+        recordFacade.update(updateDTO);
+        redirectAttributes.addFlashAttribute("alert_success", "Activity record " + updateDTO.getId() + " was updated. ");
         return "redirect:" + uriBuilder.path("/record/list").toUriString();
     }
 

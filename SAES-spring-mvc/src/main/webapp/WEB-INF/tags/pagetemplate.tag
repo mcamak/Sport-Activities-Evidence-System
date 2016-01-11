@@ -35,21 +35,30 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}">Sport Activity Evidence System</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/login">Sport Activity Evidence System</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
                     <li class="${pageContext.request.requestURI.contains("/activity") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/activity">Sport Activity</a>
+                        <a href="${pageContext.request.contextPath}/activity/list">Sport Activity</a>
                     </li>
-                </sec:authorize>
-                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-                    <li class="${pageContext.request.requestURI.contains("/record/list") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/record">Activity Record</a>
+                    <li class="${pageContext.request.requestURI.contains("/calorie") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/calorie/list">Burned Calorie</a>
+                    </li>
+                    <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/record/list">Activity Record</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/user">User</a>
+                        <a href="${pageContext.request.contextPath}/user/list">User</a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasAnyRole('ROLE_USER')">
+                    <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/record/list">Activity Record</a>
+                    </li>
+                    <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
+                        <a href="${pageContext.request.contextPath}/user/update/">User</a>
                     </li>
                 </sec:authorize>
             </ul>
@@ -75,20 +84,6 @@
     <c:if test="${not empty title}">
         <div class="page-header">
             <h1><c:out value="${title}"/></h1>
-        </div>
-    </c:if>
-
-    <!-- authenticated user info -->
-    <c:if test="${not empty authenticatedUser}">
-        <div class="row">
-            <div class="col-xs-6 col-sm-8 col-md-9 col-lg-10"></div>
-            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <c:out value="${authenticatedUser.givenName} ${authenticatedUser.surname}"/>
-                    </div>
-                </div>
-            </div>
         </div>
     </c:if>
 

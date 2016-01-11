@@ -27,20 +27,20 @@ public class UserFacadeImpl implements UserFacade {
     private BeanMappingService bms;
 
     @Override
-    public void create(UserCreateDTO u, String password) {
+    public void create(UserCreateDTO u) {
         if (u == null) {
             throw new IllegalArgumentException("User is null. ");
         }
-        if (password == null || password.isEmpty()) {
+        if (u.getPassword() == null || u.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password is null or empty. ");
         }
 
-        userService.register(bms.mapTo(u, User.class), password);
+        userService.register(bms.mapTo(u, User.class), u.getPassword());
     }
 
     @Override
     public boolean logIn(UserLogInDTO logIn) {
-        return userService.authenticate(userService.findById(logIn.getId()), logIn.getPassword());
+        return userService.authenticate(userService.findByUsername(logIn.getUsername()), logIn.getPassword());
     }
 
     @Override

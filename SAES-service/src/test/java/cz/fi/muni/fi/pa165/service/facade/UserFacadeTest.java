@@ -85,10 +85,11 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         userDTO.setId(user.getId());
         
         userLogInDTO = new UserLogInDTO();
-        userLogInDTO.setId(user.getId());
+        userLogInDTO.setUsername(user.getUsername());
         userLogInDTO.setPassword("Rohozec");
 
         userCreateDTO = new UserCreateDTO();
+        userCreateDTO.setPassword("pass");
         userCreateDTO.setAge(user.getAge());
         userCreateDTO.setUsername(user.getUsername());
         userCreateDTO.setSex(user.getSex());
@@ -102,14 +103,14 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void createTest() {
-        userFacade.create(userCreateDTO, "pass");
+        userFacade.create(userCreateDTO);
         verify(beanMappingService).mapTo(userCreateDTO, User.class);
         verify(userService).register(Matchers.any(User.class), Matchers.same("pass"));
     }
 
     @Test
     public void logInTest() {
-        when(userService.findById(user.getId())).thenReturn(user);
+        when(userService.findByUsername(user.getUsername())).thenReturn(user);
         userFacade.logIn(userLogInDTO);
         verify(userService).authenticate(user, userLogInDTO.getPassword());
     }

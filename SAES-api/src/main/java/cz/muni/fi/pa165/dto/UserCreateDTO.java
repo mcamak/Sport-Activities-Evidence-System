@@ -21,6 +21,11 @@ public class UserCreateDTO {
     String username;
 
     @NotNull
+    @Size(min = 3, max = 50)
+    @Pattern(regexp = ".{3,}")
+    String password;
+
+    @NotNull
     Gender sex;
 
     @NotNull
