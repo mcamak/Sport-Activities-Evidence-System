@@ -13,9 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.inject.Inject;
 
-import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
-import static cz.muni.fi.pa165.mvc.security.Roles.USER;
-
 /**
  * @author Marian Camak
  */
@@ -29,10 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/record/list")
+                .defaultSuccessUrl("/")
                 .and()
                 .csrf().disable();
     }
@@ -42,11 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("admin").password(passwordEncoder.encode("admin")).authorities(ADMIN).and()
-                .withUser("erik").password(passwordEncoder.encode("erik")).authorities(USER).and()
-                .withUser("maria").password(passwordEncoder.encode("maria")).authorities(USER);
+        auth.authenticationProvider(new CustomAuthenticationProvider(userFacade));
     }
 
     @Bean

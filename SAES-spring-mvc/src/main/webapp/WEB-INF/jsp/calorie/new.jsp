@@ -12,12 +12,12 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<my:pagetemplate title="New burned calorie">
+<my:pagetemplate title="${calorie.id != null ? 'Update' : 'New'} burned calorie">
     <jsp:attribute name="body">
-    <form:form method="post" action="${pageContext.request.contextPath}/calorie/create/${id != null ? id : ''}"
+    <form:form method="post" action="${pageContext.request.contextPath}/calorie/create"
                modelAttribute="calorie" class="form-horizontal">
         <fieldset>
-            <legend>Burned calorie</legend>
+            <form:input path="id" class="form-control" value="${calorie.id}" type="hidden"/>
             <div class="form-group">
                 <form:label path="activity" cssClass="col-sm-2 control-label">Sport activity</form:label>
                 <div class="col-sm-10">
@@ -25,10 +25,10 @@
                         <c:forEach items="${activities}" var="activity">
                             <c:choose>
                                 <c:when test="${calorie.activity != null && calorie.activity.id == activity.id}">
-                                    <form:option value="${activity}" selected="true">${activity.name}</form:option>
+                                    <form:option value="${activity.id}" selected="true">${activity.name}</form:option>
                                 </c:when>
                                 <c:otherwise>
-                                    <form:option value="${activity}">${activity.name}</form:option>
+                                    <form:option value="${activity.id}">${activity.name}</form:option>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
@@ -53,7 +53,7 @@
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     <c:choose>
-                        <c:when test="${id != null}">
+                        <c:when test="${calorie.id != null}">
                             <button class="btn btn-primary" type="submit">Update burned calorie</button>
                         </c:when>
                         <c:otherwise>

@@ -23,16 +23,17 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${activities}" var="calorie">
-            <tr class="tableRow">
-                <td onclick="location.href = '${pageContext.request.contextPath}/activity/update/${calorie.id}';">
-                    <c:out value="${calorie.id}"/>
-                </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/activity/update/${calorie.id}';">
-                    <c:out value="${calorie.name}"/>
+        <c:forEach items="${activities}" var="activity">
+            <tr class="tableRow"
+                onclick="location.href = '${pageContext.request.contextPath}/activity/update/${activity.id}';">
+                <td>
+                    <c:out value="${activity.id}"/>
                 </td>
                 <td>
-                    <form method="post" action="${pageContext.request.contextPath}/activity/delete/${calorie.id}">
+                    <c:out value="${activity.name}"/>
+                </td>
+                <td>
+                    <form method="post" action="${pageContext.request.contextPath}/activity/delete/${activity.id}">
                         <button type="submit" class="btn btn-default">Delete</button>
                     </form>
                 </td>

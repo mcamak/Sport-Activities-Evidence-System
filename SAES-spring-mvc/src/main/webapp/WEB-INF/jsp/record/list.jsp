@@ -27,27 +27,31 @@
         </thead>
         <tbody>
         <c:forEach items="${records}" var="record">
-            <tr class="tableRow">
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
+            <tr class="tableRow"
+                onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
+                <td>
                     <c:out value="${record.id}"/>
                 </td>
                 <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-                    <td onclick="location.href = '${pageContext.request.contextPath}/activity/view/${record.activity.id}';">
-                        <button class="btn"><c:out value="${record.activity.name}"/></button>
+                    <td>
+                        <form method="get"
+                              action="${pageContext.request.contextPath}/activity/update/${record.activity.id}">
+                            <button class="btn"><c:out value="${record.activity.name}"/></button>
+                        </form>
                     </td>
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('ROLE_USER')">
-                    <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
+                    <td>
                         <c:out value="${record.activity.name}"/>
                     </td>
                 </sec:authorize>
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
+                <td>
                     <c:out value="${record.burnedCalories}"/>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
+                <td>
                     <c:out value="${record.time}"/>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/record/update/${record.id}';">
+                <td>
                     <c:out value="${record.distance}"/>
                 </td>
                 <td>

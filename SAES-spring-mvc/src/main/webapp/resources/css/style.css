@@ -1,17 +1,6 @@
 body {
-}
-
-body::after {
-    content: "";
-    background: url('../img/background.jpg') no-repeat fixed center 20%;
+    background: url('../img/background.png') no-repeat fixed center 20%;
     background-size: cover;
-    opacity: 0.3;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;
 }
 
 .table-hover tr {

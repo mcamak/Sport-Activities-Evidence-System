@@ -12,12 +12,12 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<my:pagetemplate title="New sport activity">
+<my:pagetemplate title="${activity.id != null ? 'Update' : 'New'} sport activity">
     <jsp:attribute name="body">
-    <form:form method="post" action="${pageContext.request.contextPath}/activity/create${id != null ? '/'+id : ''}"
+    <form:form method="post" action="${pageContext.request.contextPath}/activity/create"
                modelAttribute="activity" class="form-horizontal">
         <fieldset>
-            <legend>Login</legend>
+            <form:input path="id" class="form-control" value="${activity.id}" type="hidden"/>
             <div class="form-group ${name_error?'has-error':''}">
                 <form:label path="name" class="col-lg-2 control-label">Name</form:label>
                 <div class="col-lg-4">
@@ -28,7 +28,7 @@
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     <c:choose>
-                        <c:when test="${id != null}">
+                        <c:when test="${activity.id != null}">
                             <button class="btn btn-primary" type="submit">Update sport activity</button>
                         </c:when>
                         <c:otherwise>

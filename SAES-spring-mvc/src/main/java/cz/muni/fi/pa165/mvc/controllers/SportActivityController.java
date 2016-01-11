@@ -1,11 +1,9 @@
 package cz.muni.fi.pa165.mvc.controllers;
 
 
-import cz.muni.fi.pa165.dto.SportActivityCreateDTO;
+import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.exceptions.EntityReferenceException;
-import cz.muni.fi.pa165.facade.BurnedCaloriesFacade;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 
 import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
 
 /**
- *
  * @author Marian Camak
  */
 
@@ -32,13 +30,22 @@ import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
 @Secured(ADMIN)
 @RequestMapping("/activity")
 public class SportActivityController {
-    
-    @Autowired
+
+    @Inject
     private SportActivityFacade activityFacade;
-    
-    @Autowired
-    private BurnedCaloriesFacade caloriesFacade;
-    
+
+    /**
+     * List of sport activities.
+     *
+     * @param model data to display
+     * @return JSP page name
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(Model model) {
+        model.addAttribute("activities", activityFacade.findAll());
+        return "activity/list";
+    }
+
     /**
      * Prepares an empty form.
      *
@@ -47,8 +54,8 @@ public class SportActivityController {
      */
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newActivity(Model model) {
-        if (!model.containsAttribute("activity")) {
-            model.addAttribute("activity", new SportActivityCreateDTO());
+        if (!model.containsAttribute("activity") || model.asMap().get("activity") == null) {
+            model.addAttribute("activity", new SportActivityDTO());
         }
         return "activity/new";
     }
@@ -61,20 +68,20 @@ public class SportActivityController {
      */
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable long id, Model model) {
-        model.addAttribute("id", id);
         model.addAttribute("activity", activityFacade.findById(id));
         return newActivity(model);
     }
-    
-     /**
+
+    /**
      * Creates new sport activity
+     *
      * @param model data to display
      * @return JSP page
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute("sportActivityCreate") SportActivityCreateDTO formBean, BindingResult bindingResult,
+    public String create(@Valid @ModelAttribute("activity") SportActivityDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
-        
+
         if (bindingResult.hasErrors()) {
             for (ObjectError ge : bindingResult.getGlobalErrors()) {
                 model.addAttribute(ge.getObjectName() + "_error", true);
@@ -85,37 +92,31 @@ public class SportActivityController {
             return "activity/new";
         }
 
-        Long id = activityFacade.create(formBean);
-        redirectAttributes.addFlashAttribute("alert_info", "Sport Activity " + id + " was created");
-        return "redirect:" + uriBuilder.path("/activity/list").toUriString();
-    }
-    
-    /**
-     * List of sport activities.
-     *
-     * @param model data to display
-     * @return JSP page name
-     */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model) {
-        model.addAttribute("activities", activityFacade.findAll());
-        return "activity/list";
-    }
-    
-    /**
-     * Delete sport activity with id.
-     *
-     * @param id
-     * @param uriBuilder
-     * @param redirectAttributes
-     * @return JSP page
-     */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public String remove(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) throws EntityReferenceException {
-        activityFacade.delete(id);
-        redirectAttributes.addFlashAttribute("alert_info", "Sport activity " + id + " was deleted.");
+        if (formBean.getId() == null) {
+            Long newId = activityFacade.create(formBean);
+            redirectAttributes.addFlashAttribute("alert_info", "Sport Activity " + newId + " was created. ");
+        } else {
+            activityFacade.update(formBean);
+            redirectAttributes.addFlashAttribute("alert_info", "Sport Activity " + formBean.getId() + " was updated. ");
+        }
         return "redirect:" + uriBuilder.path("/activity/list").toUriString();
     }
 
-    
+    /**
+     * Delete sport activity.
+     *
+     * @param id of activity to be deleted
+     * @return JSP page
+     */
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
+        try {
+            activityFacade.delete(id);
+        } catch (EntityReferenceException e) {
+            redirectAttributes.addFlashAttribute("alert_danger", "There is record(s) assigned to this sport activity. You must delete them first. ");
+            return "redirect:" + uriBuilder.path("/activity/list").toUriString();
+        }
+        redirectAttributes.addFlashAttribute("alert_info", "Sport activity " + id + " was deleted.");
+        return "redirect:" + uriBuilder.path("/activity/list").toUriString();
+    }
 }

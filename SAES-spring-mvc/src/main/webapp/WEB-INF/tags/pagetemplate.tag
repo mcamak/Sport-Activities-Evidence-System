@@ -58,7 +58,7 @@
                         <a href="${pageContext.request.contextPath}/record/list">Activity Record</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/user/update/">User</a>
+                        <a href="${pageContext.request.contextPath}/user/update/name=${pageContext.request.userPrincipal.name}">User</a>
                     </li>
                 </sec:authorize>
             </ul>

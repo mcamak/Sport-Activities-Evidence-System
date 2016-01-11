@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author Marian Camak
@@ -16,8 +17,8 @@ public class DefaultController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String defaultView() {
-        return "/record/list";
+    public String defaultView(UriComponentsBuilder uriBuilder) {
+        return "redirect:" + uriBuilder.path("/record/list").toUriString();
     }
 
     @RequestMapping(value = "error/{code}")

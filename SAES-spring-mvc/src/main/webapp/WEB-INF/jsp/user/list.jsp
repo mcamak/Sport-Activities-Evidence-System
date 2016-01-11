@@ -16,12 +16,10 @@
 <my:pagetemplate title="User">
 <jsp:attribute name="body">
 
-    <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-        <my:a href="/user/new" class="btn btn-primary btnNew">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            New user
-        </my:a>
-    </sec:authorize>
+    <my:a href="/user/new" class="btn btn-primary btnNew">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        New user
+    </my:a>
 
     <table class="table table-hover">
         <thead>

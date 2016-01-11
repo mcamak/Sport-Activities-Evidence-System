@@ -26,17 +26,21 @@
         </thead>
         <tbody>
         <c:forEach items="${calories}" var="calorie">
-            <tr class="tableRow">
-                <td onclick="location.href = '${pageContext.request.contextPath}/calorie/update/${calorie.id}';">
+            <tr class="tableRow"
+                onclick="location.href = '${pageContext.request.contextPath}/calorie/update/${calorie.id}';">
+                <td>
                     <c:out value="${calorie.id}"/>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/activity/new/${calorie.activity.id}';">
-                    <button class="btn"><c:out value="${calorie.activity.name}"/></button>
+                <td>
+                    <form method="get"
+                          action="${pageContext.request.contextPath}/activity/update/${calorie.activity.id}">
+                        <button type="submit" class="btn"><c:out value="${calorie.activity.name}"/></button>
+                    </form>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/calorie/update/${calorie.id}';">
+                <td>
                     <c:out value="${calorie.bodyWeight}"/>
                 </td>
-                <td onclick="location.href = '${pageContext.request.contextPath}/calorie/update/${calorie.id}';">
+                <td>
                     <c:out value="${calorie.caloriesBurned}"/>
                 </td>
                 <td>

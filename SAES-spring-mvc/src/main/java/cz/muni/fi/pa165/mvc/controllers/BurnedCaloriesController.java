@@ -1,8 +1,8 @@
 package cz.muni.fi.pa165.mvc.controllers;
 
 
-import cz.muni.fi.pa165.dto.BurnedCaloriesCreateDTO;
 import cz.muni.fi.pa165.dto.BurnedCaloriesDTO;
+import cz.muni.fi.pa165.dto.SportActivityDTO;
 import cz.muni.fi.pa165.facade.BurnedCaloriesFacade;
 import cz.muni.fi.pa165.facade.SportActivityFacade;
 import org.springframework.security.access.annotation.Secured;
@@ -20,11 +20,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.List;
 
 import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
+
 /**
- *
- * @author Barbora B.
+ * @author Marian Camak
  */
 
 @Controller
@@ -50,6 +51,12 @@ public class BurnedCaloriesController {
         return "calorie/list";
     }
 
+    @ModelAttribute("activities")
+    public List<SportActivityDTO> getActivities() {
+        return activityFacade.findAll();
+    }
+
+
     /**
      * Prepares an empty form.
      *
@@ -58,34 +65,32 @@ public class BurnedCaloriesController {
      */
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newCalorie(Model model) {
-        if (!model.containsAttribute("calorie")) {
-            model.addAttribute("calorie", new BurnedCaloriesCreateDTO());
+        if (!model.containsAttribute("calorie") || model.asMap().get("calorie") == null) {
+            model.addAttribute("calorie", new BurnedCaloriesDTO());
         }
-        model.addAttribute("activities", activityFacade.findAll());
         return "calorie/new";
     }
 
     /**
      * Prepares an update form.
      *
-     * @param id
-     * @param redirectAttributes
+     * @param model data to be displayed
      * @return JSP page
      */
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-    public String update(@PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes) {
-        BurnedCaloriesDTO calorieDTO = caloriesFacade.findById(id);
-        model.addAttribute("calorie", calorieDTO);
+    public String update(@PathVariable long id, Model model) {
+        model.addAttribute("calorie", caloriesFacade.findById(id));
         return newCalorie(model);
     }
-    
+
     /**
      * Creates new burned calorie
+     *
      * @param model data to display
      * @return JSP page
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute("calorie") BurnedCaloriesCreateDTO formBean, BindingResult bindingResult,
+    public String create(@Valid @ModelAttribute("calorie") BurnedCaloriesDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
 
         if (bindingResult.hasErrors()) {
@@ -98,51 +103,27 @@ public class BurnedCaloriesController {
             return "calorie/new";
         }
 
-        caloriesFacade.create(formBean);
-        redirectAttributes.addFlashAttribute("alert_info", "Burned calorie was created");
-        return "redirect:" + uriBuilder.path("/calorie/list").toUriString();
-    }
-
-    /**
-     * Creates new burned calorie
-     * @param model data to display
-     * @return JSP page
-     */
-    @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
-    public String update(@Valid @ModelAttribute("calorie") BurnedCaloriesCreateDTO formBean, BindingResult bindingResult,
-                         @PathVariable("id") long id, Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
-
-        if (bindingResult.hasErrors()) {
-            for (ObjectError ge : bindingResult.getGlobalErrors()) {
-                model.addAttribute(ge.getObjectName() + "_error", true);
-            }
-            for (FieldError fe : bindingResult.getFieldErrors()) {
-                model.addAttribute(fe.getField() + "_error", true);
-            }
-            return "calorie/new";
+        if (formBean.getId() == null) {
+            Long newId = caloriesFacade.create(formBean);
+            redirectAttributes.addFlashAttribute("alert_info", "Burned calorie " + newId + " was created. ");
+        } else {
+            caloriesFacade.update(formBean);
+            redirectAttributes.addFlashAttribute("alert_info", "Burned calorie " + formBean.getId() + " was updated. ");
         }
-        BurnedCaloriesDTO calorieDTO = (BurnedCaloriesDTO) formBean;
-        calorieDTO.setId(id);
-        caloriesFacade.update(calorieDTO);
-        redirectAttributes.addFlashAttribute("alert_info", "Burned calorie was updated");
         return "redirect:" + uriBuilder.path("/calorie/list").toUriString();
     }
-    
+
     /**
      * Delete burned calories with id.
      *
-     * @param id
-     * @param uriBuilder
-     * @param redirectAttributes
+     * @param id of calorie to be deleted
      * @return JSP page
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public String remove(@PathVariable("id") long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
+    public String remove(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
         caloriesFacade.delete(id);
         redirectAttributes.addFlashAttribute("alert_info", "Burned calorie " + id + " was deleted.");
         return "redirect:" + uriBuilder.path("/calorie/list").toUriString();
     }
-
-    
 }
 
