@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.data;
 
+import cz.muni.fi.pa165.enums.Gender;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.BurnedCalories;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
@@ -8,7 +9,6 @@ import cz.muni.fi.pa165.service.ActivityRecordService;
 import cz.muni.fi.pa165.service.BurnedCaloriesService;
 import cz.muni.fi.pa165.service.SportActivityService;
 import cz.muni.fi.pa165.service.UserService;
-import enums.Gender;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

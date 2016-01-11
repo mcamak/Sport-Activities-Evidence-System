@@ -1,10 +1,11 @@
 package cz.fi.muni.fi.pa165.service.service;
 
+import cz.muni.fi.pa165.enums.Gender;
+import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserServiceImpl;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import enums.Gender;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -30,6 +31,9 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
     @Mock
     private UserDao userDao;
+
+    @Mock
+    private ActivityRecordDao recordDao;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -123,6 +127,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void updateTest() {
         user1.setId(1L);
+        when(userDao.findUser(user1.getId())).thenReturn(user1);
         userService.update(user1);
         verify(userDao).updateUser(user1);
     }
@@ -143,6 +148,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     public void deleteTest() {
         user1.setId(1l);
         when(userDao.findUser(1l)).thenReturn(user1);
+        Mockito.doNothing().when(recordDao).deleteUserRecords(user1);
         userService.delete(user1.getId());
         verify(userDao).deleteUser(user1);
     }

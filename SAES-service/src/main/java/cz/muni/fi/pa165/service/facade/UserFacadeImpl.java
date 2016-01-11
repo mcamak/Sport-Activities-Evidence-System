@@ -40,7 +40,11 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public boolean logIn(UserLogInDTO logIn) {
-        return userService.authenticate(userService.findByUsername(logIn.getUsername()), logIn.getPassword());
+        User user = userService.findByUsername(logIn.getUsername());
+        if (user == null) {
+            return false;
+        }
+        return userService.authenticate(user, logIn.getPassword());
     }
 
     @Override

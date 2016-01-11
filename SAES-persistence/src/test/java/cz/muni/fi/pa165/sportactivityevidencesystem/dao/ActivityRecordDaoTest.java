@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
+import cz.muni.fi.pa165.enums.Gender;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.SportActivityDao;
@@ -7,7 +8,6 @@ import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.ActivityRecord;
 import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
-import enums.Gender;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -56,7 +56,7 @@ public class ActivityRecordDaoTest extends AbstractTestNGSpringContextTests {
 
         user = new User();
         user.setUsername("Peter");
-        user.setPasswordHash("passwordHash");
+        user.setPassword("passwordHash");
         user.setAge(35);
         user.setSex(Gender.MALE);
         user.setWeight(95);

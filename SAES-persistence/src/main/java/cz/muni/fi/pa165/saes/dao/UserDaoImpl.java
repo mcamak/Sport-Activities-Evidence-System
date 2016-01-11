@@ -86,7 +86,7 @@ public class UserDaoImpl implements UserDao {
         if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
             throw new IllegalArgumentException("User name is null or empty. ");
         }
-        if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()) {
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password hash is null or empty. ");
         }
         if (user.getAge() == null) {

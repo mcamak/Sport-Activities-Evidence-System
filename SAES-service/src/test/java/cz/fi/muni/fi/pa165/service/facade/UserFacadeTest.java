@@ -3,13 +3,13 @@ package cz.fi.muni.fi.pa165.service.facade;
 import cz.muni.fi.pa165.dto.UserCreateDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.dto.UserLogInDTO;
+import cz.muni.fi.pa165.enums.Gender;
 import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.service.facade.UserFacadeImpl;
 import cz.muni.fi.pa165.service.mapping.BeanMappingService;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import enums.Gender;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -75,7 +75,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         user.setWeight(100);
         user.setAdmin(true);
         user.setId(12899L);
-        user.setPasswordHash("kobliha");
+        user.setPassword("kobliha");
 
         userDTO = new UserDTO();
         userDTO.setAge(user.getAge());

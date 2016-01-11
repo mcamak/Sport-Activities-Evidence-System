@@ -1,5 +1,6 @@
 package cz.fi.muni.fi.pa165.service.service;
 
+import cz.muni.fi.pa165.enums.Gender;
 import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.BurnedCaloriesDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
@@ -9,7 +10,6 @@ import cz.muni.fi.pa165.saes.entity.SportActivity;
 import cz.muni.fi.pa165.saes.entity.User;
 import cz.muni.fi.pa165.service.ActivityRecordServiceImpl;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
-import enums.Gender;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -102,7 +102,7 @@ public class ActivityRecordServiceTest extends AbstractTestNGSpringContextTests 
         user = new User();
         user.setAge(100);
         user.setUsername("Pepa z Depa");
-        user.setPasswordHash("LOL");
+        user.setPassword("LOL");
         user.setSex(Gender.MALE);
         user.setWeight(56);
 

@@ -1,9 +1,9 @@
 package cz.muni.fi.pa165.sportactivityevidencesystem.dao;
 
+import cz.muni.fi.pa165.enums.Gender;
 import cz.muni.fi.pa165.saes.SportActivitySystemApplicationContext;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
-import enums.Gender;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -82,7 +82,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     @Test(expectedExceptions = DataAccessException.class)
     public void testCreateUserWithNullPasswordHash() {
         User u = createNewRandomUser();
-        u.setPasswordHash(null);
+        u.setPassword(null);
         userDao.createUser(u);
     }
     
@@ -123,7 +123,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     public void testGetUser() {
         User user = new User();
         user.setUsername("Adam");
-        user.setPasswordHash("PasswordHash");
+        user.setPassword("PasswordHash");
         user.setAge(20);
         user.setSex(Gender.MALE);
         user.setWeight(70);
@@ -132,7 +132,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         
         User found = userDao.findUser(user.getId());
         Assert.assertEquals("Adam", found.getUsername());
-        Assert.assertEquals("PasswordHash", found.getPasswordHash());
+        Assert.assertEquals("PasswordHash", found.getPassword());
         Assert.assertEquals(new Integer(20), found.getAge());
         Assert.assertEquals(Gender.MALE, found.getSex());
         Assert.assertEquals(new Integer(70), found.getWeight());
@@ -153,7 +153,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
     public void testFindUserByName() {
         User user = new User();
         user.setUsername("Adam");
-        user.setPasswordHash("PasswordHash");
+        user.setPassword("PasswordHash");
         user.setAge(20);
         user.setSex(Gender.MALE);
         user.setWeight(70);
@@ -162,7 +162,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
 
         User found = userDao.findUserByName(user.getUsername());
         Assert.assertEquals("Adam", found.getUsername());
-        Assert.assertEquals("PasswordHash", found.getPasswordHash());
+        Assert.assertEquals("PasswordHash", found.getPassword());
         Assert.assertEquals(new Integer(20), found.getAge());
         Assert.assertEquals(Gender.MALE, found.getSex());
         Assert.assertEquals(new Integer(70), found.getWeight());
@@ -284,7 +284,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         User user = createNewRandomUser();
         userDao.createUser(user);
         assertNotNull(user.getId());
-        user.setPasswordHash(null);
+        user.setPassword(null);
         userDao.updateUser(user);
     }
     
@@ -341,7 +341,7 @@ public class UserDaoTest extends AbstractTestNGSpringContextTests {
         int index = (int) (System.nanoTime() % 4);
         user.setUsername(names[index]);
         names[index] += "1";
-        user.setPasswordHash("PasswordHash");
+        user.setPassword("PasswordHash");
         user.setAge((int) (System.nanoTime() % 150));
         user.setSex(System.nanoTime() % 2 == 0 ? Gender.MALE : Gender.FEMALE);
         user.setWeight((int) (System.nanoTime() % 150));

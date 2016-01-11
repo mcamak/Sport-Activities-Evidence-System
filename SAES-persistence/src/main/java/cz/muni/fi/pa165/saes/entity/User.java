@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.saes.entity;
 
-import enums.Gender;
+import cz.muni.fi.pa165.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ public class User implements Comparable<User> {
 
     @Column(unique = true, nullable = false)
     private String username;
-    private String passwordHash;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Gender sex;
@@ -36,7 +36,7 @@ public class User implements Comparable<User> {
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.username);
-        hash = 97 * hash + Objects.hashCode(this.passwordHash);
+        hash = 97 * hash + Objects.hashCode(this.password);
         hash = 97 * hash + Objects.hashCode(this.sex);
         hash = 97 * hash + Objects.hashCode(this.age);
         hash = 97 * hash + Objects.hashCode(this.weight);

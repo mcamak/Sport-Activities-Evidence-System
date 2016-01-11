@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.dto;
 
-import enums.Gender;
+import cz.muni.fi.pa165.enums.Gender;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

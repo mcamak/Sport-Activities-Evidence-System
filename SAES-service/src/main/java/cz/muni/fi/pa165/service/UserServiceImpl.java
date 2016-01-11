@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.exceptions.SaesServiceException;
+import cz.muni.fi.pa165.saes.dao.ActivityRecordDao;
 import cz.muni.fi.pa165.saes.dao.UserDao;
 import cz.muni.fi.pa165.saes.entity.User;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
     @Inject
     private UserDao userDao;
 
+    @Inject
+    private ActivityRecordDao recordDao;
+
     @Override
     public void register(User user, String password) {
         if (user == null) {
@@ -34,7 +38,7 @@ public class UserServiceImpl implements UserService {
         if (userDao.findUserByName(user.getUsername()) != null) {
             throw new SaesServiceException("User '" + user.getUsername() + "' already exists, choose another name. ");
         }
-        user.setPasswordHash(createHash(password));
+        user.setPassword(createHash(password));
         userDao.createUser(user);
     }
 
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
-        return validatePassword(password, user.getPasswordHash());
+        return validatePassword(password, user.getPassword());
     }
 
     @Override
@@ -65,6 +69,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userDao.findUser(id);
         if (user != null) {
+            recordDao.deleteUserRecords(user);
             userDao.deleteUser(user);
         }
     }
@@ -90,6 +95,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new IllegalArgumentException("User is null. ");
         }
+        User userBefore = userDao.findUser(user.getId());
+        user.setPassword(userBefore.getPassword());
+        user.setAdmin(userBefore.isAdmin());
         userDao.updateUser(user);
     }
 
