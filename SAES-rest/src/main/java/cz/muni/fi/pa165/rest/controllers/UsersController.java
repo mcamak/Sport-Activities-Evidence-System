@@ -19,31 +19,30 @@ import java.util.Collection;
 
 /**
  * User rest controller.
- * <p/>
+ *
  * Created by Marian Camak on 12. 12. 2015.
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/users")
+public class UsersController {
 
-    final static Logger logger = LoggerFactory.getLogger(UserController.class);
+    final static Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     @Inject
     private UserFacade userFacade;
 
-    @RequestMapping(value = "/{pass}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final void createUser(UserCreateDTO dto, @PathVariable("pass") String password) throws Exception {
+    @RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final void createUser(UserCreateDTO dto) throws Exception {
 
         logger.info("REST: createUser...");
         try {
-            dto.setPassword(password);
             userFacade.create(dto);
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public final boolean logIn(UserLogInDTO dto) throws Exception {
 
         logger.info("REST: log in user with name '" + dto.getUsername() + "'. ");
@@ -69,7 +68,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final Collection<UserDTO> getUsers() throws Exception {
 
         logger.info("REST: getAllUsers...");
@@ -80,8 +79,15 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/admin", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final boolean isAdmin(UserDTO dto) {
+
+        logger.info("REST: updateUser with id '" + dto.getId() + "'. ");
+        return userFacade.isAdmin(dto.getId());
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public final void deleteUser(@PathVariable("id") long id) throws Exception {
+    public final void delete(@PathVariable("id") long id) throws Exception {
 
         logger.info("REST: deleteUser with id '" + id + "'. ");
         try {
@@ -92,7 +98,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final void updateUser(UserDTO dto) {
+    public final void update(UserDTO dto) {
 
         logger.info("REST: updateUser with id '" + dto.getId() + "'. ");
         userFacade.update(dto);
