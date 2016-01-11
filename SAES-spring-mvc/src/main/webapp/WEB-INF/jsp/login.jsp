@@ -21,7 +21,7 @@
 <jsp:attribute name="body"><%-- provide page-fragment attribute to be rendered by the my:layout tag --%>
 
     <c:if test="${param.error != null}">
-        <p class="text-danger">
+        <p class="alert alert-danger">
             <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>
         </p>
     </c:if>
@@ -30,7 +30,7 @@
     </c:if>
 
     <sec:authorize access="isAuthenticated()">
-        <div class="text-center">
+        <div class="alert alert-success">
             <p>You are logged in as <strong><c:out value="${pageContext.request.userPrincipal.name}"/></strong></p>
             <button class="btn btn-primary btn-lg"
                     onclick="location.href = '${pageContext.request.contextPath}/logout';">
