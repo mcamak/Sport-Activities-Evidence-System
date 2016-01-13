@@ -34,13 +34,13 @@
                             <div class="form-group ${password_error?'has-error':''}" hidden>
                                 </c:when>
                                 <c:otherwise>
-                                <div class="form-group ${password_error?'has-error':''}">
-                                    </c:otherwise>
-                                    </c:choose>
-                                    <form:label path="password" class="col-lg-2 control-label"
-                                                value="${user.password}">Password</form:label>
+                                    <div class="form-group ${password_error?'has-error':''}">
+                                        </c:otherwise>
+                                        </c:choose>
+                                        <form:label path="password" class="col-lg-2 control-label">Password</form:label>
                                     <div class="col-lg-4">
-                                        <form:input path="password" class="form-control" type="password"/>
+                                        <form:input path="password" class="form-control" type="password"
+                                                    value="${user.id != null ? 'neverBeUsed' : user.password}"/>
                                         <form:errors path="password" class="help-block"/>
                                     </div>
                                 </div>

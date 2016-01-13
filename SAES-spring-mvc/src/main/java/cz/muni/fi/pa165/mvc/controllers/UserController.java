@@ -6,6 +6,7 @@ import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.logging.Logger;
 
 import static cz.muni.fi.pa165.mvc.security.Roles.ADMIN;
 import static cz.muni.fi.pa165.mvc.security.Roles.USER;
@@ -34,6 +36,8 @@ import static cz.muni.fi.pa165.mvc.security.Roles.USER;
 @RequestMapping("/user")
 public class UserController {
 
+    Logger logger = Logger.getLogger(UserController.class.getName());
+
     @Inject
     private UserFacade userFacade;
 
@@ -45,7 +49,8 @@ public class UserController {
      */
     @Secured(ADMIN)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model) {
+    public String list(Model model) throws Exception {
+        logger.info("Method 'list' invoked. ");
         model.addAttribute("users", userFacade.findAll());
         return "user/list";
     }
@@ -59,6 +64,7 @@ public class UserController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newUser(Model model) {
         if (!model.containsAttribute("user") || model.asMap().get("user") == null) {
+            logger.info("Method 'new' invoked. ");
             model.addAttribute("user", new UserDTO());
         }
         return "user/new";
@@ -74,6 +80,7 @@ public class UserController {
     @Secured(ADMIN)
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable long id, Model model) {
+        logger.info("Method 'update' invoked. (id: {" + id + "})");
         model.addAttribute("user", userFacade.findById(id));
         return newUser(model);
     }
@@ -88,6 +95,7 @@ public class UserController {
     @Secured(USER)
     @RequestMapping(value = "/update/name={name}", method = RequestMethod.GET)
     public String update(@PathVariable("name") String username, Model model) {
+        logger.info("Method 'update' invoked. (username: " + username + ")");
         UserDTO user = userFacade.findByUsername(username);
         user.setPassword("this will be not concerned");
         model.addAttribute("user", user);
@@ -103,6 +111,7 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute("user") UserDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder, Principal p) {
+        logger.info("Method 'create' invoked. ");
 
         if (bindingResult.hasErrors()) {
             for (ObjectError ge : bindingResult.getGlobalErrors()) {
@@ -146,11 +155,13 @@ public class UserController {
      */
     @Secured({ADMIN, USER})
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes, Principal p) {
+    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes, Principal p, Authentication a) {
+        logger.info("Method 'delete' invoked. (id: " + id + ")");
         UserDTO userRequesting = userFacade.findByUsername(p.getName());
         if (userFacade.isAdmin(userRequesting.getId())) {
             userFacade.delete(id);
             if (userRequesting.getId().equals(new Long(id))) {
+                SecurityContextHolder.clearContext();
                 redirectAttributes.addFlashAttribute("alert_success", "Your user account was deleted. ");
                 return "redirect:" + uriBuilder.path("/login").toUriString();
             } else {

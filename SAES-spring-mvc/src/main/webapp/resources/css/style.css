@@ -10,3 +10,9 @@ body {
 .btnNew {
     margin: 5px;
 }
+
+.tableError, .tableError > tbody > tr > th, .tableError > tbody > tr > td {
+    font-size: medium;
+    width: auto;
+    border: none;
+}

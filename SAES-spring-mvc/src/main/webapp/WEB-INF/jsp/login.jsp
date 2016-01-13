@@ -26,11 +26,11 @@
         </p>
     </c:if>
     <c:if test="${param.logout != null}">
-        <p class="text-success">You have been logged out.</p>
+        <p class="alert alert-success">You have been logged out.</p>
     </c:if>
 
     <sec:authorize access="isAuthenticated()">
-        <div class="alert alert-success">
+        <div class="text-center">
             <p>You are logged in as <strong><c:out value="${pageContext.request.userPrincipal.name}"/></strong></p>
             <button class="btn btn-primary btn-lg"
                     onclick="location.href = '${pageContext.request.contextPath}/logout';">
