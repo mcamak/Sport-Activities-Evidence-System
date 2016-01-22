@@ -41,24 +41,31 @@
             <ul class="nav navbar-nav">
                 <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
                     <li class="${pageContext.request.requestURI.contains("/activity") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/activity/list">Sport Activity</a>
+                        <a href="${pageContext.request.contextPath}/activity/list"
+                           title="List of sport activities">Sport Activity</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/calorie") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/calorie/list">Burned Calorie</a>
+                        <a href="${pageContext.request.contextPath}/calorie/list"
+                           title="List of tabular values belonging to sport activities, source:
+                                    http://www.nutristrategy.com/caloriesburned.htm">Burned Calorie</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/record/list">Activity Record</a>
+                        <a href="${pageContext.request.contextPath}/record/list"
+                           title="List of user records">Activity Record</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/user/list">User</a>
+                        <a href="${pageContext.request.contextPath}/user/list"
+                           title="List of users for management">Users</a>
                     </li>
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('ROLE_USER')">
                     <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/record/list">Activity Record</a>
+                        <a href="${pageContext.request.contextPath}/record/list"
+                           title="List of user records">Activity Record</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/user") ? 'active' : ''}">
-                        <a href="${pageContext.request.contextPath}/user/update/name=${pageContext.request.userPrincipal.name}">User</a>
+                        <a href="${pageContext.request.contextPath}/user/update/name=${pageContext.request.userPrincipal.name}"
+                           title="Account settings">User</a>
                     </li>
                 </sec:authorize>
             </ul>
