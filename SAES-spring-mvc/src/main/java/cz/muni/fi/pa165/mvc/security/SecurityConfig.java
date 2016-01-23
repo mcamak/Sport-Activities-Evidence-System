@@ -36,9 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Inject
-    private PasswordEncoder passwordEncoder;
-
-    @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(new CustomAuthenticationProvider(userFacade));
     }
