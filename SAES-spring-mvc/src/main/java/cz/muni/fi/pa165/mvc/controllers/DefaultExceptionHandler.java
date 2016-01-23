@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.mvc.controllers;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,11 @@ public class DefaultExceptionHandler {
         mav.addObject("eMessage", e.getMessage());
         mav.addObject("eCode", 900);
         return mav;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String accessError(Exception e) {
+        return "redirect:/login";
     }
 
     @ExceptionHandler(Exception.class)
