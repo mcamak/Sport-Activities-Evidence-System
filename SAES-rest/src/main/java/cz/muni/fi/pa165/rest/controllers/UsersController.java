@@ -2,17 +2,13 @@ package cz.muni.fi.pa165.rest.controllers;
 
 import cz.muni.fi.pa165.dto.UserCreateDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
-import cz.muni.fi.pa165.dto.UserLogInDTO;
 import cz.muni.fi.pa165.facade.UserFacade;
 import cz.muni.fi.pa165.rest.exceptions.InvalidParameterException;
 import cz.muni.fi.pa165.rest.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -31,32 +27,21 @@ public class UsersController {
     @Inject
     private UserFacade userFacade;
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final void createUser(UserCreateDTO dto) throws Exception {
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final Collection<UserDTO> list() throws Exception {
 
-        logger.info("REST: createUser...");
+        logger.info("REST: listing all users...");
         try {
-            userFacade.create(dto);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidParameterException(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final boolean logIn(UserLogInDTO dto) throws Exception {
-
-        logger.info("REST: log in user with name '" + dto.getUsername() + "'. ");
-        try {
-            return userFacade.logIn(dto);
+            return userFacade.findAll();
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final UserDTO getUser(@PathVariable("id") long id) throws Exception {
+    public final UserDTO get(@PathVariable("id") long id) throws Exception {
 
-        logger.info("REST: getUser with id '" + id + "'. ");
+        logger.info("REST: getting user " + id + ". ");
         try {
             UserDTO userDTO = userFacade.findById(id);
             if (userDTO == null) {
@@ -68,22 +53,29 @@ public class UsersController {
         }
     }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final Collection<UserDTO> getUsers() throws Exception {
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final void create(@RequestBody UserCreateDTO dto) throws Exception {
 
-        logger.info("REST: getAllUsers...");
+        logger.info("REST: creating user.");
         try {
-            return userFacade.findAll();
+            userFacade.create(dto);
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final boolean isAdmin(UserDTO dto) {
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final void update(@RequestBody UserDTO dto) {
 
         logger.info("REST: updateUser with id '" + dto.getId() + "'. ");
-        return userFacade.isAdmin(dto.getId());
+        userFacade.update(dto);
+    }
+
+    @RequestMapping(value = "/admin/{id}", method = RequestMethod.GET)
+    public final boolean isAdmin(@PathVariable("id") long id) {
+
+        logger.info("REST: checking if user " + id + " is admin. ");
+        return userFacade.isAdmin(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -95,12 +87,5 @@ public class UsersController {
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }
-    }
-
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final void update(UserDTO dto) {
-
-        logger.info("REST: updateUser with id '" + dto.getId() + "'. ");
-        userFacade.update(dto);
     }
 }
