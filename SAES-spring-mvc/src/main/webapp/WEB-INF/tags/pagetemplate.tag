@@ -35,7 +35,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/login">Sport Activity Evidence System</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/login" title="Home">Sport Activity Evidence
+                System</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -46,8 +47,8 @@
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/calorie") ? 'active' : ''}">
                         <a href="${pageContext.request.contextPath}/calorie/list"
-                           title="List of tabular values belonging to sport activities, source:
-                                    http://www.nutristrategy.com/caloriesburned.htm">Burned Calorie</a>
+                           title="List of tabular values belonging to sport activities&#13;source: http://www.nutristrategy.com/caloriesburned.htm">Burned
+                            Calorie</a>
                     </li>
                     <li class="${pageContext.request.requestURI.contains("/record") ? 'active' : ''}">
                         <a href="${pageContext.request.contextPath}/record/list"
