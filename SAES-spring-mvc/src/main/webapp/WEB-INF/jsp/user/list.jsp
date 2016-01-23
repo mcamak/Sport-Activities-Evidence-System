@@ -13,7 +13,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<my:pagetemplate title="User">
+<my:pagetemplate title="Users">
 <jsp:attribute name="body">
 
     <my:a href="/user/new" class="btn btn-primary btnNew">
