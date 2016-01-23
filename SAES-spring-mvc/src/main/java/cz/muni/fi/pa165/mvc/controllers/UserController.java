@@ -3,9 +3,11 @@ package cz.muni.fi.pa165.mvc.controllers;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.exceptions.SaesServiceException;
 import cz.muni.fi.pa165.facade.UserFacade;
+import cz.muni.fi.pa165.mvc.security.ApplicationUser;
 import cz.muni.fi.pa165.service.mapping.ServiceConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -73,7 +75,7 @@ public class UserController {
     /**
      * Prepares an update form.
      *
-     * @param id of user to be updated
+     * @param id    of user to be updated
      * @param model data to be displayed
      * @return JSP page
      */
@@ -89,7 +91,7 @@ public class UserController {
      * Prepares an update form.
      *
      * @param username of the user to be updated
-     * @param model data to be displayed
+     * @param model    data to be displayed
      * @return JSP page
      */
     @Secured(USER)
@@ -123,6 +125,16 @@ public class UserController {
             return "user/new";
         }
 
+        boolean isAdmin = false;
+        if (p != null) {
+            UsernamePasswordAuthenticationToken p1 = (UsernamePasswordAuthenticationToken) p;
+            ApplicationUser applicationUser = (ApplicationUser) (p1).getPrincipal();
+            if (applicationUser.getUsername() != null && !applicationUser.getUsername().isEmpty()) {
+                UserDTO userRequesting = userFacade.findByUsername(applicationUser.getUsername());
+                isAdmin = userFacade.isAdmin(userRequesting.getId());
+            }
+        }
+
         if (formBean.getId() == null) {
             try {
                 userFacade.create(formBean);
@@ -133,17 +145,31 @@ public class UserController {
                 return "user/new";
             }
         } else {
+            UserDTO old = userFacade.findById(formBean.getId());
             userFacade.update(formBean);
+
+            if (p != null && old.getUsername().equals(p.getName()) && !old.getUsername().equals(formBean.getUsername())) {
+                UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) p;
+                ApplicationUser applicationUser = (ApplicationUser) (token).getPrincipal();
+                ApplicationUser newApplicationUser = new ApplicationUser(
+                        formBean.getUsername(),
+                        applicationUser.getPassword() != null ? applicationUser.getPassword() : "",
+                        applicationUser.isEnabled(),
+                        applicationUser.isAccountNonExpired(),
+                        applicationUser.isCredentialsNonExpired(),
+                        applicationUser.isAccountNonLocked(),
+                        applicationUser.getAuthorities()
+                );
+
+                Authentication a = new UsernamePasswordAuthenticationToken(newApplicationUser, token.getCredentials(), token.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(a);
+            }
             redirectAttributes.addFlashAttribute("alert_info", "User " + formBean.getId() + " was updated. ");
         }
-        if (p == null) {
-            return "redirect:" + uriBuilder.path("/login").toUriString();
-        }
-        UserDTO userRequesting = userFacade.findByUsername(p.getName());
-        if (userRequesting == null || !userFacade.isAdmin(userRequesting.getId())) {
-            return "redirect:" + uriBuilder.path("/login").toUriString();
-        } else {
+        if (isAdmin) {
             return "redirect:" + uriBuilder.path("/user/list").toUriString();
+        } else {
+            return "redirect:" + uriBuilder.path("/login").toUriString();
         }
     }
 
